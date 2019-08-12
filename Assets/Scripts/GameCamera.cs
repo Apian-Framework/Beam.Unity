@@ -25,6 +25,7 @@ public class GameCamera : MonoBehaviour {
     protected bool _bMoving = false;
     protected bool _bRotating = false;
     protected bool _bZooming = false;    
+
         
     public void StartMotion()
     { 
@@ -32,7 +33,7 @@ public class GameCamera : MonoBehaviour {
         
         _bMoving = true;
         _bRotating = true;
-        _bZooming = true;
+        _bZooming = true; 
         
         _moveStartTime = Time.time;
         _moveStartFOV = _thisCamera.fieldOfView;    
@@ -40,7 +41,7 @@ public class GameCamera : MonoBehaviour {
     }      
     
     // return true when done
-    public bool MoveTowards(Vector3 targetPos, Vector3 targetLookAt, float targetFOV, float targetMoveSecs)
+    public bool MoveTowards(Vector3 targetPos, Vector3 targetLookAt, float targetFOV, float targetMoveSecs, float closeEnough)
     {
         Transform thisT = _thisCamera.transform;
         
@@ -55,11 +56,14 @@ public class GameCamera : MonoBehaviour {
             // max = FBField.kLength * .5f + FBField.kEndZoneDepth;
             // targetPos.z = Mathf.Clamp(targetPos.z, -max, max);               
             
-            thisT.position = Vector3.SmoothDamp(thisT.position,targetPos,ref _curVel,targetMoveSecs);
+            thisT.position = Vector3.SmoothDamp(thisT.position, targetPos, ref _curVel, targetMoveSecs);
      
-            if (Vector3.Distance(thisT.position, targetPos) < kZeroDist)
-            {
-                _bMoving = false;   
+            // Debug.Log(string.Format("Current dist: {0}, Current Vel: {1}",Vector3.Distance(thisT.position, targetPos),_curVel));
+
+            if (Vector3.Distance(thisT.position, targetPos) < closeEnough)
+            {          
+                _bMoving = false;
+                Debug.Log("Not moving!");                         
             }           
         }
          
@@ -75,7 +79,7 @@ public class GameCamera : MonoBehaviour {
              
             // gotten there? Note that the rotation can't be considered done until the motion is done
             // Since the latter affects the former
-            if  ((_bMoving == false) && (Quaternion.Angle(thisT.rotation, targetRotation) < .1))
+            if  ((_bMoving == false) && (Quaternion.Angle(thisT.rotation, targetRotation) < 5))
             {
                 _bRotating = false; 
             }       
@@ -101,8 +105,10 @@ public class GameCamera : MonoBehaviour {
             }
         }    
         
+        if (!(_bMoving || _bRotating || _bZooming))
+            Debug.Log("Got there!");
         
-        return !(_bMoving || _bRotating || _bZooming);
+        return !(_bMoving || _bRotating || _bZooming); // true if "we are there"
     }       
     
     
@@ -122,6 +128,18 @@ public class GameCamera : MonoBehaviour {
         public virtual void update() {} 
         public virtual void end() {}         
         public virtual void handleCmd(int cmd, object param) {}           
+
+        // For moving a camera towards a target object
+        protected Vector3 TargetCamPos(GameObject target, Vector3 posOffset)
+        {       
+            return target.transform.TransformPoint(posOffset);
+        }
+                
+        protected Vector3 TargetCamLookat(GameObject target, float lookAngleRad, float lookHeight)
+        {     
+            Vector3 offset = new Vector3(-100 * Mathf.Sin(lookAngleRad), lookHeight, 100 *  Mathf.Cos(lookAngleRad));
+            return target.transform.TransformPoint(offset);
+        }                      
     }
     
     
@@ -129,7 +147,8 @@ public class GameCamera : MonoBehaviour {
     public enum CamModeID
     {
         kNormal = 0,
-        kMove,
+        kMoveToPos,
+        kMoveToTarget,
         kOrbit,
         kBikeView,        
         // kSweep,
@@ -143,7 +162,7 @@ public class GameCamera : MonoBehaviour {
     }
     
 
-    public class ModeMoving : CameraMode
+    public class ModeMovingToPos : CameraMode
     {
         // Move from current place to another fixed place with given view
         protected Vector3 _targetPos;
@@ -166,11 +185,48 @@ public class GameCamera : MonoBehaviour {
         
         public override void update()
         {
-            if (_theGameCam.MoveTowards(_targetPos, _targetLookAt, _targetFOV, _targetMoveSecs) )
+            if (_theGameCam.MoveTowards(_targetPos, _targetLookAt, _targetFOV, _targetMoveSecs, kZeroDist) )
                 _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);            
         }   
     }
     
+    public class ModeMovingToTarget : CameraMode
+    {
+        // Move from current place to another fixed place with given view
+        protected GameObject _target;
+        protected float   _targetMoveSecs = 1.0f;
+
+        protected float _finalDist = 0; 
+        protected float _finalHeight = 0;
+
+        protected float _closeEnough;
+        
+        public virtual void init(GameCamera cam, GameObject target, float finalDist, float finalHeight, float moveSecs, float closeEnough)
+        {
+            base.init(cam);  
+
+            _target = target;
+            _finalDist = finalDist;
+            _finalHeight = finalHeight;
+            _targetMoveSecs = moveSecs;
+            _closeEnough = closeEnough;   
+            cam.StartMotion();
+        }      
+        
+        public override void update()
+        {
+            // Our target is on the line between the camera and the target, "dist" away from the target and at a height of "finalHeight".
+            Vector3 posOffset =  _finalDist * (_theGameCam.transform.position -_target.transform.position).normalized;
+            posOffset.y = _finalHeight;
+          
+            Vector3 pos = TargetCamPos(_target, posOffset);
+                   
+            if (_theGameCam.MoveTowards(pos, _target.transform.position, -1, _targetMoveSecs, _closeEnough))
+                _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
+                
+        }   
+    }
+
     public class ModeOrbit : CameraMode
     {    
         // Orbit around a gameObject as it moves
@@ -257,31 +313,20 @@ public class GameCamera : MonoBehaviour {
             _bike = bike;
             _maxDegPerSec = 120;
             _radius = 3.0f;
-            _height = 2.0f;
+            _height = 3.0f;
             _lookAngle = 0f;
             _lookDecayRate = .5f; // deg/sec
             _theGameCam.StartMotion();
             _cmdDispatch[(int)Commands.kInit](null);
         }
-        
-        protected Vector3 TargetCamPos()
-        {    
-            Vector3 offset = new Vector3(0, _height, -_radius);    
-            return _bike.transform.TransformPoint(offset);
-        }
-        
-        protected Vector3 TargetCamLookat()
-        {    
-           // Vector3 offset = new Vector3(0, _height, 100);    
-            Vector3 offset = new Vector3(-100 * Mathf.Sin(_lookAngle), _height, 100 *  Mathf.Cos(_lookAngle));
-            return _bike.transform.TransformPoint(offset);
-        }        
+          
 
         public override void update()
         {
-            Vector3 pos = TargetCamPos();
-            Vector3 lookAt = TargetCamLookat();                     
-            _theGameCam.MoveTowards(pos, lookAt, -1, .2f);  
+            Vector3 posOffset = new Vector3(0, _height, -_radius);            
+            Vector3 pos = TargetCamPos(_bike, posOffset);
+            Vector3 lookAt = TargetCamLookat(_bike, _lookAngle, _height);                     
+            _theGameCam.MoveTowards(pos, lookAt, -1, .2f, kZeroDist);  
 
             float lookSign = Mathf.Sign(_lookAngle);
             float absLA = Mathf.Max(0, Math.Abs(_lookAngle) - (GameTime.DeltaTime() * _lookDecayRate));
@@ -425,20 +470,24 @@ public class GameCamera : MonoBehaviour {
         switch (modeID)
         {
         case CamModeID.kNormal:
-         newMode = new ModeNormal();
-         break;
+            newMode = new ModeNormal();
+            break;
             
-        case CamModeID.kMove:
-         newMode = new ModeMoving();
-         break;            
+        case CamModeID.kMoveToPos:
+            newMode = new ModeMovingToPos();
+            break;       
+
+        case CamModeID.kMoveToTarget:
+            newMode = new ModeMovingToTarget();
+            break;     
             
         case CamModeID.kOrbit:
-         newMode = new ModeOrbit();
-         break;     
+            newMode = new ModeOrbit();
+            break;     
 
         case CamModeID.kBikeView:
-         newMode = new ModeBikeView();
-         break;                        
+            newMode = new ModeBikeView();
+            break;                        
    
         // case CamModeID.kSweep:
         //  newMode = new ModeSweep();
@@ -471,10 +520,16 @@ public class GameCamera : MonoBehaviour {
 	// Call this to set the camera in motion	
 	public void MoveCamera(Vector3 newPos, Vector3 newLookAt, float newFOV, float moveSecs)
 	{
-        ModeMoving mode = (ModeMoving)SetMode(CamModeID.kMove);
+        ModeMovingToPos mode = (ModeMovingToPos)SetMode(CamModeID.kMoveToPos);
         mode.init(this, newPos, newLookAt, newFOV, moveSecs);
 	}	
     
+	public void MoveCameraToTarget(GameObject target, float finalDist , float finalHeight, float moveSecs, float closeEnough = kZeroDist)
+	{
+        ModeMovingToTarget mode = (ModeMovingToTarget)SetMode(CamModeID.kMoveToTarget);
+        mode.init(this, target, finalDist, finalHeight, moveSecs, closeEnough);
+	}	
+
     // Maintain current distance from object and current height. >0 is CCW
     // Look at target's pos plus ofset
     public void StartOrbit(GameObject target, float degPerSec, Vector3 offset)
