@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.23188472, g: 0.23576865, b: 0.27134424, a: 1}
+  m_IndirectSpecularColor: {r: 0.23137516, g: 0.23384121, b: 0.2717356, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -129,8 +129,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 139603162}
+  - component: {fileID: 139603163}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: BikeFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,6 +151,20 @@ Transform:
   m_Father: {fileID: 357892377}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &139603163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139603161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c904a74f511191e43a5878008604ed3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bikePrefab: {fileID: 7933474773069442399, guid: fcf5b99f1d771a848949f77c6a27c0b5,
+    type: 3}
 --- !u!1 &141110966
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,8 +494,6 @@ MonoBehaviour:
   uiCamera: {fileID: 1205679685}
   inputDispatch: {fileID: 245336448}
   ground: {fileID: 157601948}
-  bikePrefab: {fileID: 7933474773069442399, guid: fcf5b99f1d771a848949f77c6a27c0b5,
-    type: 3}
   _bikesList: []
 --- !u!1 &443470197 stripped
 GameObject:
@@ -831,7 +844,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 
+  m_text: <b>Block:</b> 4879586
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -900,13 +913,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 664150527}
-    characterCount: 0
+    characterCount: 14
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 0
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 1
+    pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
@@ -2079,7 +2092,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: <b>Eth Node:</b> https://mainnet.infura.io
+  m_text: <b>Eth Node:</b> https://rinkeby.infura.io
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

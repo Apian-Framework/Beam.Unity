@@ -37,13 +37,11 @@ public abstract class ModeState
 public class GameMain : MonoBehaviour {
 	
 	public EthereumProxy eth = null;
+	public List<GameObject> BikeList { get; private set;}	
 	public GameCamera gameCamera;
 	public UICamera uiCamera;	
 	public InputDispatch inputDispatch;
 	public Ground ground;
-  
-    //&&& These must be set (should enforce this)
-	public List<GameObject> _bikesList = null;
 
 	// here's the currently implemented modes:
 	public enum ModeID
@@ -77,13 +75,15 @@ public class GameMain : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-	
-		_bikesList = new List<GameObject>();
-
 		Application.targetFrameRate = 30;
+
+		// Semi-presistent GameMain-owned objects
+		BikeList = new List<GameObject>();
 		uiCamera = (UICamera)utils.findObjectComponent("UICamera", "UICamera");		
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");		
 		eth = new EthereumProxy();
+
+
 		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using
 		//eth.Connect(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using		
 		firstFrame = true;
@@ -158,11 +158,11 @@ public class GameMain : MonoBehaviour {
 
 	public void DestroyBikes()
 	{
-		foreach (GameObject bk in _bikesList)
+		foreach (GameObject bk in BikeList)
 		{
 			GameObject.Destroy(bk);
 		}
-		_bikesList.Clear();
+		BikeList.Clear();
 	}
 
 

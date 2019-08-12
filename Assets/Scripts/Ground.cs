@@ -11,6 +11,8 @@ public class Ground : MonoBehaviour
     public static float minZ = -500f;
     public static float maxZ = 500f;
 
+    public static Vector3 zeroPos = new Vector3(0f, 0f, 0f);
+
     public static float secsHeld = 15; // TODO: Maybe should ber per-bike and increase with time? Bike Trail FX would have to as well.
 
     public class Place
