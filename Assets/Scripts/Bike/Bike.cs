@@ -34,6 +34,14 @@ public class Bike : MonoBehaviour
     float _turnTheta = 0f; // 0 is north, increases clockwise
     TurnDir _curTurn = TurnDir.kNone; 
 
+    public Player player = null;
+
+    public virtual void Setup(Heading head, Player p) 
+    {
+		heading = head;
+        player = p;
+        SetColor(p.Team.Color);        
+    }
 
     // Start is called before the first frame update
     void Start()
