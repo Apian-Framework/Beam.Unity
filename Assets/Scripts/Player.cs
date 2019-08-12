@@ -5,7 +5,7 @@ using UnityEngine;
 // NOTE: Monbehaviour here? Probably not needed but makes it easier
 // to see what they are doing while the game is running
 
-public static class DemoPlayers
+public static class SplashPlayers
 {
     public static readonly int count = 8;
     public static readonly Player[] data = {
@@ -20,7 +20,7 @@ public static class DemoPlayers
     };
 }
 
-public class Player : MonoBehaviour
+public class Player
 {
     public string ScreenName { get; private set;}
     public Team Team {get; private set;}
