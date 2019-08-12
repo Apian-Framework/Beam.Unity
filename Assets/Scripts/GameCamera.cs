@@ -278,12 +278,16 @@ public class GameCamera : MonoBehaviour {
     // set up behind a player and look the same direction - with a rate limit
     public class ModeBikeView : CameraMode
     {             
+        protected float _highHeight;
+        protected float _lowHeight;
+
         protected GameObject _bike;
         protected float _maxDegPerSec;
         
         protected float _radius;
         protected float _curAngle;
         protected float _height;
+        protected float _viewHeight;
         
         protected float _lookAngle;
         protected float _lookDecayRate;
@@ -294,7 +298,8 @@ public class GameCamera : MonoBehaviour {
         {
             kInit = 0,
             kLookAround = 1,
-            kCount = 2
+            kToggleHighLow = 2,
+            kCount = 3
         }
 
         public class LookParams
@@ -309,11 +314,15 @@ public class GameCamera : MonoBehaviour {
             base.init(cam);   
             _cmdDispatch[(int)Commands.kInit] = new Action<object>( (o) => {} );  // TODO: &&&& First command invoke causes a delay "blip".  This is a bad answer.
             _cmdDispatch[(int)Commands.kLookAround] = new Action<object>(o => lookAround(o));
+            _cmdDispatch[(int)Commands.kToggleHighLow] = new Action<object>(o => ToggleHeight(o));            
 
             _bike = bike;
             _maxDegPerSec = 120;
             _radius = 3.0f;
             _height = 3.0f;
+            _viewHeight = 3.0f;
+            _highHeight = 30f;
+            _lowHeight = 3.0f;
             _lookAngle = 0f;
             _lookDecayRate = .5f; // deg/sec
             _theGameCam.StartMotion();
@@ -325,7 +334,7 @@ public class GameCamera : MonoBehaviour {
         {
             Vector3 posOffset = new Vector3(0, _height, -_radius);            
             Vector3 pos = TargetCamPos(_bike, posOffset);
-            Vector3 lookAt = TargetCamLookat(_bike, _lookAngle, _height);                     
+            Vector3 lookAt = TargetCamLookat(_bike, _lookAngle, _viewHeight);                     
             _theGameCam.MoveTowards(pos, lookAt, -1, .2f, kZeroDist);  
 
             float lookSign = Mathf.Sign(_lookAngle);
@@ -347,6 +356,10 @@ public class GameCamera : MonoBehaviour {
             }
         }
 
+        protected void ToggleHeight(object param)
+        {
+            _height = (_height == _lowHeight) ? _highHeight : _lowHeight;
+        }
 
         public override void handleCmd(int cmd, object param)
         {

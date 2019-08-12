@@ -42,9 +42,7 @@ public class UIBtn : MonoBehaviour {
 	// Update is called once per frame
 	protected virtual void Update () 
 	{
-
 		Vector3 newPos = transform.position;
-		
 		float targetZ = _basePos.z - (_bIsHighLit ? pressOffset : 0);
 		
 		float zErr = targetZ - newPos.z;
@@ -57,13 +55,11 @@ public class UIBtn : MonoBehaviour {
 		newPos.z += dZ;
 		
 		transform.position = newPos;
-
-	
 	}
 	
 	public virtual void doSelect()
 	{
-		
+		// UICamera decides to call this	
 	}
 	
 	
