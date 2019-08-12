@@ -13,6 +13,7 @@ public class GameModePlay : GameMode
 	{
 		base.init();
         _mainObj.DestroyBikes();
+        _mainObj.ground.ClearPlaces();
 
         Assert.IsTrue(kMaxPlayers <= SplashPlayers.count, "Too many bikes for splash players list");
 

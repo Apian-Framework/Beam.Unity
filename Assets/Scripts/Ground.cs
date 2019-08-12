@@ -11,6 +11,8 @@ public class Ground : MonoBehaviour
     public static float minZ = -500f;
     public static float maxZ = 500f;
 
+    public static readonly int pointsPerAxis = 101;
+
     public static Vector3 zeroPos = new Vector3(0f, 0f, 0f);
 
     public static float secsHeld = 15; // TODO: Maybe should ber per-bike and increase with time? Bike Trail FX would have to as well.
@@ -30,9 +32,7 @@ public class Ground : MonoBehaviour
 
     void Awake() 
     {
-        placeArray = new Place[101,101];
-        activePlaces = new List<Place>();
-        freePlaces = new Stack<Place>();
+        ClearPlaces();
     }
     void Start()
     {
@@ -59,13 +59,21 @@ public class Ground : MonoBehaviour
         //    Debug.Log(string.Format("--- Removed {0} places --- {1} still active --- {2} free -------------------", removed, activePlaces.Count, freePlaces.Count));
     }
 
+    public void ClearPlaces()
+    {
+        // is this asking too much of the GC?
+        placeArray = new Place[pointsPerAxis,pointsPerAxis];
+        activePlaces = new List<Place>();
+        freePlaces = new Stack<Place>();        
+    }
+
     public Place GetPlace(Vector3 pos)
     {
         Vector3 gridPos = NearestGridPoint(pos);
         int xIdx = (int)Mathf.Floor((gridPos.x - minX) / gridSize );
         int zIdx = (int)Mathf.Floor((gridPos.z - minZ) / gridSize );
         //Debug.Log(string.Format("gridPos: {0}, xIdx: {1}, zIdx: {2}", gridPos, xIdx, zIdx));
-        return placeArray[xIdx,zIdx];
+        return IndicesAreOnMap(xIdx,zIdx) ? placeArray[xIdx,zIdx] : null;
     }
 
     public Place ClaimPlace(Bike bike, Vector3 pos)
@@ -73,9 +81,10 @@ public class Ground : MonoBehaviour
         Vector3 gridPos = NearestGridPoint(pos);        
         int xIdx = (int)Mathf.Floor((gridPos.x - minX) / gridSize );
         int zIdx = (int)Mathf.Floor((gridPos.z - minZ) / gridSize );
-        Place p = placeArray[xIdx,zIdx] ?? SetupPlace(bike, xIdx, zIdx);
+
+        Place p = IndicesAreOnMap(xIdx,zIdx) ? ( placeArray[xIdx,zIdx] ?? SetupPlace(bike, xIdx, zIdx) ) : null;
         // TODO: Should claiming a place already held by team reset the timer?
-        return p.bike == bike ? p : null;
+        return (p?.bike == bike) ? p : null;
     }
 
     public static Vector3 NearestGridPoint(Vector3 pos) 
@@ -96,5 +105,10 @@ public class Ground : MonoBehaviour
         placeArray[xIdx, zIdx] = p;
         activePlaces.Add(p);
         return p;
+    }
+
+    protected bool IndicesAreOnMap(int xIdx, int zIdx)
+    {
+        return !(xIdx < 0 || zIdx < 0 || xIdx >= pointsPerAxis || zIdx >= pointsPerAxis);
     }
 }
