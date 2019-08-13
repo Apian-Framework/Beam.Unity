@@ -320,8 +320,8 @@ public class GameCamera : MonoBehaviour {
             _maxDegPerSec = 120;
             _radius = 3.0f;
             _height = 3.0f;
-            _viewHeight = 3.0f;
-            _highHeight = 30f;
+            _viewHeight = 0f;
+            _highHeight = 60f;
             _lowHeight = 3.0f;
             _lookAngle = 0f;
             _lookDecayRate = .5f; // deg/sec
@@ -359,6 +359,7 @@ public class GameCamera : MonoBehaviour {
         protected void ToggleHeight(object param)
         {
             _height = (_height == _lowHeight) ? _highHeight : _lowHeight;
+            _viewHeight = (_height == _lowHeight) ? 0 : -1000f; // &&&&& TODO: constants!
         }
 
         public override void handleCmd(int cmd, object param)
