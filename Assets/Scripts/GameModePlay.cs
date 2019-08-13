@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class GameModePlay : GameMode
 {		
-    public readonly int kMaxPlayers = 3;
+    public readonly int kMaxPlayers = 8;
 
 	public override void init() 
 	{

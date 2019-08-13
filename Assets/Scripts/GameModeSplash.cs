@@ -11,6 +11,7 @@ public class GameModeSplash : GameMode
 	{
 		base.init();
         _mainObj.DestroyBikes();
+        _mainObj.ground.ClearPlaces();
 
         Assert.IsTrue(kSplashBikeCount <= SplashPlayers.count, "Too many bikes for splash players list");
 

@@ -23,6 +23,12 @@ public class Ground : MonoBehaviour
         public int zIdx;
         public Bike bike;
         public float secsLeft;
+        public GameObject marker;
+
+        public Vector3 GetPos()
+        {
+            return new Vector3(xIdx*gridSize+minX, 0, zIdx*gridSize+minZ);
+        }
     }
 
     public Place[,] placeArray = null; 
@@ -30,13 +36,17 @@ public class Ground : MonoBehaviour
     protected List<Place> activePlaces = null;
     protected Stack<Place> freePlaces = null; // re-use released/expired ones
 
+    protected List<GameObject> markerList = null; // makes it easier to track/delete them
+
+    public GameObject markerPrefab;
+
     void Awake() 
     {
+        markerList = new List<GameObject>();        
         ClearPlaces();
     }
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -48,7 +58,8 @@ public class Ground : MonoBehaviour
                 p.secsLeft -= GameTime.DeltaTime();
                 if (p.secsLeft <= 0)
                 {
-                    p.bike = null;                    
+                    p.bike = null;                 
+                    p.marker.SetActive(false);
                     freePlaces.Push(p); // add to free list
                     placeArray[p.xIdx, p.zIdx] = null;
                     //Debug.Log(string.Format("Removing Place: xIdx: {0}, zIdx: {0}", p.xIdx, p.zIdx));
@@ -61,10 +72,11 @@ public class Ground : MonoBehaviour
 
     public void ClearPlaces()
     {
+        markerList.RemoveAll(m => {Object.Destroy(m); return true;});
         // is this asking too much of the GC?
         placeArray = new Place[pointsPerAxis,pointsPerAxis];
         activePlaces = new List<Place>();
-        freePlaces = new Stack<Place>();        
+        freePlaces = new Stack<Place>();         
     }
 
     public Place GetPlace(Vector3 pos)
@@ -91,7 +103,7 @@ public class Ground : MonoBehaviour
     {
         float invGridSize = 1.0f / gridSize;
         return new Vector3( Mathf.Round(pos.x * invGridSize) * gridSize, pos.y, Mathf.Round(pos.z * invGridSize) * gridSize);
-    }
+    } 
 
     // Set up a place instance for use or re-use
     protected Place SetupPlace(Bike bike, int xIdx, int zIdx)
@@ -102,9 +114,25 @@ public class Ground : MonoBehaviour
         p.xIdx = xIdx;
         p.zIdx = zIdx;
         p.bike = bike;
+        p.marker = SetupMarkerForPlace(p); // might create it
         placeArray[xIdx, zIdx] = p;
         activePlaces.Add(p);
         return p;
+    }
+
+    protected GameObject SetupMarkerForPlace(Place p)
+    {
+        GameObject  marker = p.marker;
+        if (marker == null) {
+            marker = GameObject.Instantiate(markerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+            marker.transform.parent = transform;            
+            markerList.Add(marker);
+        }
+        marker.transform.position = p.GetPos();
+        GroundMarker gm = (GroundMarker)marker.transform.GetComponent("GroundMarker");
+		gm.SetColor(p.bike.player.Team.Color);	
+        marker.SetActive(true);	
+        return marker;
     }
 
     protected bool IndicesAreOnMap(int xIdx, int zIdx)
