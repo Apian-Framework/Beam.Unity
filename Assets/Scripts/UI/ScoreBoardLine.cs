@@ -22,7 +22,7 @@ public class ScoreboardLine : MonoBehaviour
     {
         if (bike.player.Score != prevScore)
         {
-            transform.parent.GetComponent<ScoreBoard>().SetDirty();
+            transform.parent.GetComponent<Scoreboard>().SetDirty();
             prevScore = bike.player.Score;
             scoreTextMesh.text = prevScore.ToString();
         }
