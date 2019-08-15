@@ -55,7 +55,14 @@ public class GameModePlay : GameMode
  
     public override void update()
     {
-        
+        // List<GameObject> delBikes = new List<GameObject>();
+        // foreach ( GameObject go in _mainObj.BikeList)
+        // {
+        //     if (go.transform.GetComponent<Bike>().player.Score < 0)
+        //         delBikes.Add(go);            
+        // }
+        // foreach ( GameObject go in delBikes)
+        //     _mainObj.RemoveOneBike(go);        
     }
         
     public override void HandleTap(bool isDown)     

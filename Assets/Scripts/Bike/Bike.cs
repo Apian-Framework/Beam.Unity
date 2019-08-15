@@ -40,6 +40,7 @@ public class Bike : MonoBehaviour
     {
 		heading = head;
         player = p;
+        p.Score = Player.kStartScore;
         SetColor(p.Team.Color);        
     }
 

@@ -31,12 +31,14 @@ public class Player
     public Team Team {get; private set;}
     public int Score { get; set;}
 
+    public static readonly int kStartScore = 1000;
+
     public Player(string id, string name, Team t)
     { 
         ID = id;
         ScreenName = name;
         Team = t;
-        Score = 0;
+        Score = kStartScore;
     }
 
     // void Start()

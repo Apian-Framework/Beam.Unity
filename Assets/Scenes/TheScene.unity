@@ -403,7 +403,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: dc8c2ac9e27e85c42b2b46553c8e4c58, type: 2}
     - target: {fileID: 100006, guid: 5c67a68734d4ad24c870e55891a0f9b0, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 5c67a68734d4ad24c870e55891a0f9b0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2432,6 +2432,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bike: {fileID: 0}
   prevScore: -1
+  whoTextMesh: {fileID: 0}
+  scoreTextMesh: {fileID: 0}
 --- !u!1 &1547960405 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100002, guid: 1f1256534aa3a4a4698f5acbd9fef60c,

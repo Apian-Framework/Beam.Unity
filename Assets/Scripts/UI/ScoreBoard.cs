@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class ScoreBoard : MovableUISetItem
+public class Scoreboard : MovableUISetItem
 {
     public float otherYBase = .38f;
     public float lineDy = -.05f;
@@ -31,16 +33,18 @@ public class ScoreBoard : MovableUISetItem
     protected void DoSort()
     {
         // descending
-        OtherPlayerLines.Sort((a, b) => b.GetComponent<ScoreBoardLine>().prevScore.CompareTo(a.GetComponent<ScoreBoardLine>().prevScore));
+        try {
+            OtherPlayerLines.Sort((a, b) => b.GetComponent<ScoreboardLine>().prevScore.CompareTo(a.GetComponent<ScoreboardLine>().prevScore));
 
-        float y = otherYBase;       
-        foreach (GameObject otherLine in OtherPlayerLines)
-        {
-            Vector3 pos = otherLine.transform.localPosition;
-            pos.y = y;
-            otherLine.transform.localPosition = pos;
-            y += lineDy;
-        }
+            float y = otherYBase;       
+            foreach (GameObject otherLine in OtherPlayerLines)
+            {
+                Vector3 pos = otherLine.transform.localPosition;
+                pos.y = y;
+                otherLine.transform.localPosition = pos;
+                y += lineDy;
+            }
+        } catch(System.NullReferenceException e) {}
         _isDirty = false;
     }
 
@@ -63,5 +67,13 @@ public class ScoreBoard : MovableUISetItem
         _isDirty = true; // needs sorting
         onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;
     }
+
+    // public void RemoveBike(GameObject bikeObj)
+    // {
+    //     Bike remBike = bikeObj.GetComponent<Bike>();
+    //     GameObject line = OtherPlayerLines.Find(l => (l.GetComponent<ScoreboardLine>()).bike == remBike);
+    //     OtherPlayerLines.Remove(line);
+    //     Object.Destroy(line);
+    // }
 
 }

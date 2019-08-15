@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class ScoreBoardLine : MonoBehaviour
+public class ScoreboardLine : MonoBehaviour
 {
     public Bike bike = null;
 

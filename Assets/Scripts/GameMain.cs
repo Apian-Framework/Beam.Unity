@@ -165,6 +165,14 @@ public class GameMain : MonoBehaviour {
 		BikeList.Clear();
 	}
 
+	// public void RemoveOneBike(GameObject bikeObj)
+	// {
+	// 	BikeList.Remove(bikeObj);
+	// 	uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", bikeObj); // TODO: find better way
+	// 	Object.Destroy(bikeObj);
+	// 	// TODO: What if it is the player? Boom?
+	// }
+
 	public void ReportScoreEvent(Bike bike, ScoreEvent evt, Ground.Place place)
 	{
 		int scoreDelta = GameConstants.eventScores[(int)evt];
