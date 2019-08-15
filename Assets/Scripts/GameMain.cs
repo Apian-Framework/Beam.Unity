@@ -165,5 +165,31 @@ public class GameMain : MonoBehaviour {
 		BikeList.Clear();
 	}
 
+	public void ReportScoreEvent(Bike bike, ScoreEvent evt, Ground.Place place)
+	{
+		int scoreDelta = GameConstants.eventScores[(int)evt];
+		bike.player.Score += scoreDelta;
+
+		if (evt == ScoreEvent.kHitEnemyPlace || evt == ScoreEvent.kHitFriendPlace)
+		{
+			// half of the deduction goes to the owner of the place, the rest is divded 
+			// among the owner's team 
+			// UNLESS: the bike doing the hitting IS the owner - then the rest of the team just splits it
+			if (bike != place.bike) {
+				scoreDelta /= 2;
+				place.bike.player.Score -= scoreDelta; // adds
+			}
+
+			IEnumerable<Bike> rewardedOtherBikes = 
+				BikeList.Select(go =>  go.transform.GetComponent<Bike>()) // all bikes (yuk! fix this)
+				.Where( b => b != bike && b.player.Team == place.bike.player.Team);  // Bikes other the "bike" on affected team
+
+			if (rewardedOtherBikes.Count() > 0)
+			{
+				foreach (Bike b in rewardedOtherBikes) 
+					b.player.Score -= scoreDelta / rewardedOtherBikes.Count();
+			}
+		}		
+	}
 
 }

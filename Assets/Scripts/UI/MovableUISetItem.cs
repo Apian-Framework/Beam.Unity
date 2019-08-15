@@ -16,7 +16,7 @@ public class MovableUISetItem : MonoBehaviour {
 	public const float kZeroDist = .01f;
 	
 	// Use this for initialization
-	void Start () 
+	protected virtual void Start () 
 	{
 		bMoving = false;
 		
@@ -27,7 +27,7 @@ public class MovableUISetItem : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	protected virtual void Update () 
 	{
 		if (bMoving)
 		{

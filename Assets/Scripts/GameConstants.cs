@@ -16,11 +16,20 @@ public enum TurnDir
     kRight = 2,
 }
 
+public enum ScoreEvent
+{
+    kClaimPlace = 0,
+    kHitFriendPlace = 1,
+    kHitEnemyPlace = 2
+}
+
 public static class GameConstants 
 {
-    public static readonly float kScorePerSec = 10;
-    public static readonly float kBeamPenalty = 50;
-    public static readonly float friendlyBeamPenalty = 10;
+    public static readonly int[] eventScores = {
+        11, // claimPlace
+        -511, // hitfriend
+        -1211 // hitEnemy
+    };
 
     // NOTE: coordinates are LEFT-HANDED! A positive heading rotation, for instance, is clockwise from above.
     public static readonly float[] headingDegrees = {

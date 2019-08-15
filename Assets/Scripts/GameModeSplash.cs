@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public class GameModeSplash : GameMode
 {		
-	public readonly int kSplashBikeCount = 4;
+	public readonly int kSplashBikeCount = 12;
 	public override void init() 
 	{
 		base.init();
@@ -19,7 +19,7 @@ public class GameModeSplash : GameMode
         {
             Player p = SplashPlayers.data[i]; 
 		    Heading heading = BikeFactory.PickRandomHeading();
-		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 5 );            
+		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 10 );            
             GameObject bike =  BikeFactory.CreateDemoBike(p, _mainObj.ground, pos, heading);
             _mainObj.BikeList.Add(bike);
         }

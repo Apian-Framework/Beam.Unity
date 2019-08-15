@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class GameModePlay : GameMode
 {		
-    public readonly int kMaxPlayers = 8;
+    public readonly int kMaxPlayers = 12;
 
 	public override void init() 
 	{
@@ -20,7 +20,7 @@ public class GameModePlay : GameMode
         // Create player bike
         Player p = SplashPlayers.data[0]; 
         Heading heading = BikeFactory.PickRandomHeading();
-        Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 5 );            
+        Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 10 );            
         GameObject playerBike =  BikeFactory.CreateLocalPlayerBike(p, _mainObj.ground, pos, heading);
         _mainObj.BikeList.Add(playerBike);   
         _mainObj.inputDispatch.SetLocalPlayerBike(playerBike);     
@@ -29,7 +29,7 @@ public class GameModePlay : GameMode
         {
             p = SplashPlayers.data[i]; 
 		    heading = BikeFactory.PickRandomHeading();
-		    pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 5 );            
+		    pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize *  10 );            
             GameObject bike =  BikeFactory.CreateAIBike(p, _mainObj.ground, pos, heading);
             _mainObj.BikeList.Add(bike);
         }
@@ -40,6 +40,13 @@ public class GameModePlay : GameMode
 
  
 		_mainObj.uiCamera.switchToNamedStage("PlayStage");
+        _mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard").SendMessage("SetLocalPlayerBike", playerBike);
+        foreach (GameObject b in _mainObj.BikeList)
+        {
+            if (b != playerBike)
+                _mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard").SendMessage("AddBike", b);
+        }
+
         _mainObj.gameCamera.StartBikeMode( playerBike);           
         _mainObj.gameCamera.gameObject.SetActive(true);  
  

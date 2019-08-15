@@ -62,7 +62,7 @@ public class BikeFactory : MonoBehaviour
 	}
 	public static Vector3 PositionForNewBike(List<GameObject> otherBikes, Heading head, Vector3 basePos, float radius)
 	{
-		float minDist = Bike.length * 5;
+		float minDist = Bike.length * 20; 
 		float closestD = -1;
 		Vector3 newPos = Vector3.zero;
 		while (closestD < minDist) 

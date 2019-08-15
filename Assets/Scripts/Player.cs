@@ -7,27 +7,33 @@ using UnityEngine;
 
 public static class SplashPlayers
 {
-    public static readonly int count = 8;
+    public static readonly int count = 12;
     public static readonly Player[] data = {
-        new Player("Alice", Team.teamData[(int)TeamID.kSharks]),    
-        new Player("Bob", Team.teamData[(int)TeamID.kCatfish]),  
-        new Player("Carol", Team.teamData[(int)TeamID.kWhales]),  
-        new Player("Don", Team.teamData[(int)TeamID.kOrcas]), 
-        new Player("Evan", Team.teamData[(int)TeamID.kSharks]),    
-        new Player("Frank", Team.teamData[(int)TeamID.kCatfish]),  
-        new Player("Gayle", Team.teamData[(int)TeamID.kWhales]),  
-        new Player("Herb", Team.teamData[(int)TeamID.kOrcas]),                
+        new Player("00", "Alice", Team.teamData[(int)TeamID.kSharks]),    
+        new Player("01", "Bob", Team.teamData[(int)TeamID.kCatfish]),  
+        new Player("02", "Carol", Team.teamData[(int)TeamID.kWhales]),  
+        new Player("03", "Don", Team.teamData[(int)TeamID.kOrcas]), 
+        new Player("04", "Evan", Team.teamData[(int)TeamID.kSharks]),    
+        new Player("05", "Frank", Team.teamData[(int)TeamID.kCatfish]),  
+        new Player("06", "Gayle", Team.teamData[(int)TeamID.kWhales]),  
+        new Player("07", "Herb", Team.teamData[(int)TeamID.kOrcas]),  
+        new Player("08", "Inez", Team.teamData[(int)TeamID.kSharks]),    
+        new Player("09", "Jim", Team.teamData[(int)TeamID.kCatfish]),  
+        new Player("0a", "Kayla", Team.teamData[(int)TeamID.kWhales]),  
+        new Player("0b", "Mike", Team.teamData[(int)TeamID.kOrcas]),                        
     };
 }
 
 public class Player
 {
+    public string ID { get; private set;}    
     public string ScreenName { get; private set;}
     public Team Team {get; private set;}
-    public int Score { get; private set;}
+    public int Score { get; set;}
 
-    public Player(string name, Team t)
+    public Player(string id, string name, Team t)
     { 
+        ID = id;
         ScreenName = name;
         Team = t;
         Score = 0;

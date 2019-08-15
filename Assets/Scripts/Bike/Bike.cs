@@ -143,9 +143,12 @@ public class Bike : MonoBehaviour
         Ground.Place p = g.GetPlace(pos);
         if (p == null) {
             p = g.ClaimPlace(this, pos);
+            if (p != null)
+                GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kClaimPlace, null);            
         } else {
             ouchObj.SetActive(false); // restart in case the anim is already running
             ouchObj.SetActive(true);
+            GameMain.GetInstance().ReportScoreEvent(this,  p.bike.player.Team == player.Team ? ScoreEvent.kHitFriendPlace : ScoreEvent.kHitEnemyPlace, p);
         }
         return p;
     }
