@@ -18,7 +18,7 @@ public class ViewUpBtn : UIBtn  {
 	protected override void Update()
 	{
 		base.Update();
-		if (Input.GetKeyDown(KeyCode.S ))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			_main.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kToggleHighLow, null );
 		}

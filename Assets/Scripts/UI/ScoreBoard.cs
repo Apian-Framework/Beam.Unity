@@ -61,6 +61,7 @@ public class ScoreBoard : MovableUISetItem
         newLine.SendMessage("SetBike", bike.transform.GetComponent("Bike"));   
         OtherPlayerLines.Add(newLine);   
         _isDirty = true; // needs sorting
+        onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;
     }
 
 }

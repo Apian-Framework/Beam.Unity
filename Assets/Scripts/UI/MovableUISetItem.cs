@@ -42,6 +42,12 @@ public class MovableUISetItem : MonoBehaviour {
 		}			
 	}
 	
+	public void toggle()
+	{
+		bMoving = true;
+		targetPos = targetPos == onScreenPos ? offScreenPos : onScreenPos;
+	}
+
 	public void moveOnScreen()
 	{
 		bMoving = true;
