@@ -1790,11 +1790,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7d77e1301ea5d4a9b017e2de8da603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startOnScreen: 1
+  startOnScreen: 0
   switchSecs: 0.3
   offScreenPos: {x: -12, y: -14, z: 0}
-  onScreenPos: {x: -12, y: 0, z: 0}
-  otherYBase: 0.38
+  onScreenPos: {x: -12, y: -3, z: 0}
+  otherYBase: 0.3
   lineDy: -0.05
   LocalPlayerLine: {fileID: 0}
 --- !u!1 &1205679683
@@ -3013,8 +3013,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7290058970269308357}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12, y: 0, z: 0}
-  m_LocalScale: {x: 8, y: 16, z: 1}
+  m_LocalPosition: {x: -12, y: -14, z: 0}
+  m_LocalScale: {x: 8, y: 12, z: 1}
   m_Children:
   - {fileID: 1529194643}
   m_Father: {fileID: 1430697597}
