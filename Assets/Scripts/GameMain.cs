@@ -165,13 +165,14 @@ public class GameMain : MonoBehaviour {
 		BikeList.Clear();
 	}
 
-	// public void RemoveOneBike(GameObject bikeObj)
-	// {
-	// 	BikeList.Remove(bikeObj);
-	// 	uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", bikeObj); // TODO: find better way
-	// 	Object.Destroy(bikeObj);
-	// 	// TODO: What if it is the player? Boom?
-	// }
+	public void RemoveOneBike(GameObject bikeObj)
+	{
+		BikeList.Remove(bikeObj);
+		uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", bikeObj); // TODO: find better way
+		ground.RemovePlacesForBike(bikeObj.GetComponent<Bike>());
+		Object.Destroy(bikeObj);
+		// TODO: What if it is the player? Boom?
+	}
 
 	public void ReportScoreEvent(Bike bike, ScoreEvent evt, Ground.Place place)
 	{
@@ -197,7 +198,12 @@ public class GameMain : MonoBehaviour {
 				foreach (Bike b in rewardedOtherBikes) 
 					b.player.Score -= scoreDelta / rewardedOtherBikes.Count();
 			}
-		}		
+		}
+
+		if (evt == ScoreEvent.kOffMap) 
+		{
+			bike.player.Score = 0; // Boom!
+		}
 	}
 
 }

@@ -20,7 +20,8 @@ public enum ScoreEvent
 {
     kClaimPlace = 0,
     kHitFriendPlace = 1,
-    kHitEnemyPlace = 2
+    kHitEnemyPlace = 2,
+    kOffMap = 3,
 }
 
 public static class GameConstants 
@@ -28,7 +29,8 @@ public static class GameConstants
     public static readonly int[] eventScores = {
         11, // claimPlace
         -511, // hitfriend
-        -1211 // hitEnemy
+        -1211, // hitEnemy
+        0, // offMap (no score issue - you just die)
     };
 
     // NOTE: coordinates are LEFT-HANDED! A positive heading rotation, for instance, is clockwise from above.

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,17 +57,18 @@ public class Ground : MonoBehaviour
         int removed = activePlaces.RemoveAll( p => {
                 p.secsLeft -= GameTime.DeltaTime();
                 if (p.secsLeft <= 0)
-                {
-                    p.bike = null;                 
-                    p.marker.SetActive(false);
-                    freePlaces.Push(p); // add to free list
-                    placeArray[p.xIdx, p.zIdx] = null;
-                    //Debug.Log(string.Format("Removing Place: xIdx: {0}, zIdx: {0}", p.xIdx, p.zIdx));
-                }
+                    RecyclePlace(p);
                 return p.secsLeft <= 0; // remove from active list
         });
         //if (removed > 0)
         //    Debug.Log(string.Format("--- Removed {0} places --- {1} still active --- {2} free -------------------", removed, activePlaces.Count, freePlaces.Count));
+    }
+
+    protected void RecyclePlace(Place p){
+        p.bike = null;                 
+        p.marker.SetActive(false);
+        freePlaces.Push(p); // add to free list
+        placeArray[p.xIdx, p.zIdx] = null;
     }
 
     public void ClearPlaces()
@@ -77,6 +78,15 @@ public class Ground : MonoBehaviour
         placeArray = new Place[pointsPerAxis,pointsPerAxis];
         activePlaces = new List<Place>();
         freePlaces = new Stack<Place>();         
+    }
+
+    public void RemovePlacesForBike(Bike bike)
+    {
+        activePlaces.RemoveAll( p => {
+                if (p.bike == bike)
+                    RecyclePlace(p);
+                return p.bike == null; // remove from active list
+        });        
     }
 
     public Place GetPlace(Vector3 pos)

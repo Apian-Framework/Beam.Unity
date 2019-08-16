@@ -144,7 +144,9 @@ public class Bike : MonoBehaviour
         Ground.Place p = g.GetPlace(pos);
         if (p == null) {
             p = g.ClaimPlace(this, pos);
-            if (p != null)
+            if (p == null)
+                GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kOffMap, null);
+            else
                 GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kClaimPlace, null);            
         } else {
             ouchObj.SetActive(false); // restart in case the anim is already running

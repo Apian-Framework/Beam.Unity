@@ -33,7 +33,7 @@ public class Scoreboard : MovableUISetItem
     protected void DoSort()
     {
         // descending
-        try {
+       // try {
             OtherPlayerLines.Sort((a, b) => b.GetComponent<ScoreboardLine>().prevScore.CompareTo(a.GetComponent<ScoreboardLine>().prevScore));
 
             float y = otherYBase;       
@@ -44,7 +44,7 @@ public class Scoreboard : MovableUISetItem
                 otherLine.transform.localPosition = pos;
                 y += lineDy;
             }
-        } catch(System.NullReferenceException e) {}
+        //} catch(System.NullReferenceException e) {}
         _isDirty = false;
     }
 
@@ -68,12 +68,16 @@ public class Scoreboard : MovableUISetItem
         onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;
     }
 
-    // public void RemoveBike(GameObject bikeObj)
-    // {
-    //     Bike remBike = bikeObj.GetComponent<Bike>();
-    //     GameObject line = OtherPlayerLines.Find(l => (l.GetComponent<ScoreboardLine>()).bike == remBike);
-    //     OtherPlayerLines.Remove(line);
-    //     Object.Destroy(line);
-    // }
+    public void RemoveBike(GameObject bikeObj)
+    {
+        Bike remBike = bikeObj.GetComponent<Bike>();
+        GameObject line = OtherPlayerLines.Find(l => (l.GetComponent<ScoreboardLine>()).bike == remBike);
+        if (line != null) {
+            OtherPlayerLines.Remove(line);
+            _isDirty = true; // needs sorting
+            onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;        
+            Object.Destroy(line);
+        }
+    }
 
 }
