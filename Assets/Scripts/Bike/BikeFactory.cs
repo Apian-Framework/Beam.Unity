@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BikeFactory : MonoBehaviour
 {
-    public GameObject bikePrefab;     
+    public GameObject bikePrefab;   
 
     // Singleton management
     private static BikeFactory instance = null;

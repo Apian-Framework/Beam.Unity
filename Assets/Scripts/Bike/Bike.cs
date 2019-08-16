@@ -7,9 +7,10 @@ public class Bike : MonoBehaviour
     public static readonly float length = 2.0f;
     public float speed =  15.0f;
     public float turnRadius = 1; // 2.0f;
+
     public float maxLean = 50.0f;
 
-    protected GameObject ouchObj;
+    protected GameObject ouchObj; 
 
     protected static readonly Heading[][] newHeadForTurn = {
         // newHead = newHeadForTurn[oldHead][turnDir];

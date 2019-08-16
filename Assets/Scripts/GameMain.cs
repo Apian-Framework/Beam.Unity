@@ -42,6 +42,7 @@ public class GameMain : MonoBehaviour {
 	public UICamera uiCamera;	
 	public InputDispatch inputDispatch;
 	public Ground ground;
+    public GameObject boomPrefab;  	
 
 	// here's the currently implemented modes:
 	public enum ModeID
@@ -170,6 +171,7 @@ public class GameMain : MonoBehaviour {
 		BikeList.Remove(bikeObj);
 		uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", bikeObj); // TODO: find better way
 		ground.RemovePlacesForBike(bikeObj.GetComponent<Bike>());
+		GameObject.Instantiate(boomPrefab, bikeObj.transform.position, Quaternion.identity);
 		Object.Destroy(bikeObj);
 		// TODO: What if it is the player? Boom?
 	}
