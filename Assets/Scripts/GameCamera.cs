@@ -332,14 +332,19 @@ public class GameCamera : MonoBehaviour {
 
         public override void update()
         {
-            Vector3 posOffset = new Vector3(0, _height, -_radius);            
-            Vector3 pos = TargetCamPos(_bike, posOffset);
-            Vector3 lookAt = TargetCamLookat(_bike, _lookAngle, _viewHeight);                     
-            _theGameCam.MoveTowards(pos, lookAt, -1, .2f, kZeroDist);  
+            if (_bike == null) // target went away (gameobject refs get autonulled on destroy)
+            {
+                _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
+            } else {
+                Vector3 posOffset = new Vector3(0, _height, -_radius);            
+                Vector3 pos = TargetCamPos(_bike, posOffset);
+                Vector3 lookAt = TargetCamLookat(_bike, _lookAngle, _viewHeight);                     
+                _theGameCam.MoveTowards(pos, lookAt, -1, .2f, kZeroDist);  
 
-            float lookSign = Mathf.Sign(_lookAngle);
-            float absLA = Mathf.Max(0, Math.Abs(_lookAngle) - (GameTime.DeltaTime() * _lookDecayRate));
-            _lookAngle = lookSign * absLA;
+                float lookSign = Mathf.Sign(_lookAngle);
+                float absLA = Mathf.Max(0, Math.Abs(_lookAngle) - (GameTime.DeltaTime() * _lookDecayRate));
+                _lookAngle = lookSign * absLA;
+            }
 
         }
 
