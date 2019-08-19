@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 using System.Collections;
 
 public class UICamera : MonoBehaviour {
@@ -21,7 +22,7 @@ public class UICamera : MonoBehaviour {
 	
 	public delegate void CaptureSwipeDelegate(bool bIsDone); // != bIsDone means it's started.	
 	
-	TextMesh _dbgFPSMesh = null;
+	TextMeshPro _dbgFPSMesh = null;
 	
 	public LayerMask getBtnLayerMask()
 	{
@@ -91,7 +92,7 @@ public class UICamera : MonoBehaviour {
         setInitialStage();
         setState(new StateIdle() );           
         
-	//	_dbgFPSMesh = (TextMesh)transform.Find("fpsdisp").GetComponent("TextMesh"); // might or might not be there
+		_dbgFPSMesh = (TextMeshPro)transform.Find("fpsdisp").GetComponent<TextMeshPro>(); // might or might not be there
 
 	}
 	
