@@ -10,11 +10,19 @@ public class LocalPlayerBike : Bike
     {
         base.Update();
 
-        // Ground g = GameMain.GetInstance().ground;
-        // if (_curTurn == TurnDir.kNone) {
+         Ground g = GameMain.GetInstance().ground;
+         if (_curTurn == TurnDir.kNone) {
+            // Vector3 pos = transform.position;
+            // Vector3 otherPos = ClosestBike(this.gameObject).transform.position;
+
+            //  TurnDir turnToZero = TurnTowardsPos( otherPos, pos, heading );
+
+            //  Heading newHead = newHeadForTurn[(int)heading][(int)turnToZero];
+            //  Debug.DrawLine( pos, pos + GameConstants.unitOffsetForHeading[(int)newHead]*Ground.gridSize, Color.white ); 
+
 
         //     //Vector3 offset = new Vector3(0,.1f,0);
-        //     Vector3 pos = transform.position;
+
         //     Vector3 nextPos = UpcomingGridPoint(pos, heading);
         //     //Debug.Log(string.Format("pos: {0}, next: {1}", pos, nextPos));
         //     Debug.DrawLine(pos, nextPos, Color.green );
@@ -27,7 +35,7 @@ public class LocalPlayerBike : Bike
         //         Color c = dcc.score < 1 ? Color.red : Color.gray;
         //         Debug.DrawLine( nextPos, nextPos + GameConstants.unitOffsetForHeading[(int)newHead]*Ground.gridSize, c );                
         //     }
-        // }
+        }
     }
 
 

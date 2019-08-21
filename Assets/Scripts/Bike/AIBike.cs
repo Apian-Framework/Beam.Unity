@@ -24,13 +24,22 @@ public class AIBike : Bike
             secsSinceLastAiCheck += Time.deltaTime;   
             if (secsSinceLastAiCheck > aiCheckTimeout) {         
                 secsSinceLastAiCheck = 0;
-                    Vector3 nextPos = UpcomingGridPoint(pos, heading);
+
+                // If not gonna turn maybe go towards the closest bike?
+                if (_pendingTurn == TurnDir.kNone) {
+                    Vector3 closestBikePos = ClosestBike(this.gameObject).transform.position;
+                    if ( Vector3.Distance(pos, closestBikePos) > Ground.gridSize * 10) // only if it's not really close
+                        _pendingTurn = TurnTowardsPos( closestBikePos, pos, heading );                
+                }
+
+                Vector3 nextPos = UpcomingGridPoint(pos, heading);
                 List<Ground.Place> places = PossiblePlacesForPointAndHeading(g, nextPos, heading);
                 List<dirAndScore> dirScores = places.Select((p,idx) =>  new dirAndScore{turnDir = (TurnDir)idx, score = ( p == null ? 1 : 0)}).ToList();
                 if ( dirScores[(int)_pendingTurn].score < 1) {
                     _pendingTurn =  dirScores.OrderBy( ds => ds.score).Last().turnDir; // // TODO: add some randomness to ties?
                 }
             }
+            
         }
 
         if (_pendingTurn == TurnDir.kNone) // TODO: differentiate between "not selected" and "straight"
@@ -52,6 +61,8 @@ public class AIBike : Bike
             }
         }
     }
+
+
 
 
 }

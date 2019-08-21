@@ -204,6 +204,20 @@ public class Bike : MonoBehaviour
             g.GetPlace(pos)).ToList();
     }
 
+    protected TurnDir TurnTowardsPos(Vector3 targetPos, Vector3 curPos, Heading curHead) 
+    {
+        Vector3 bearing = targetPos - curPos;
+        float turnAngleDeg = Vector3.SignedAngle(bearing, GameConstants.unitOffsetForHeading[(int)curHead], Vector3.up);
+        //Debug.Log(string.Format("Pos: {0}, Turn Angle: {1}", curPos, turnAngleDeg));
+        return turnAngleDeg > 45f ? TurnDir.kLeft : (turnAngleDeg < -45f ? TurnDir.kRight : TurnDir.kNone);
+    }
 
+    protected GameObject ClosestBike(GameObject thisBike) 
+    {
+        GameMain gm = GameMain.GetInstance();
+        GameObject closest = gm.BikeList.Where(b => b != thisBike)
+            .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).First();
+        return closest;
+    }
 
 }
