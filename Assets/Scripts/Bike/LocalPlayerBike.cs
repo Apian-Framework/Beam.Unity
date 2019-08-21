@@ -1,9 +1,35 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LocalPlayerBike : Bike
 {
+
+    public override void Update()
+    {
+        base.Update();
+
+        // Ground g = GameMain.GetInstance().ground;
+        // if (_curTurn == TurnDir.kNone) {
+
+        //     //Vector3 offset = new Vector3(0,.1f,0);
+        //     Vector3 pos = transform.position;
+        //     Vector3 nextPos = UpcomingGridPoint(pos, heading);
+        //     //Debug.Log(string.Format("pos: {0}, next: {1}", pos, nextPos));
+        //     Debug.DrawLine(pos, nextPos, Color.green );
+
+        //     List<Ground.Place> places = PossiblePlacesForPointAndHeading(g, nextPos, heading);
+        //     List<dirAndScore> dirCrashCnts = places.Select((p,idx) =>  new dirAndScore{turnDir = (Heading)idx, score = ( p == null ? 1 : 0)}).ToList();        
+        //     foreach (dirAndScore dcc in dirCrashCnts)
+        //     {
+        //         Heading newHead = newHeadForTurn[(int)heading][(int)dcc.turnDir];
+        //         Color c = dcc.score < 1 ? Color.red : Color.gray;
+        //         Debug.DrawLine( nextPos, nextPos + GameConstants.unitOffsetForHeading[(int)newHead]*Ground.gridSize, c );                
+        //     }
+        // }
+    }
+
 
     public override void DecideToTurn()
     {

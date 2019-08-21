@@ -1,9 +1,13 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bike : MonoBehaviour
 {
+
+    protected class dirAndScore { public TurnDir turnDir; public int score; };
+
     public static readonly float length = 2.0f;
     public float speed =  15.0f;
     public float turnRadius = 1; // 2.0f;
@@ -33,7 +37,7 @@ public class Bike : MonoBehaviour
     Vector3 _turnAxis = Vector3.up; // just a dummy location
     float _turnStartTheta = 0f;
     float _turnTheta = 0f; // 0 is north, increases clockwise
-    TurnDir _curTurn = TurnDir.kNone; 
+    protected TurnDir _curTurn = TurnDir.kNone; 
 
     public Player player = null;
 
@@ -60,7 +64,7 @@ public class Bike : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public virtual void Update()
     {
         Vector3 pos = transform.transform.position;
         Vector3 angles = transform.eulerAngles;
@@ -156,6 +160,7 @@ public class Bike : MonoBehaviour
         }
         return p;
     }
+
     protected bool AtGridPoint(Vector3 gridPos, Vector3 bikePos, float bikeLen, float turnRadius)
     {
         // Assumes grid spacing is >= 2*turnRadius 
@@ -163,11 +168,42 @@ public class Bike : MonoBehaviour
         return dist <= turnRadius;
     }
 
-
     protected Vector3 NearestGridPoint(Vector3 pos, float gridSize) 
     {
         float invGridSize = 1.0f / gridSize;
         return new Vector3( Mathf.Round(pos.x * invGridSize) * gridSize, pos.y, Mathf.Round(pos.z * invGridSize) * gridSize);
     }
+
+    // Tools for AIs
+   protected Vector3 UpcomingGridPoint(Vector3 curPos, Heading curHead)
+    {
+        // it's either the current closest point (if direction to it is the same as heading)
+        // or is the closest point + gridSize*unitOffsetForHeading[curHead] if closest point is behind us
+        Vector3 point = NearestGridPoint(curPos, Ground.gridSize); 
+        if ( Vector3.Dot(GameConstants.unitOffsetForHeading[(int)curHead], point - curPos) < 0 ) {
+            point += GameConstants.unitOffsetForHeading[(int)curHead] * Ground.gridSize;
+        }
+        return point;
+    }
+
+    protected static List<Vector3> PossiblePointsForPointAndHeading(Vector3 curPtPos, Heading curHead)
+    {
+        // returns a list of grid positions where you could go next if you are headed for one with the given heading
+        // The entries correspond to turn directions (none, left, right) 
+        // TODO use something like map() ?
+        return new List<Vector3> {
+            curPtPos + GameConstants.unitOffsetForHeading[(int)newHeadForTurn[(int)curHead][(int)TurnDir.kNone]]*Ground.gridSize,
+            curPtPos + GameConstants.unitOffsetForHeading[(int)newHeadForTurn[(int)curHead][(int)TurnDir.kLeft]]*Ground.gridSize,
+            curPtPos + GameConstants.unitOffsetForHeading[(int)newHeadForTurn[(int)curHead][(int)TurnDir.kRight]]*Ground.gridSize,                        
+        };
+    }
+
+    protected List<Ground.Place> PossiblePlacesForPointAndHeading(Ground g, Vector3 curPtPos, Heading curHead)
+    {
+        return PossiblePointsForPointAndHeading(curPtPos, curHead).Select( (pos) => 
+            g.GetPlace(pos)).ToList();
+    }
+
+
 
 }
