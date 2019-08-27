@@ -51,5 +51,13 @@ public static class GameConstants
 
     public static Vector3 UnitOffsetForHeading(Heading h) => unitOffsetForHeading[(int)h%4];
 
+    private static readonly Heading[][] newHeadForTurn = {
+        // newHead = GameConstants.newHeadForTurn[oldHead][turnDir];
+        new Heading[] { Heading.kNorth, Heading.kWest, Heading.kEast }, // N
+        new Heading[] { Heading.kEast, Heading.kNorth, Heading.kSouth }, // E
+        new Heading[] { Heading.kSouth, Heading.kEast, Heading.kWest }, // S
+        new Heading[] { Heading.kWest, Heading.kSouth, Heading.kNorth } // W                 
+    };
 
+    public static Heading NewHeadForTurn(Heading h, TurnDir t) => newHeadForTurn[(int)h%4][(int)t%3];
 }

@@ -16,14 +16,6 @@ public class Bike : MonoBehaviour
 
     protected GameObject ouchObj; 
 
-    protected static readonly Heading[][] newHeadForTurn = {
-        // newHead = newHeadForTurn[oldHead][turnDir];
-        new Heading[] { Heading.kNorth, Heading.kWest, Heading.kEast }, // N
-        new Heading[] { Heading.kEast, Heading.kNorth, Heading.kSouth }, // E
-        new Heading[] { Heading.kSouth, Heading.kEast, Heading.kWest }, // S
-        new Heading[] { Heading.kWest, Heading.kSouth, Heading.kNorth } // W                 
-    };
-
     protected static readonly float[] turnStartTheta = {
         90f, 180f, 270f, 0f
     };
@@ -117,7 +109,7 @@ public class Bike : MonoBehaviour
                 // should be StartTurn()
                 Heading prevHead = heading;
                 _curTurn = _pendingTurn;
-                heading = newHeadForTurn[(int)heading][(int)_pendingTurn];
+                heading = GameConstants.NewHeadForTurn(heading,_pendingTurn);
                 _pendingTurn = TurnDir.kNone;
 
                 // set up turn axis and angle
@@ -192,9 +184,9 @@ public class Bike : MonoBehaviour
         // The entries correspond to turn directions (none, left, right) 
         // TODO use something like map() ?
         return new List<Vector3> {
-            curPtPos + GameConstants.UnitOffsetForHeading(newHeadForTurn[(int)curHead][(int)TurnDir.kNone])*Ground.gridSize,
-            curPtPos + GameConstants.UnitOffsetForHeading(newHeadForTurn[(int)curHead][(int)TurnDir.kLeft])*Ground.gridSize,
-            curPtPos + GameConstants.UnitOffsetForHeading(newHeadForTurn[(int)curHead][(int)TurnDir.kRight])*Ground.gridSize,                        
+            curPtPos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kNone))*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kLeft))*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kRight))*Ground.gridSize,                        
         };
     }
 
@@ -255,7 +247,7 @@ public class Bike : MonoBehaviour
             place = g.GetPlace(p);
             score = ScoreForPoint(g, pos, place);
             next = depth < 1 ? null : PossiblePointsForPointAndHeading( pos, head)
-                    .Select( (pt,childDir) => new MoveNode( g, pos + GameConstants.UnitOffsetForHeading(newHeadForTurn[(int)head][childDir])*Ground.gridSize, head, (TurnDir)childDir, depth-1))
+                    .Select( (pt,childDir) => new MoveNode( g, pos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(head,(TurnDir)childDir))*Ground.gridSize, head, (TurnDir)childDir, depth-1))
                     .ToList();
         }        
 

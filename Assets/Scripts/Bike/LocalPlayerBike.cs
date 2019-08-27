@@ -17,7 +17,7 @@ public class LocalPlayerBike : Bike
 
             //  TurnDir turnToZero = TurnTowardsPos( otherPos, pos, heading );
 
-            //  Heading newHead = newHeadForTurn[(int)heading][(int)turnToZero];
+            //  Heading newHead = GameConstants.newHeadForTurn[(int)heading][(int)turnToZero];
             //  Debug.DrawLine( pos, pos + GameConstants.UnitOffsetForHeading(newHead]*Ground.gridSize, Color.white ); 
 
 
@@ -31,7 +31,7 @@ public class LocalPlayerBike : Bike
         //     List<dirAndScore> dirCrashCnts = places.Select((p,idx) =>  new dirAndScore{turnDir = (Heading)idx, score = ( p == null ? 1 : 0)}).ToList();        
         //     foreach (dirAndScore dcc in dirCrashCnts)
         //     {
-        //         Heading newHead = newHeadForTurn[(int)heading][(int)dcc.turnDir];
+        //         Heading newHead = GameConstants.newHeadForTurn[(int)heading][(int)dcc.turnDir];
         //         Color c = dcc.score < 1 ? Color.red : Color.gray;
         //         Debug.DrawLine( nextPos, nextPos + GameConstants.UnitOffsetForHeading(newHead]*Ground.gridSize, c );                
         //     }
