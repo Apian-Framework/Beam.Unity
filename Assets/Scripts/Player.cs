@@ -31,7 +31,7 @@ public class Player
     public Team Team {get; private set;}
     public int Score { get; set;}
 
-    public static readonly int kStartScore = 1000;
+    public static readonly int kStartScore = 2000;
 
     public Player(string id, string name, Team t)
     { 
