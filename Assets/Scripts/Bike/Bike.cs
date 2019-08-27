@@ -23,13 +23,13 @@ public class Bike : MonoBehaviour
     public static readonly float kRoot2Over2 = 2.0f / Mathf.Sqrt(2);
 
     public Heading heading = Heading.kNorth;
-    public TurnDir _pendingTurn = TurnDir.kNone; // set and turn will start at next grid point
+    public TurnDir _pendingTurn = TurnDir.kUnset; // set and turn will start at next grid point
     
    // Heading _prevHead = Heading.kNorth; // if different than curHead we are in a turn
     Vector3 _turnAxis = Vector3.up; // just a dummy location
     float _turnStartTheta = 0f;
     float _turnTheta = 0f; // 0 is north, increases clockwise
-    protected TurnDir _curTurn = TurnDir.kNone; 
+    protected TurnDir _curTurn = TurnDir.kStraight; 
 
     public Player player = null;
 
@@ -70,7 +70,7 @@ public class Bike : MonoBehaviour
          // 
          // Do frame motion
          //
-        if (_curTurn != TurnDir.kNone)
+        if (_curTurn != TurnDir.kStraight)
         {
             // TODO: be consistent with degrees/radians
             // Do a turn iteration
@@ -82,7 +82,7 @@ public class Bike : MonoBehaviour
             //Debug.Log(string.Format("turnTheta: {0}", _turnTheta)); 
 
             if ( Mathf.Abs(_turnTheta) >= 90 ) {
-                _curTurn = TurnDir.kNone;
+                _curTurn = TurnDir.kStraight;
                 angles.z = 0;
                 angles.y = turnStartTheta[(int)heading] - 90f;
             } else {
@@ -98,28 +98,33 @@ public class Bike : MonoBehaviour
         // Deal with this frame's motion
  
         bool atGridPt =  AtGridPoint(gridPt, pos, length, turnRadius); 
-        // Just crossed onto a grid pint?  
-        if (atGridPt && !prevAtGridPt)
+
+        if (atGridPt)
         {
-            DealWithPlace(pos);
-
-            // Waiting to turn?
-            if ( !prevAtGridPt && _pendingTurn != TurnDir.kNone && _curTurn == TurnDir.kNone)
+            if (!prevAtGridPt)
             {
-                // should be StartTurn()
-                Heading prevHead = heading;
-                _curTurn = _pendingTurn;
-                heading = GameConstants.NewHeadForTurn(heading,_pendingTurn);
-                _pendingTurn = TurnDir.kNone;
+                // Just crossed onto a grid point
+                DealWithPlace(pos);
 
-                // set up turn axis and angle
-                _turnAxis = gridPt - (GameConstants.UnitOffsetForHeading(prevHead) - GameConstants.UnitOffsetForHeading(heading)) * turnRadius;
-                _turnStartTheta = turnStartTheta[(int)prevHead] + (_curTurn == TurnDir.kRight ? 180f : 0f);
-                _turnTheta = 0;
-                //Debug.Log(string.Format("gridPt: {0}", gridPt));             
-                //Debug.Log(string.Format("turnAxis: {0}", _turnAxis));                
+                // Waiting to turn?
+                if ( !prevAtGridPt && _pendingTurn != TurnDir.kStraight && _pendingTurn != TurnDir.kUnset && _curTurn == TurnDir.kStraight)
+                {
+                    // should be StartTurn()
+                    Heading prevHead = heading;
+                    _curTurn = _pendingTurn;
+                    heading = GameConstants.NewHeadForTurn(heading,_pendingTurn);
+
+                    // set up turn axis and angle
+                    _turnAxis = gridPt - (GameConstants.UnitOffsetForHeading(prevHead) - GameConstants.UnitOffsetForHeading(heading)) * turnRadius;
+                    _turnStartTheta = turnStartTheta[(int)prevHead] + (_curTurn == TurnDir.kRight ? 180f : 0f);
+                    _turnTheta = 0;
+                    //Debug.Log(string.Format("gridPt: {0}", gridPt));             
+                    //Debug.Log(string.Format("turnAxis: {0}", _turnAxis));                
+                }
+                    
+                _pendingTurn = TurnDir.kUnset;  // reset when you get to a grid point        
             }
-        }
+        } 
 
         transform.position = pos;
       
@@ -184,7 +189,7 @@ public class Bike : MonoBehaviour
         // The entries correspond to turn directions (none, left, right) 
         // TODO use something like map() ?
         return new List<Vector3> {
-            curPtPos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kNone))*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kStraight))*Ground.gridSize,
             curPtPos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kLeft))*Ground.gridSize,
             curPtPos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kRight))*Ground.gridSize,                        
         };
@@ -201,7 +206,7 @@ public class Bike : MonoBehaviour
         Vector3 bearing = targetPos - curPos;
         float turnAngleDeg = Vector3.SignedAngle(bearing, GameConstants.UnitOffsetForHeading(curHead), Vector3.up);
         //Debug.Log(string.Format("Pos: {0}, Turn Angle: {1}", curPos, turnAngleDeg));
-        return turnAngleDeg > 45f ? TurnDir.kLeft : (turnAngleDeg < -45f ? TurnDir.kRight : TurnDir.kNone);
+        return turnAngleDeg > 45f ? TurnDir.kLeft : (turnAngleDeg < -45f ? TurnDir.kRight : TurnDir.kStraight);
     }
 
     protected GameObject ClosestBike(GameObject thisBike) 
@@ -253,7 +258,7 @@ public class Bike : MonoBehaviour
 
         public static MoveNode GenerateTree(Ground g, Vector3 rootPos, Heading initialHead, int depth)
         {
-            return new MoveNode(g, rootPos, initialHead, TurnDir.kNone, depth);
+            return new MoveNode(g, rootPos, initialHead, TurnDir.kStraight, depth);
         }
 
         public int BestScore()

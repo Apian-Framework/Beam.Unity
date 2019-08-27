@@ -20,44 +20,49 @@ public class AIBike : Bike
 
         Ground g = GameMain.GetInstance().ground;
 
-        if (_curTurn == TurnDir.kNone) { // not currently turning
+        if (_curTurn == TurnDir.kStraight) { // not currently turning
             secsSinceLastAiCheck += Time.deltaTime;   
             if (secsSinceLastAiCheck > aiCheckTimeout) {         
                 secsSinceLastAiCheck = 0;
 
                 // If not gonna turn maybe go towards the closest bike?
-                if (_pendingTurn == TurnDir.kNone) {
+                if (_pendingTurn == TurnDir.kUnset) {
                     Vector3 closestBikePos = ClosestBike(this.gameObject).transform.position;
                     if ( Vector3.Distance(pos, closestBikePos) > Ground.gridSize * 6) // only if it's not really close
-                        _pendingTurn = TurnTowardsPos( closestBikePos, pos, heading );                
+                        _pendingTurn = TurnTowardsPos( closestBikePos, pos, heading ); 
+                    else
+                    {
+                        bool doTurn = ( Random.value * turnTime <  GameTime.DeltaTime() );
+                        if (doTurn)    
+                            _pendingTurn = (Random.value < .5f) ? TurnDir.kLeft : TurnDir.kRight;                        
+                    }               
                 }
 
-                // If we're about to hit something, turn
+                // Do some looking ahaed
                 Vector3 nextPos = UpcomingGridPoint(pos, heading);
 
-                // List<Vector3> pts = PossiblePointsForPointAndHeading( nextPos, heading);
-                // List<dirAndScore> dirScores = pts.Select((pt,idx) =>  
-                //     new dirAndScore{ turnDir = (TurnDir)idx, score = scoreForPoint(g, pt, g.GetPlace(pt))}).ToList();
 
-                MoveNode moveTree = BuildMoveTree(nextPos, heading, 3);
+
+                MoveNode moveTree = BuildMoveTree(nextPos, heading, 4);
                 List<dirAndScore> dirScores = TurnScores(moveTree);
-                dirAndScore best =  dirScores.OrderBy( ds => ds.score).Last(); // Add some randomness for ties?
-                if ( dirScores[(int)_pendingTurn].score < best.score)
-                  _pendingTurn =  best.turnDir;
-
- 
-            }
-            
+                dirAndScore best =  SelectBestTurn(dirScores); // dirScores.OrderBy( ds => ds.score).Last(); // Add some randomness for ties?
+                if (  _pendingTurn == TurnDir.kUnset || dirScores[(int)_pendingTurn].score < best.score) 
+                {
+                    //Debug.Log(string.Format("New Turn: {0}", best.turnDir));                    
+                    _pendingTurn =  best.turnDir;
+                }
+            }   
         }
 
-        if (_pendingTurn == TurnDir.kNone) // TODO: differentiate between "not selected" and "straight"
-        {
-            bool doTurn = ( Random.value * turnTime <  GameTime.DeltaTime() );
-            if (doTurn) {    
-                _pendingTurn = (Random.value < .5f) ? TurnDir.kLeft : TurnDir.kRight;
-            }
-        }
     }
 
+    protected dirAndScore SelectBestTurn(List<dirAndScore> dirScores) {
+        int bestScore = dirScores.OrderBy( ds => ds.score).Last().score;
+        // If you only take the best score you will almost always just go forwards.
+        List<dirAndScore> turns = dirScores.Where( ds => ds.score >= bestScore * .5).ToList();
+        int sel = (int)(Random.value * (float)turns.Count);
+        //Debug.Log(string.Format("Possible: {0}, Sel Idx: {1}", turns.Count, sel));
+        return turns[sel];
+    }
 
 }

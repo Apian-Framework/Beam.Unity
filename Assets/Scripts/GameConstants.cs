@@ -11,10 +11,10 @@ public enum Heading
 
 public enum TurnDir
 {
-    kNone = 0, 
+    kStraight = 0, 
     kLeft = 1,
     kRight = 2,
-    kUnset = 3 // usually straied as set
+    kUnset = 3, 
 }
 
 public enum ScoreEvent
