@@ -41,13 +41,15 @@ public static class GameConstants
 
     public static float HeadingDegrees(Heading h) => headingDegrees[(int)h%4];
 
-    public static readonly Vector3[] unitOffsetForHeading = {
+    private static readonly Vector3[] unitOffsetForHeading = {
         // Unit velocity for given heading
         new Vector3(0, 0, 1),  // N
         new Vector3(1, 0, 0),  // E
         new Vector3(0, 0, -1),  // S
         new Vector3(-1, 0, 0),  // W         
     };
+
+    public static Vector3 UnitOffsetForHeading(Heading h) => unitOffsetForHeading[(int)h%4];
 
 
 }

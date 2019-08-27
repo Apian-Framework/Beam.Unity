@@ -18,7 +18,7 @@ public class LocalPlayerBike : Bike
             //  TurnDir turnToZero = TurnTowardsPos( otherPos, pos, heading );
 
             //  Heading newHead = newHeadForTurn[(int)heading][(int)turnToZero];
-            //  Debug.DrawLine( pos, pos + GameConstants.unitOffsetForHeading[(int)newHead]*Ground.gridSize, Color.white ); 
+            //  Debug.DrawLine( pos, pos + GameConstants.UnitOffsetForHeading(newHead]*Ground.gridSize, Color.white ); 
 
 
         //     //Vector3 offset = new Vector3(0,.1f,0);
@@ -33,7 +33,7 @@ public class LocalPlayerBike : Bike
         //     {
         //         Heading newHead = newHeadForTurn[(int)heading][(int)dcc.turnDir];
         //         Color c = dcc.score < 1 ? Color.red : Color.gray;
-        //         Debug.DrawLine( nextPos, nextPos + GameConstants.unitOffsetForHeading[(int)newHead]*Ground.gridSize, c );                
+        //         Debug.DrawLine( nextPos, nextPos + GameConstants.UnitOffsetForHeading(newHead]*Ground.gridSize, c );                
         //     }
         }
     }

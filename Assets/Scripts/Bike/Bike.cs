@@ -100,7 +100,7 @@ public class Bike : MonoBehaviour
             transform.eulerAngles = angles;            
 
         } else {
-            pos += GameTime.DeltaTime() * speed * GameConstants.unitOffsetForHeading[(int)heading];
+            pos += GameTime.DeltaTime() * speed * GameConstants.UnitOffsetForHeading(heading);
         }
 
         // Deal with this frame's motion
@@ -121,7 +121,7 @@ public class Bike : MonoBehaviour
                 _pendingTurn = TurnDir.kNone;
 
                 // set up turn axis and angle
-                _turnAxis = gridPt - (GameConstants.unitOffsetForHeading[(int)prevHead] - GameConstants.unitOffsetForHeading[(int)heading]) * turnRadius;
+                _turnAxis = gridPt - (GameConstants.UnitOffsetForHeading(prevHead) - GameConstants.UnitOffsetForHeading(heading)) * turnRadius;
                 _turnStartTheta = turnStartTheta[(int)prevHead] + (_curTurn == TurnDir.kRight ? 180f : 0f);
                 _turnTheta = 0;
                 //Debug.Log(string.Format("gridPt: {0}", gridPt));             
@@ -180,8 +180,8 @@ public class Bike : MonoBehaviour
         // it's either the current closest point (if direction to it is the same as heading)
         // or is the closest point + gridSize*unitOffsetForHeading[curHead] if closest point is behind us
         Vector3 point = NearestGridPoint(curPos, Ground.gridSize); 
-        if ( Vector3.Dot(GameConstants.unitOffsetForHeading[(int)curHead], point - curPos) < 0 ) {
-            point += GameConstants.unitOffsetForHeading[(int)curHead] * Ground.gridSize;
+        if ( Vector3.Dot(GameConstants.UnitOffsetForHeading(curHead), point - curPos) < 0 ) {
+            point += GameConstants.UnitOffsetForHeading(curHead) * Ground.gridSize;
         }
         return point;
     }
@@ -192,9 +192,9 @@ public class Bike : MonoBehaviour
         // The entries correspond to turn directions (none, left, right) 
         // TODO use something like map() ?
         return new List<Vector3> {
-            curPtPos + GameConstants.unitOffsetForHeading[(int)newHeadForTurn[(int)curHead][(int)TurnDir.kNone]]*Ground.gridSize,
-            curPtPos + GameConstants.unitOffsetForHeading[(int)newHeadForTurn[(int)curHead][(int)TurnDir.kLeft]]*Ground.gridSize,
-            curPtPos + GameConstants.unitOffsetForHeading[(int)newHeadForTurn[(int)curHead][(int)TurnDir.kRight]]*Ground.gridSize,                        
+            curPtPos + GameConstants.UnitOffsetForHeading(newHeadForTurn[(int)curHead][(int)TurnDir.kNone])*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffsetForHeading(newHeadForTurn[(int)curHead][(int)TurnDir.kLeft])*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffsetForHeading(newHeadForTurn[(int)curHead][(int)TurnDir.kRight])*Ground.gridSize,                        
         };
     }
 
@@ -207,7 +207,7 @@ public class Bike : MonoBehaviour
     protected TurnDir TurnTowardsPos(Vector3 targetPos, Vector3 curPos, Heading curHead) 
     {
         Vector3 bearing = targetPos - curPos;
-        float turnAngleDeg = Vector3.SignedAngle(bearing, GameConstants.unitOffsetForHeading[(int)curHead], Vector3.up);
+        float turnAngleDeg = Vector3.SignedAngle(bearing, GameConstants.UnitOffsetForHeading(curHead), Vector3.up);
         //Debug.Log(string.Format("Pos: {0}, Turn Angle: {1}", curPos, turnAngleDeg));
         return turnAngleDeg > 45f ? TurnDir.kLeft : (turnAngleDeg < -45f ? TurnDir.kRight : TurnDir.kNone);
     }
@@ -255,7 +255,7 @@ public class Bike : MonoBehaviour
             place = g.GetPlace(p);
             score = ScoreForPoint(g, pos, place);
             next = depth < 1 ? null : PossiblePointsForPointAndHeading( pos, head)
-                    .Select( (pt,childDir) => new MoveNode( g, pos + GameConstants.unitOffsetForHeading[(int)newHeadForTurn[(int)head][childDir]]*Ground.gridSize, head, (TurnDir)childDir, depth-1))
+                    .Select( (pt,childDir) => new MoveNode( g, pos + GameConstants.UnitOffsetForHeading(newHeadForTurn[(int)head][childDir])*Ground.gridSize, head, (TurnDir)childDir, depth-1))
                     .ToList();
         }        
 
