@@ -145,7 +145,14 @@ public class Ground : MonoBehaviour
         return marker;
     }
 
-    protected bool IndicesAreOnMap(int xIdx, int zIdx)
+    public bool PointIsOnMap(Vector3 pt)
+    {
+        int xIdx = (int)Mathf.Floor((pt.x - minX) / gridSize );
+        int zIdx = (int)Mathf.Floor((pt.z - minZ) / gridSize );        
+        return IndicesAreOnMap(xIdx, zIdx);
+    }
+    
+    public bool IndicesAreOnMap(int xIdx, int zIdx)
     {
         return !(xIdx < 0 || zIdx < 0 || xIdx >= pointsPerAxis || zIdx >= pointsPerAxis);
     }

@@ -220,4 +220,63 @@ public class Bike : MonoBehaviour
         return closest;
     }
 
+    // AI Move stuff (here so player bike can display it)
+
+    protected static int ScoreForPoint(Ground g, Vector3 point, Ground.Place place)
+    {
+        return g.PointIsOnMap(point) ? ( place == null ? 5 : 1) : 0; // 5 pts for a good place, 1 for a claimed one, zero for off-map
+    }
+
+    protected MoveNode BuildMoveTree( Vector3 curPos, Heading curHead, int depth)
+    {
+        Ground g = GameMain.GetInstance().ground;        
+        Vector3 nextPos = UpcomingGridPoint(curPos, heading);
+        MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1);
+        return root;
+    }
+
+    protected List<dirAndScore> TurnScores(MoveNode moveTree)
+    {
+        return moveTree.next.Select( n =>  new dirAndScore{ turnDir = n.dir, score = n.BestScore()}).ToList();
+    }
+
+
+    public class MoveNode {
+        public TurnDir dir; // the turn direction that got to here (index in parent's "next" list)
+        public Vector3 pos;
+        public Ground.Place place;
+        public int score;
+        public List<MoveNode> next; // length 3
+
+        public MoveNode(Ground g, Vector3 p,  Heading head, TurnDir d, int depth) 
+        {
+            pos = p;
+            dir = d;
+            place = g.GetPlace(p);
+            score = ScoreForPoint(g, pos, place);
+            next = depth < 1 ? null : PossiblePointsForPointAndHeading( pos, head)
+                    .Select( (pt,childDir) => new MoveNode( g, pos + GameConstants.unitOffsetForHeading[(int)newHeadForTurn[(int)head][childDir]]*Ground.gridSize, head, (TurnDir)childDir, depth-1))
+                    .ToList();
+        }        
+
+        public static MoveNode GenerateTree(Ground g, Vector3 rootPos, Heading initialHead, int depth)
+        {
+            return new MoveNode(g, rootPos, initialHead, TurnDir.kNone, depth);
+        }
+
+        public int BestScore()
+        {
+            // Express this trivially until I understand th epossibilities
+            if (score == 0) // This kills you, why look further?
+                return 0;
+            
+            if (next == null) // no kids
+                return score;
+
+            // return score + next.Select( n => n.BestScore()).OrderBy(i => i).Last();
+            return score + next.Select( n => n.BestScore()).Where( i => i > 0).Sum();         
+        }
+
+    }    
+
 }
