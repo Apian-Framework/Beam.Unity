@@ -217,6 +217,15 @@ public class Bike : MonoBehaviour
         return closest;
     }
 
+    protected List<Vector3> UpcomingEnemyPos(GameObject thisBike, int maxCnt)
+    {
+        GameMain gm = GameMain.GetInstance();        
+        return gm.BikeList.Where(b => b != thisBike)
+            .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).Take(maxCnt) // gameObjects
+            .Select( go => go.transform.position).ToList();
+    }
+
+
     // AI Move stuff (here so player bike can display it)
 
     protected static int ScoreForPoint(Ground g, Vector3 point, Ground.Place place)
@@ -224,11 +233,11 @@ public class Bike : MonoBehaviour
         return g.PointIsOnMap(point) ? ( place == null ? 5 : 1) : 0; // 5 pts for a good place, 1 for a claimed one, zero for off-map
     }
 
-    protected MoveNode BuildMoveTree( Vector3 curPos, Heading curHead, int depth)
+    protected MoveNode BuildMoveTree( Vector3 curPos, Heading curHead, int depth, List<Vector3> otherBadPos = null)
     {
         Ground g = GameMain.GetInstance().ground;        
         Vector3 nextPos = UpcomingGridPoint(curPos, heading);
-        MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1);
+        MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1, otherBadPos);
         return root;
     }
 
@@ -245,20 +254,27 @@ public class Bike : MonoBehaviour
         public int score;
         public List<MoveNode> next; // length 3
 
-        public MoveNode(Ground g, Vector3 p,  Heading head, TurnDir d, int depth) 
+        public MoveNode(Ground g, Vector3 p,  Heading head, TurnDir d, int depth, List<Vector3> otherClaimedPos) 
         {
             pos = p;
-            dir = d;
+            dir = d; // for later lookup
             place = g.GetPlace(p);
             score = ScoreForPoint(g, pos, place);
+            if (score == 0 && otherClaimedPos.Any( op => op.Equals(pos))) // TODO: make prettier
+                score = 1; // TODO: use named scoring constants
             next = depth < 1 ? null : PossiblePointsForPointAndHeading( pos, head)
-                    .Select( (pt,childDir) => new MoveNode( g, pos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(head,(TurnDir)childDir))*Ground.gridSize, head, (TurnDir)childDir, depth-1))
+                    .Select( (pt,childTurnDir) => new MoveNode( g, 
+                        pos + GameConstants.UnitOffsetForHeading(GameConstants.NewHeadForTurn(head,(TurnDir)childTurnDir))*Ground.gridSize, 
+                        head, 
+                        (TurnDir)childTurnDir, 
+                        depth-1,
+                        otherClaimedPos))
                     .ToList();
         }        
 
-        public static MoveNode GenerateTree(Ground g, Vector3 rootPos, Heading initialHead, int depth)
+        public static MoveNode GenerateTree(Ground g, Vector3 rootPos, Heading initialHead, int depth, List<Vector3> otherBadPos)
         {
-            return new MoveNode(g, rootPos, initialHead, TurnDir.kStraight, depth);
+            return new MoveNode(g, rootPos, initialHead, TurnDir.kStraight, depth, otherBadPos);
         }
 
         public int BestScore()

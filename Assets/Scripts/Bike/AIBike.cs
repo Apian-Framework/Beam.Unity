@@ -41,11 +41,11 @@ public class AIBike : Bike
                 // Do some looking ahaed
                 Vector3 nextPos = UpcomingGridPoint(pos, heading);
 
+                List<Vector3> othersPos = UpcomingEnemyPos(this.gameObject, 2); // up to 2 closest
 
-
-                MoveNode moveTree = BuildMoveTree(nextPos, heading, 4);
+                MoveNode moveTree = BuildMoveTree(nextPos, heading, 5, othersPos);
                 List<dirAndScore> dirScores = TurnScores(moveTree);
-                dirAndScore best =  SelectBestTurn(dirScores); // dirScores.OrderBy( ds => ds.score).Last(); // Add some randomness for ties?
+                dirAndScore best =  SelectGoodTurn(dirScores); 
                 if (  _pendingTurn == TurnDir.kUnset || dirScores[(int)_pendingTurn].score < best.score) 
                 {
                     //Debug.Log(string.Format("New Turn: {0}", best.turnDir));                    
@@ -56,10 +56,12 @@ public class AIBike : Bike
 
     }
 
-    protected dirAndScore SelectBestTurn(List<dirAndScore> dirScores) {
+    protected dirAndScore SelectGoodTurn(List<dirAndScore> dirScores) {
         int bestScore = dirScores.OrderBy( ds => ds.score).Last().score;
         // If you only take the best score you will almost always just go forwards.
-        List<dirAndScore> turns = dirScores.Where( ds => ds.score >= bestScore * .5).ToList();
+        // But never select a 1 if there is anything better
+        // &&& jkb - I suspect this doesn;t do exactly what I think it does.
+        List<dirAndScore> turns = dirScores.Where( ds => (bestScore > 2) ? (ds.score > bestScore * .5) : (ds.score == bestScore)).ToList(); 
         int sel = (int)(Random.value * (float)turns.Count);
         //Debug.Log(string.Format("Possible: {0}, Sel Idx: {1}", turns.Count, sel));
         return turns[sel];
