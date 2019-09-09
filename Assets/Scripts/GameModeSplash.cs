@@ -5,7 +5,7 @@ using System.Collections.Generic;
 	
 
 public class GameModeSplash : GameMode
-{		
+{	
 	public readonly int kSplashBikeCount = 12;
 	public override void init() 
 	{

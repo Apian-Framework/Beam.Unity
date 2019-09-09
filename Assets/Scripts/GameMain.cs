@@ -9,6 +9,7 @@ using System.Linq;
 
 public abstract class GameMode
 {	
+    protected Dictionary<int,dynamic> _cmdDispatch = new Dictionary<int, dynamic>();  	
 	public GameMain _mainObj; 
 		
 	public virtual void init()
@@ -18,7 +19,8 @@ public abstract class GameMode
 	public virtual void update() {}
 	public virtual void end() {}
     public virtual void HandleTap(bool isDown) {}        
-	// public virtual void doNavBtn(GameNavBtn.Direction dir) {} //&&& need more generic button event
+
+    public virtual void handleCmd(int cmd, object param) {}  	   	
 };
 
 public abstract class ModeState
@@ -156,6 +158,11 @@ public class GameMain : MonoBehaviour {
         return _curMode;   
     }
 
+	public void SendCmd(int cmd, object param)
+	{
+        if (_curMode != null)
+            _curMode.handleCmd(cmd, param );  		
+	}
 
 	public void DestroyBikes()
 	{
@@ -170,6 +177,11 @@ public class GameMain : MonoBehaviour {
 	{
 		BikeList.Remove(bikeObj);
 		uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", bikeObj); // TODO: find better way
+		if (bikeObj == inputDispatch.localPlayerBike?.gameObject)
+		{
+			Debug.Log("Boom! Player");
+			uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
+		}
 		ground.RemovePlacesForBike(bikeObj.GetComponent<Bike>());
 		GameObject.Instantiate(boomPrefab, bikeObj.transform.position, Quaternion.identity);
 		Object.Destroy(bikeObj);
