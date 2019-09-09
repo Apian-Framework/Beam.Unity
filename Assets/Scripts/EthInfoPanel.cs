@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -31,7 +31,7 @@ public class EthInfoPanel : MonoBehaviour
         if ( (eth != null) && (eth.web3 != null)  && (secsSinceLastPoll >= pollSecs))
         {   
             secsSinceLastPoll = 0;
-            string node = eth.ethereumNodeUrl;
+            string node = new Uri(eth.ethereumNodeUrl).Host;
             var blockRes = await eth.web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
             System.Numerics.BigInteger block = blockRes.Value;          
             if (block > _prevBlock) { // polling will sometimes result in a previous block

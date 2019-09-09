@@ -12,7 +12,7 @@ public class EthereumProxy
 {
     // public static EthereumProxy instance {get; private set; } = null;  
 
-    public static readonly string  InfuraRinkebyUrl = "https://rinkeby.infura.io";
+    public static readonly string  InfuraRinkebyUrl = "https://rinkeby.infura.io/v3/7653fb1ed226443c98ce85d402299735";
     public static readonly string InfuraMainnetUrl = "https://mainnet.infura.io";
     public Web3 web3 {get; private set; } = null;  
 
