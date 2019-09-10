@@ -33,18 +33,17 @@ public class Scoreboard : MovableUISetItem
     protected void DoSort()
     {
         // descending
-       // try {
-            OtherPlayerLines.Sort((a, b) => b.GetComponent<ScoreboardLine>().prevScore.CompareTo(a.GetComponent<ScoreboardLine>().prevScore));
+        OtherPlayerLines.Sort((a, b) => b.GetComponent<ScoreboardLine>().prevScore.CompareTo(a.GetComponent<ScoreboardLine>().prevScore));
 
-            float y = otherYBase;       
-            foreach (GameObject otherLine in OtherPlayerLines)
-            {
-                Vector3 pos = otherLine.transform.localPosition;
-                pos.y = y;
-                otherLine.transform.localPosition = pos;
-                y += lineDy;
-            }
-        //} catch(System.NullReferenceException e) {}
+        float y = otherYBase;       
+        foreach (GameObject otherLine in OtherPlayerLines)
+        {
+            Vector3 pos = otherLine.transform.localPosition;
+            pos.y = y;
+            otherLine.transform.localPosition = pos;
+            y += lineDy;
+        }
+        onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;        
         _isDirty = false;
     }
 
@@ -65,7 +64,7 @@ public class Scoreboard : MovableUISetItem
         newLine.SendMessage("SetBike", bike.transform.GetComponent("Bike"));   
         OtherPlayerLines.Add(newLine);   
         _isDirty = true; // needs sorting
-        onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;
+        //onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;
     }
 
     public void RemoveBike(GameObject bikeObj)
@@ -75,7 +74,7 @@ public class Scoreboard : MovableUISetItem
         if (line != null) {
             OtherPlayerLines.Remove(line);
             _isDirty = true; // needs sorting
-            onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;        
+            // onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;        
             Object.Destroy(line);
         }
     }

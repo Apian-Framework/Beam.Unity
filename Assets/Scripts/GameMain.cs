@@ -177,7 +177,7 @@ public class GameMain : MonoBehaviour {
 	{
 		BikeList.Remove(bikeObj);
 		uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", bikeObj); // TODO: find better way
-		if (bikeObj == inputDispatch.localPlayerBike?.gameObject)
+		if (inputDispatch.localPlayerBike != null && bikeObj == inputDispatch.localPlayerBike.gameObject)
 		{
 			Debug.Log("Boom! Player");
 			uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
@@ -185,7 +185,6 @@ public class GameMain : MonoBehaviour {
 		ground.RemovePlacesForBike(bikeObj.GetComponent<Bike>());
 		GameObject.Instantiate(boomPrefab, bikeObj.transform.position, Quaternion.identity);
 		Object.Destroy(bikeObj);
-		// TODO: What if it is the player? Boom?
 	}
 
 	public void ReportScoreEvent(Bike bike, ScoreEvent evt, Ground.Place place)
