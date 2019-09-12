@@ -34,7 +34,7 @@ ShaderVariantCollection:
         passType: 4
       - keywords: DIRECTIONAL LIGHTPROBE_SH _GLOSSYREFLECTIONS_OFF _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
         passType: 4
-      - keywords: DIRECTIONAL LIGHTPROBE_SH _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
+      - keywords: DIRECTIONAL LIGHTPROBE_SH _EMISSION _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
         passType: 4
       - keywords: DIRECTIONAL LIGHTPROBE_SH _ALPHABLEND_ON _GLOSSYREFLECTIONS_OFF
           _SPECULARHIGHLIGHTS_OFF
@@ -45,29 +45,7 @@ ShaderVariantCollection:
       - keywords: DIRECTIONAL INSTANCING_ON LIGHTPROBE_SH _ALPHAPREMULTIPLY_ON _EMISSION
           _GLOSSYREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
         passType: 4
-      - keywords: DIRECTIONAL
-        passType: 5
-      - keywords: DIRECTIONAL _NORMALMAP
-        passType: 5
-      - keywords: DIRECTIONAL _ALPHABLEND_ON
-        passType: 5
-      - keywords: DIRECTIONAL _ALPHAPREMULTIPLY_ON
-        passType: 5
-      - keywords: DIRECTIONAL _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 5
-      - keywords: DIRECTIONAL _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 5
-      - keywords: DIRECTIONAL _ALPHAPREMULTIPLY_ON _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 5
-      - keywords: DIRECTIONAL _SPECULARHIGHLIGHTS_OFF
-        passType: 5
-      - keywords: DIRECTIONAL _ALPHABLEND_ON _SPECULARHIGHLIGHTS_OFF
-        passType: 5
-      - keywords: DIRECTIONAL _ALPHAPREMULTIPLY_ON _SPECULARHIGHLIGHTS_OFF
-        passType: 5
       - keywords: SHADOWS_DEPTH
-        passType: 8
-      - keywords: INSTANCING_ON SHADOWS_DEPTH
         passType: 8
       - keywords: SHADOWS_DEPTH _ALPHABLEND_ON
         passType: 8
@@ -84,8 +62,6 @@ ShaderVariantCollection:
       variants:
       - keywords: DIRECTIONAL LIGHTPROBE_SH
         passType: 4
-      - keywords: DIRECTIONAL
-        passType: 5
   - first: {fileID: 104, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -103,23 +79,12 @@ ShaderVariantCollection:
         passType: 4
       - keywords: DIRECTIONAL LIGHTPROBE_SH _ALPHABLEND_ON _EMISSION
         passType: 4
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SOFTPARTICLES_ON _ALPHABLEND_ON
-        passType: 4
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SOFTPARTICLES_ON _ALPHABLEND_ON _EMISSION
-        passType: 4
       - keywords: DIRECTIONAL LIGHTPROBE_SH _ALPHAPREMULTIPLY_ON _EMISSION
         passType: 4
-      - keywords: DIRECTIONAL LIGHTPROBE_SH SOFTPARTICLES_ON _ALPHAPREMULTIPLY_ON
-          _EMISSION
-        passType: 4
-      - keywords: SHADOWS_DEPTH _ALPHABLEND_ON
-        passType: 8
       - keywords: PROCEDURAL_INSTANCING_ON SHADOWS_DEPTH _ALPHABLEND_ON
         passType: 8
       - keywords: PROCEDURAL_INSTANCING_ON SHADOWS_DEPTH _ALPHAPREMULTIPLY_ON
         passType: 8
-      - keywords: 
-        passType: 13
   - first: {fileID: 211, guid: 0000000000000000f000000000000000, type: 0}
     second:
       variants:
@@ -167,191 +132,26 @@ ShaderVariantCollection:
       variants:
       - keywords: 
         passType: 0
-      - keywords: UNDERLAY_ON
-        passType: 0
-      - keywords: OUTLINE_ON UNDERLAY_ON
-        passType: 0
       - keywords: BEVEL_ON UNDERLAY_ON
         passType: 0
       - keywords: GLOW_ON UNDERLAY_ON
         passType: 0
       - keywords: BEVEL_ON GLOW_ON UNDERLAY_ON
         passType: 0
-  - first: {fileID: 4800000, guid: 85187c2149c549c5b33f0cdb02836b17, type: 3}
-    second:
-      variants:
-      - keywords: DIRECTIONAL LIGHTPROBE_SH
-        passType: 4
-      - keywords: SHADOWS_DEPTH
-        passType: 8
-  - first: {fileID: 4800000, guid: a02a7d8c237544f1962732b55a9aebf1, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: bc1ede39bf3643ee8e493720e4259791, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: dd89cf5b9246416f84610a006f916af7, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: f7ada0af4f174f0694ca6a487b8f543d, type: 3}
-    second:
-      variants:
-      - keywords: DIRECTIONAL GLOW_ON LIGHTPROBE_SH
-        passType: 4
-      - keywords: DIRECTIONAL GLOW_ON
-        passType: 5
-      - keywords: SHADOWS_DEPTH
-        passType: 8
-  - first: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-      - keywords: OUTLINE_ON
-        passType: 0
       - keywords: OUTLINE_ON UNDERLAY_ON
         passType: 0
-  - first: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 0
-  - first: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
-    second:
-      variants:
-      - keywords: _DEPTH_NO_MSAA
-        passType: 0
-  - first: {fileID: 4800000, guid: 0ca6dca7396eb48e5849247ffd444914, type: 3}
-    second:
-      variants:
-      - keywords: 
-        passType: 13
-      - keywords: INSTANCING_ON
-        passType: 13
   - first: {fileID: 4800000, guid: 69c1f799e772cb6438f56c23efccb782, type: 3}
     second:
       variants:
       - keywords: 
         passType: 8
-  - first: {fileID: 4800000, guid: 8516d7a69675844a7a0b7095af7c46af, type: 3}
-    second:
-      variants:
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _RECEIVE_SHADOWS_OFF _SPECULAR_COLOR
-        passType: 13
-  - first: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
+  - first: {fileID: 4800000, guid: dd89cf5b9246416f84610a006f916af7, type: 3}
     second:
       variants:
       - keywords: 
-        passType: 8
-      - keywords: INSTANCING_ON
-        passType: 8
-      - keywords: INSTANCING_ON _GLOSSINESS_FROM_BASE_ALPHA
-        passType: 8
-      - keywords: _ADDITIONAL_LIGHTS _SPECULAR_COLOR
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _SPECULAR_COLOR
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _MIXED_LIGHTING_SUBTRACTIVE _SPECULAR_COLOR
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _GLOSSINESS_FROM_BASE_ALPHA _SPECULAR_COLOR
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _GLOSSINESS_FROM_BASE_ALPHA _MIXED_LIGHTING_SUBTRACTIVE
-          _SPECULAR_COLOR
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _RECEIVE_SHADOWS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _MIXED_LIGHTING_SUBTRACTIVE _RECEIVE_SHADOWS_OFF
-        passType: 13
-      - keywords: _EMISSION _RECEIVE_SHADOWS_OFF _SPECULAR_COLOR
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _RECEIVE_SHADOWS_OFF _SPECULAR_COLOR
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _RECEIVE_SHADOWS_OFF _SPECULAR_COLOR
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _MIXED_LIGHTING_SUBTRACTIVE _RECEIVE_SHADOWS_OFF
-          _SPECULAR_COLOR
-        passType: 13
-  - first: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+        passType: 0
+  - first: {fileID: 4800000, guid: fe393ace9b354375a9cb14cdbbc28be4, type: 3}
     second:
       variants:
       - keywords: 
-        passType: 8
-      - keywords: INSTANCING_ON
-        passType: 8
-      - keywords: _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 8
-      - keywords: 
-        passType: 13
-      - keywords: _MIXED_LIGHTING_SUBTRACTIVE
-        passType: 13
-      - keywords: _MAIN_LIGHT_SHADOWS _MIXED_LIGHTING_SUBTRACTIVE
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _NORMALMAP
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _MIXED_LIGHTING_SUBTRACTIVE
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _MAIN_LIGHT_SHADOWS _MIXED_LIGHTING_SUBTRACTIVE
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _ALPHAPREMULTIPLY_ON _EMISSION _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _ALPHAPREMULTIPLY_ON _EMISSION _MIXED_LIGHTING_SUBTRACTIVE
-          _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _RECEIVE_SHADOWS_OFF _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _RECEIVE_SHADOWS_OFF _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _MIXED_LIGHTING_SUBTRACTIVE _RECEIVE_SHADOWS_OFF
-          _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _MIXED_LIGHTING_SUBTRACTIVE _RECEIVE_SHADOWS_OFF
-          _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _MAIN_LIGHT_SHADOWS _MIXED_LIGHTING_SUBTRACTIVE _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _NORMALMAP _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _MIXED_LIGHTING_SUBTRACTIVE _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _MAIN_LIGHT_SHADOWS _MIXED_LIGHTING_SUBTRACTIVE
-          _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
-        passType: 13
-      - keywords: _ENVIRONMENTREFLECTIONS_OFF _MIXED_LIGHTING_SUBTRACTIVE _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _ENVIRONMENTREFLECTIONS_OFF _MAIN_LIGHT_SHADOWS _MIXED_LIGHTING_SUBTRACTIVE
-          _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _ENVIRONMENTREFLECTIONS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _ENVIRONMENTREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _ENVIRONMENTREFLECTIONS_OFF _SPECULARHIGHLIGHTS_OFF
-        passType: 13
-  - first: {fileID: 4800000, guid: b7839dad95683814aa64166edc107ae2, type: 3}
-    second:
-      variants:
-      - keywords: _ADDITIONAL_LIGHTS _ALPHAPREMULTIPLY_ON _EMISSION
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _RECEIVE_SHADOWS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _EMISSION _MAIN_LIGHT_SHADOWS _RECEIVE_SHADOWS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _ALPHAPREMULTIPLY_ON _EMISSION _RECEIVE_SHADOWS_OFF
-        passType: 13
-      - keywords: _ADDITIONAL_LIGHTS _ALPHAPREMULTIPLY_ON _EMISSION _MAIN_LIGHT_SHADOWS
-          _RECEIVE_SHADOWS_OFF
-        passType: 13
+        passType: 0
