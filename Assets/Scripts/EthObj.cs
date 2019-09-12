@@ -28,7 +28,6 @@ public class EthObj : MonoBehaviour
             //Sets this to not be destroyed when reloading scene
             DontDestroyOnLoad(gameObject);    
             await Task.Run(() => ConnectToNode());              
-
         }
         //If instance already exists and it's not this:
         else if (instance != this)
