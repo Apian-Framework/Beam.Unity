@@ -10,14 +10,14 @@ public class GameModeSplash : GameMode
 	public override void init() 
 	{
 		base.init();
+        _mainObj.baseData.ClearPlayers();
         _mainObj.DestroyBikes();
         _mainObj.ground.ClearPlaces();
 
-        Assert.IsTrue(kSplashBikeCount <= SplashPlayers.count, "Too many bikes for splash players list");
-
         for( int i=0;i<kSplashBikeCount; i++) 
         {
-            Player p = SplashPlayers.data[i]; 
+            Player p = DemoPlayerData.CreatePlayer(); 
+            _mainObj.baseData.AddPlayer(p);
 		    Heading heading = BikeFactory.PickRandomHeading();
 		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 10 );            
             GameObject bike =  BikeFactory.CreateDemoBike(p, _mainObj.ground, pos, heading);

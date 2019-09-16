@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public enum TeamID {
     kSharks = 0,
@@ -9,7 +11,7 @@ public enum TeamID {
 
 public class Team
 {
-    public static readonly Team[] teamData = new Team[] {
+    public static readonly List<Team> teamData = new List<Team>() {
         new Team("Sharks", Color.yellow),
         new Team("Catfish", Color.red),
         new Team("Whales", Color.cyan),

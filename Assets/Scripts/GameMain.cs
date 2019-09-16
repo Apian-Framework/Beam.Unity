@@ -39,6 +39,9 @@ public abstract class ModeState
 public class GameMain : MonoBehaviour {
 	
 	public EthereumProxy eth = null;
+
+	public SharedState baseData { get; private set; } = null;
+
 	public List<GameObject> BikeList { get; private set;}	
 	public GameCamera gameCamera;
 	public UICamera uiCamera;	
@@ -80,6 +83,9 @@ public class GameMain : MonoBehaviour {
 	void Start () {
 		Application.targetFrameRate = 30;
 
+		// Shared game state - presistent
+		baseData = new SharedState();
+
 		// Semi-presistent GameMain-owned objects
 		BikeList = new List<GameObject>();
 		uiCamera = (UICamera)utils.findObjectComponent("UICamera", "UICamera");		
@@ -99,7 +105,9 @@ public class GameMain : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-	
+
+		baseData.DoUpdate(GameTime.DeltaTime()); // update underlying game data first
+
 		if (firstFrame)
 		{	
 			// do first frame stuff	          
