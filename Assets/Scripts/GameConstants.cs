@@ -41,7 +41,7 @@ public static class GameConstants
 
     public static float HeadingDegrees(Heading h) => headingDegrees[(int)h%4];
 
-    private static readonly Vector3[] unitOffsetForHeading = {
+    private static readonly Vector3[] unitOffset3ForHeading = {
         // Unit velocity for given heading
         new Vector3(0, 0, 1),  // N
         new Vector3(1, 0, 0),  // E
@@ -49,7 +49,18 @@ public static class GameConstants
         new Vector3(-1, 0, 0),  // W         
     };
 
-    public static Vector3 UnitOffsetForHeading(Heading h) => unitOffsetForHeading[(int)h%4];
+    public static Vector3 UnitOffset3ForHeading(Heading h) => unitOffset3ForHeading[(int)h%4];
+
+    private static readonly Vector2[] unitOffset2ForHeading = {
+        // Unit velocity for given heading
+        new Vector2(0, 1),  // N
+        new Vector2(1, 0),  // E
+        new Vector2(0, -1),  // S
+        new Vector2(-1, 0),  // W         
+    };
+
+    public static Vector2 UnitOffset2ForHeading(Heading h) => unitOffset2ForHeading[(int)h%4];
+
 
     private static readonly Heading[][] newHeadForTurn = {
         // newHead = GameConstants.newHeadForTurn[oldHead][turnDir];

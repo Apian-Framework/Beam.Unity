@@ -58,11 +58,11 @@ public class BikeFactory : MonoBehaviour
 	{
 		Vector3 p = Ground.NearestGridPoint(
 					new Vector3(Random.Range(-radius, radius), 0, Random.Range(-radius, radius)) + basePos );
-		return p + GameConstants.UnitOffsetForHeading(head) * .5f * Ground.gridSize;
+		return p + GameConstants.UnitOffset3ForHeading(head) * .5f * Ground.gridSize;
 	}
 	public static Vector3 PositionForNewBike(List<GameObject> otherBikes, Heading head, Vector3 basePos, float radius)
 	{
-		float minDist = Bike.length * 20; 
+		float minDist = BaseBike.length * 20; 
 		float closestD = -1;
 		Vector3 newPos = Vector3.zero;
 		while (closestD < minDist) 
@@ -75,11 +75,11 @@ public class BikeFactory : MonoBehaviour
 
     static GameObject CreateBike(System.Type bikeType, Player p, Ground ground, Vector3 pos, Heading heading)
     {
-        GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, pos, Quaternion.identity) as GameObject;
+        GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, Vector3.zero, Quaternion.identity) as GameObject;
 		newBike.AddComponent(bikeType);
         newBike.transform.parent = ground.transform;
         Bike bk = (Bike)newBike.transform.GetComponent("Bike");
-		bk.Setup(heading, p);		
+		bk.Setup(pos, heading, p);		
         return newBike;
     }    
 
