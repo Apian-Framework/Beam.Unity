@@ -14,6 +14,9 @@ public class Bike : MonoBehaviour
     public Player player { get => bb.player; } 
     public Heading heading { get => bb.heading; }
     
+    // Temp (probably) stuff for refactoring to add BaseBike
+    public TurnDir pendingTurn { get => bb.pendingTurn; }
+
     public float turnRadius = 1; // 2.0f;
 
     public float maxLean = 50.0f;
@@ -25,8 +28,6 @@ public class Bike : MonoBehaviour
     };
 
     public static readonly float kRoot2Over2 = 2.0f / Mathf.Sqrt(2);
-
-    public TurnDir _pendingTurn = TurnDir.kUnset; // set and turn will start at next grid point
 
     Vector3 _turnAxis = Vector3.up; // just a dummy location
     float _turnStartTheta = 0f;
@@ -112,12 +113,12 @@ public class Bike : MonoBehaviour
                 DealWithPlace(pos);
 
                 // Waiting to turn?
-                if (!prevAtGridPt && _pendingTurn != TurnDir.kStraight && _pendingTurn != TurnDir.kUnset && _curTurn == TurnDir.kStraight)
+                if (!prevAtGridPt && pendingTurn != TurnDir.kStraight && pendingTurn != TurnDir.kUnset && _curTurn == TurnDir.kStraight)
                 {
                     // should be StartTurn()
                     Heading prevHead = heading;
-                    _curTurn = _pendingTurn;
-                    bb.TempSetHeading(GameConstants.NewHeadForTurn(heading, _pendingTurn));
+                    _curTurn = pendingTurn;
+                    bb.TempSetHeading(GameConstants.NewHeadForTurn(heading, pendingTurn));
 
                     // set up turn axis and angle
                     _turnAxis = gridPt - (GameConstants.UnitOffset3ForHeading(prevHead) - GameConstants.UnitOffset3ForHeading(heading)) * turnRadius;
@@ -127,7 +128,7 @@ public class Bike : MonoBehaviour
                     //Debug.Log(string.Format("turnAxis: {0}", _turnAxis));                
                 }
 
-                _pendingTurn = TurnDir.kUnset;  // reset when you get to a grid point        
+                bb.TempSetPendingTurn(TurnDir.kUnset);  // reset when you get to a grid point        
             }
         }
 

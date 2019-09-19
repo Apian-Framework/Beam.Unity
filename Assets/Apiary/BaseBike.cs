@@ -12,6 +12,13 @@ public class BaseBike
     // NOTE: 2D position: x => east, y => north (in 3-space z is north and y is up)
     public Heading heading { get; private set;} = Heading.kNorth;
 
+    //
+    // Temporary stuff for refactoring
+    //
+    public TurnDir pendingTurn { get; private set;} = TurnDir.kUnset; // set and turn will start at next grid point
+
+    public void TempSetPendingTurn(TurnDir d) => pendingTurn = d;
+
     public void TempSetHeading(Heading h) => heading = h;
 
     public BaseBike(Vector3 initialPos3)

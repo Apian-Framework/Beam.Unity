@@ -46,12 +46,12 @@ public class LocalPlayerBike : Bike
 
     public void FrobLeftButton()
     {
-        _pendingTurn = TurnDir.kLeft;
+        bb.TempSetPendingTurn(TurnDir.kLeft);
     }
 
     public void FrobRightButton()
     {
-        _pendingTurn = TurnDir.kRight;        
+        bb.TempSetPendingTurn(TurnDir.kRight);
     }
 
     protected override Ground.Place DealWithPlace(Vector3 pos)

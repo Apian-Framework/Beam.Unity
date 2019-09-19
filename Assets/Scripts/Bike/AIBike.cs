@@ -26,15 +26,15 @@ public class AIBike : Bike
                 secsSinceLastAiCheck = 0;
 
                 // If not gonna turn maybe go towards the closest bike?
-                if (_pendingTurn == TurnDir.kUnset) {
+                if (pendingTurn == TurnDir.kUnset) {
                     Vector3 closestBikePos = ClosestBike(this.gameObject).transform.position;
                     if ( Vector3.Distance(pos, closestBikePos) > Ground.gridSize * 6) // only if it's not really close
-                        _pendingTurn = TurnTowardsPos( closestBikePos, pos, heading ); 
+                        bb.TempSetPendingTurn(TurnTowardsPos( closestBikePos, pos, heading )); 
                     else
                     {
                         bool doTurn = ( Random.value * turnTime <  GameTime.DeltaTime() );
                         if (doTurn)    
-                            _pendingTurn = (Random.value < .5f) ? TurnDir.kLeft : TurnDir.kRight;                        
+                            bb.TempSetPendingTurn( (Random.value < .5f) ? TurnDir.kLeft : TurnDir.kRight);   
                     }               
                 }
 
@@ -46,10 +46,10 @@ public class AIBike : Bike
                 MoveNode moveTree = BuildMoveTree(nextPos, heading, 5, othersPos);
                 List<dirAndScore> dirScores = TurnScores(moveTree);
                 dirAndScore best =  SelectGoodTurn(dirScores); 
-                if (  _pendingTurn == TurnDir.kUnset || dirScores[(int)_pendingTurn].score < best.score) 
+                if (  pendingTurn == TurnDir.kUnset || dirScores[(int)pendingTurn].score < best.score) 
                 {
                     //Debug.Log(string.Format("New Turn: {0}", best.turnDir));                    
-                    _pendingTurn =  best.turnDir;
+                    bb.TempSetPendingTurn(best.turnDir);
                 }
             }   
         }
