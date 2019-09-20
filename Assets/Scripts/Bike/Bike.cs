@@ -36,12 +36,11 @@ public class Bike : MonoBehaviour
 
     // Important: Setup() is not called until after Awake() and Start() have been called on the
     // GameObject and components. Both of those are called when the GO is instantiated
-    public virtual void Setup(Vector3 pos, Heading head, Player p)
+    public virtual void Setup(BaseBike baseBike)
     {
-        bb = new BaseBike(transform.position);
-        bb.Setup(pos, head, p);
-        transform.position = pos;
-        SetColor(p.Team.Color);        
+        bb = baseBike;
+        transform.position = bb.GetPos3(); // Is probably already set to this
+        SetColor(bb.player.Team.Color);        
     }
 
     // Start is called before the first frame update
@@ -142,9 +141,8 @@ public class Bike : MonoBehaviour
     {
         DecideToTurn();
 
-        float deltaT = GameTime.DeltaTime();
-
-        bb.DoUpdate(deltaT);
+        //float deltaT = GameTime.DeltaTime();
+        //bb.DoUpdate(deltaT);
 
         Vector3 pos = bb.GetPos3();
         Vector3 angles = transform.eulerAngles;

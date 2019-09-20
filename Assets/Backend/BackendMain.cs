@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SharedState
+public class BackendMain
 {
     public float Time { get; private set; } = 0;
     public Dictionary<string, Player> Players { get; private set; } = null;
 
     public Dictionary<string, BaseBike> Bikes { get; private set; } = null;
 
-    public SharedState()
+    public BackendMain()
     {
         Players = new Dictionary<string, Player>();
         Bikes = new Dictionary<string, BaseBike>();        
@@ -21,8 +21,13 @@ public class SharedState
     {
         Time += deltaSecs;
         // Players do not update 
+        foreach( BaseBike bb in Bikes.Values)
+            bb.DoUpdate(deltaSecs);
     }
 
+    //
+    // Player
+    //
     public bool AddPlayer(Player p)
     {
         if  ( Players.ContainsKey(p.ID))
@@ -42,9 +47,25 @@ public class SharedState
         Players.Clear();
     }
 
+    //
     // Bikes
-    public void AddBike(BaseBike bb) {
-
+    //
+    public bool AddBike(BaseBike bb) {
+        if  ( Bikes.ContainsKey(bb.bikeId))
+            return false;
+        
+        Bikes[bb.bikeId] =  bb;
+        return true;
     }
+
+    public bool RemoveBike(BaseBike bb)
+    {
+        return Bikes.Remove(bb.bikeId);
+    }
+
+    public void ClearBikes()
+    {
+        Bikes.Clear();
+    }    
 }
 

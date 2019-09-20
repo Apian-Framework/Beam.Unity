@@ -25,19 +25,19 @@ public class BikeFactory : MonoBehaviour
     // API
     // 
 
-    public static GameObject CreateDemoBike( Player p, Ground ground, Vector3 pos, Heading heading)
+    public static GameObject CreateDemoBike( BaseBike bb,  Ground ground )
 	{ 
-        return CreateBike(typeof(DemoBike), p, ground, pos, heading);
+        return CreateBike(typeof(DemoBike), bb, ground);
     }
 
-    public static GameObject CreateAIBike( Player p, Ground ground, Vector3 pos, Heading heading)
+    public static GameObject CreateAIBike( BaseBike bb,  Ground ground)
 	{ 
-        return CreateBike(typeof(AIBike), p, ground, pos, heading);
+        return CreateBike(typeof(AIBike), bb, ground);
     }
 
-    public static GameObject CreateLocalPlayerBike(Player p, Ground ground, Vector3 pos, Heading heading)
+    public static GameObject CreateLocalPlayerBike( BaseBike bb,  Ground ground)
     {    
-        GameObject bike  = CreateBike(typeof(LocalPlayerBike), p, ground, pos, heading); 
+        GameObject bike  = CreateBike(typeof(LocalPlayerBike), bb, ground ); 
         return bike;
     }	
 
@@ -73,14 +73,13 @@ public class BikeFactory : MonoBehaviour
 		return newPos;
 	}
 
-    static GameObject CreateBike(System.Type bikeType, Player p, Ground ground, Vector3 pos, Heading heading)
+    static GameObject CreateBike(System.Type bikeType, BaseBike bb, Ground ground)
     {
-
-        GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, pos, Quaternion.identity) as GameObject;
+        GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, bb.GetPos3(), Quaternion.identity) as GameObject;
 		newBike.AddComponent(bikeType);
         newBike.transform.parent = ground.transform;
         Bike bk = (Bike)newBike.transform.GetComponent("Bike");
-		bk.Setup(pos, heading, p);		
+		bk.Setup(bb);		
         return newBike;
     }    
 

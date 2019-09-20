@@ -6,7 +6,9 @@ using UnityEngine;
 public class BaseBike
 {
     public static readonly float length = 2.0f;
-    public static readonly float speed =  15.0f;    
+    public static readonly float speed =  15.0f;   
+
+    public string bikeId {get; private set;} = null; 
     public Player player {get; private set;} = null;
     public Vector2 position {get; private set;} = Vector2.zero; // always on the grid
     // NOTE: 2D position: x => east, y => north (in 3-space z is north and y is up)
@@ -21,17 +23,12 @@ public class BaseBike
 
     public void TempSetHeading(Heading h) => heading = h;
 
-    public BaseBike(Vector3 initialPos3)
+    public BaseBike(string ID, Player p, Vector3 initialPos, Heading head)
     { 
-        SetPos3(initialPos3); // probably don't need this, but it doesn;t hurt
-    }
-
-    public void Setup(Vector3 pos, Heading head, Player p)
-    {
-        p.Score = Player.kStartScore; // TODO: Change this!
-        SetPos3(pos);
+        bikeId = ID;
+        SetPos3(initialPos); // probably don't need this, but it doesn;t hurt
         heading = head;
-        player = p;
+        player = p;        
     }
 
     public void SetPos3(Vector3 pos3)

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using UnityEngine.Assertions;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,17 +11,24 @@ public class GameModeSplash : GameMode
 	public override void init() 
 	{
 		base.init();
-        _mainObj.baseData.ClearPlayers();
+        _mainObj.backend.ClearPlayers();
         _mainObj.DestroyBikes();
+        _mainObj.backend.ClearBikes();        
         _mainObj.ground.ClearPlaces();
 
         for( int i=0;i<kSplashBikeCount; i++) 
         {
             Player p = DemoPlayerData.CreatePlayer(); 
-            _mainObj.baseData.AddPlayer(p);
+            _mainObj.backend.AddPlayer(p);
+
 		    Heading heading = BikeFactory.PickRandomHeading();
-		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 10 );            
-            GameObject bike =  BikeFactory.CreateDemoBike(p, _mainObj.ground, pos, heading);
+		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 10 );
+            string bikeId = Guid.NewGuid().ToString();
+
+            BaseBike bb = new BaseBike(bikeId, p, pos, heading);
+            _mainObj.backend.AddBike(bb);            
+
+            GameObject bike =  BikeFactory.CreateDemoBike(bb, _mainObj.ground);
             _mainObj.BikeList.Add(bike);
         }
 

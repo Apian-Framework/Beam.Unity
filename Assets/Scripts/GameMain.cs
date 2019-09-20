@@ -40,7 +40,7 @@ public class GameMain : MonoBehaviour {
 	
 	public EthereumProxy eth = null;
 
-	public SharedState baseData { get; private set; } = null;
+	public BackendMain backend { get; private set; } = null;
 
 	public List<GameObject> BikeList { get; private set;}	
 	public GameCamera gameCamera;
@@ -84,7 +84,7 @@ public class GameMain : MonoBehaviour {
 		Application.targetFrameRate = 30;
 
 		// Shared game state - presistent
-		baseData = new SharedState();
+		backend = new BackendMain();
 
 		// Semi-presistent GameMain-owned objects
 		BikeList = new List<GameObject>();
@@ -106,7 +106,7 @@ public class GameMain : MonoBehaviour {
 	void Update () 
 	{
 
-		baseData.DoUpdate(GameTime.DeltaTime()); // update underlying game data first
+		backend.DoUpdate(GameTime.DeltaTime()); // update underlying game data first
 
 		if (firstFrame)
 		{	

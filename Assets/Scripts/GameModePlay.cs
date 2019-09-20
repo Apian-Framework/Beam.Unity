@@ -25,7 +25,7 @@ public class GameModePlay : GameMode
         _cmdDispatch[(int)Commands.kInit] = new Action<object>( (o) => {} );  // TODO: &&&& First command invoke causes a delay "blip".  This is a bad answer.
         _cmdDispatch[(int)Commands.kRespawn] = new Action<object>(o => RespawnPlayerBike());
 
-        _mainObj.baseData.ClearPlayers();
+        _mainObj.backend.ClearPlayers();
         _mainObj.DestroyBikes();
         _mainObj.ground.ClearPlaces();        
 
@@ -37,7 +37,7 @@ public class GameModePlay : GameMode
             Player p = null;
             while (p == null) {
                 p = DemoPlayerData.CreatePlayer();
-                if (!_mainObj.baseData.AddPlayer(p))
+                if (!_mainObj.backend.AddPlayer(p))
                     p = null;
             }
             SpawnAIBike(p); 
@@ -61,19 +61,27 @@ public class GameModePlay : GameMode
         _cmdDispatch[cmd](param);            
     }
 
- 
+    protected BaseBike CreateBaseBike(Player p)
+    {
+        Heading heading = BikeFactory.PickRandomHeading();
+        Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 10 );   
+        string bikeId = Guid.NewGuid().ToString();
+         BaseBike bb = new BaseBike(bikeId, p, pos, heading);
+         _mainObj.backend.AddBike(bb); 
+         return bb;
+    }
+
     protected GameObject SpawnPlayerBike(Player p = null)
     {
         // Create one the first time
         while (p == null) {
             p = DemoPlayerData.CreatePlayer(true); 
-            if (_mainObj.baseData.AddPlayer(p) == false)
+            if (_mainObj.backend.AddPlayer(p) == false)
                 p = null;
         }
-
-        Heading heading = BikeFactory.PickRandomHeading();
-        Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 10 );            
-        GameObject playerBike =  BikeFactory.CreateLocalPlayerBike(p, _mainObj.ground, pos, heading);
+           
+        BaseBike bb = CreateBaseBike(p);  
+        GameObject playerBike =  BikeFactory.CreateLocalPlayerBike(bb, _mainObj.ground);
         _mainObj.BikeList.Add(playerBike);   
         _mainObj.inputDispatch.SetLocalPlayerBike(playerBike);              
         return playerBike;
@@ -81,17 +89,16 @@ public class GameModePlay : GameMode
 
     protected GameObject SpawnAIBike(Player p)
     {
-		    Heading heading = BikeFactory.PickRandomHeading();
-		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize *  10 );            
-            GameObject bike =  BikeFactory.CreateAIBike(p, _mainObj.ground, pos, heading);
-            _mainObj.BikeList.Add(bike);
-            return bike;
+        BaseBike bb = CreateBaseBike(p);  
+        GameObject bike =  BikeFactory.CreateAIBike(bb, _mainObj.ground);
+        _mainObj.BikeList.Add(bike);
+        return bike;
     }
 
 
     public void RespawnPlayerBike()
     {       
-        Player localPlayer = _mainObj.baseData.Players.Values.Where( p => p.IsLocal).First();
+        Player localPlayer = _mainObj.backend.Players.Values.Where( p => p.IsLocal).First();
         GameObject playerBike = SpawnPlayerBike(localPlayer);
         _mainObj.uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOffScreen", null);         
         _mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard").SendMessage("SetLocalPlayerBike", playerBike); 
@@ -132,7 +139,7 @@ public class GameModePlay : GameMode
     protected Player FindIdlePlayer()
     {
         // TODO: yuk
-        return _mainObj.baseData.Players.Values.Where( (p) => !p.IsLocal && p.Score <= 0).FirstOrDefault();
+        return _mainObj.backend.Players.Values.Where( (p) => !p.IsLocal && p.Score <= 0).FirstOrDefault();
     }
 
     public override void HandleTap(bool isDown)     
