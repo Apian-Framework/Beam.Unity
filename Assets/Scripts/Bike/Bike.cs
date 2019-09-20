@@ -34,12 +34,14 @@ public class Bike : MonoBehaviour
     float _turnTheta = 0f; // 0 is north, increases clockwise
     protected TurnDir _curTurn = TurnDir.kStraight;
 
+    // Important: Setup() is not called until after Awake() and Start() have been called on the
+    // GameObject and components. Both of those are called when the GO is instantiated
     public virtual void Setup(Vector3 pos, Heading head, Player p)
     {
         bb = new BaseBike(transform.position);
         bb.Setup(pos, head, p);
         transform.position = pos;
-        SetColor(p.Team.Color);
+        SetColor(p.Team.Color);        
     }
 
     // Start is called before the first frame update
@@ -57,7 +59,7 @@ public class Bike : MonoBehaviour
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    public virtual void OldUpdate()
     {
         Vector3 pos = transform.position;
         Vector3 angles = transform.eulerAngles;
@@ -136,6 +138,25 @@ public class Bike : MonoBehaviour
 
     }
 
+    public virtual void Update()
+    {
+        DecideToTurn();
+
+        float deltaT = GameTime.DeltaTime();
+
+        bb.DoUpdate(deltaT);
+
+        Vector3 pos = bb.GetPos3();
+        Vector3 angles = transform.eulerAngles;
+
+        angles.z = 0;
+        angles.y = turnStartTheta[(int)heading] - 90f;
+        transform.eulerAngles = angles;
+        // Debug.Log(string.Format("Bike Pos: {0}", pos));        
+        transform.position = pos;
+    }
+
+    //DealWithPlace(pos);
 
     public virtual void DecideToTurn() { }
 

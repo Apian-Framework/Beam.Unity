@@ -75,7 +75,8 @@ public class BikeFactory : MonoBehaviour
 
     static GameObject CreateBike(System.Type bikeType, Player p, Ground ground, Vector3 pos, Heading heading)
     {
-        GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, Vector3.zero, Quaternion.identity) as GameObject;
+
+        GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, pos, Quaternion.identity) as GameObject;
 		newBike.AddComponent(bikeType);
         newBike.transform.parent = ground.transform;
         Bike bk = (Bike)newBike.transform.GetComponent("Bike");
