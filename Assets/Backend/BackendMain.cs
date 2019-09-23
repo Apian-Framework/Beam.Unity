@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BackendMain
 {
+    public BackendEvents EventPub {get; private set;} = null;
     public float Time { get; private set; } = 0;
     public Dictionary<string, Player> Players { get; private set; } = null;
 
@@ -11,6 +12,7 @@ public class BackendMain
 
     public BackendMain()
     {
+        EventPub = new BackendEvents();
         Players = new Dictionary<string, Player>();
         Bikes = new Dictionary<string, BaseBike>();        
     }

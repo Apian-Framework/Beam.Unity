@@ -27,6 +27,7 @@ public class GameModePlay : GameMode
 
         _mainObj.backend.ClearPlayers();
         _mainObj.DestroyBikes();
+        _mainObj.backend.ClearBikes();           
         _mainObj.ground.ClearPlaces();        
 
         // Create player bike
@@ -47,7 +48,7 @@ public class GameModePlay : GameMode
         _mainObj.gameCamera.transform.position = new Vector3(100, 100, 100);               
 		_mainObj.uiCamera.switchToNamedStage("PlayStage");   
         _mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard").SendMessage("SetLocalPlayerBike", playerBike); 
-        foreach (GameObject b in _mainObj.BikeList)
+        foreach (GameObject b in _mainObj.BikeList.Values)
         {
             if (b != playerBike)
                 _mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard").SendMessage("AddBike", b);
@@ -64,9 +65,10 @@ public class GameModePlay : GameMode
     protected BaseBike CreateBaseBike(Player p)
     {
         Heading heading = BikeFactory.PickRandomHeading();
-        Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList, heading, Ground.zeroPos, Ground.gridSize * 10 );   
+        Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, Ground.zeroPos, Ground.gridSize * 10 );   
         string bikeId = Guid.NewGuid().ToString();
-         BaseBike bb = new BaseBike(bikeId, p, pos, heading);
+         BaseBike bb = new BaseBike(_mainObj.backend, bikeId, p, pos, heading);
+         p.Score = Player.kStartScore;
          _mainObj.backend.AddBike(bb); 
          return bb;
     }
@@ -82,7 +84,7 @@ public class GameModePlay : GameMode
            
         BaseBike bb = CreateBaseBike(p);  
         GameObject playerBike =  BikeFactory.CreateLocalPlayerBike(bb, _mainObj.ground);
-        _mainObj.BikeList.Add(playerBike);   
+        _mainObj.BikeList.Add(bb.bikeId, playerBike);   
         _mainObj.inputDispatch.SetLocalPlayerBike(playerBike);              
         return playerBike;
     }
@@ -91,7 +93,7 @@ public class GameModePlay : GameMode
     {
         BaseBike bb = CreateBaseBike(p);  
         GameObject bike =  BikeFactory.CreateAIBike(bb, _mainObj.ground);
-        _mainObj.BikeList.Add(bike);
+        _mainObj.BikeList.Add(bb.bikeId, bike);
         return bike;
     }
 
@@ -115,7 +117,7 @@ public class GameModePlay : GameMode
     {
         // TODO: clean this up
         List<GameObject> delBikes = new List<GameObject>();
-        foreach ( GameObject go in _mainObj.BikeList)
+        foreach ( GameObject go in _mainObj.BikeList.Values)
         {
             if (go.transform.GetComponent<Bike>().player.Score <=0)
                 delBikes.Add(go);            

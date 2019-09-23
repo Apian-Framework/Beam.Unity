@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,7 +42,7 @@ public class GameMain : MonoBehaviour {
 
 	public BackendMain backend { get; private set; } = null;
 
-	public List<GameObject> BikeList { get; private set;}	
+	public Dictionary<string, GameObject> BikeList { get; private set;}	
 	public GameCamera gameCamera;
 	public UICamera uiCamera;	
 	public InputDispatch inputDispatch;
@@ -85,9 +85,11 @@ public class GameMain : MonoBehaviour {
 
 		// Shared game state - presistent
 		backend = new BackendMain();
+		
+		backend.EventPub.BikeAtPoint += bikeAtPointHandler;
 
 		// Semi-presistent GameMain-owned objects
-		BikeList = new List<GameObject>();
+		BikeList = new Dictionary<string, GameObject>();
 		uiCamera = (UICamera)utils.findObjectComponent("UICamera", "UICamera");		
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");		
 		eth = new EthereumProxy();
@@ -174,7 +176,7 @@ public class GameMain : MonoBehaviour {
 
 	public void DestroyBikes()
 	{
-		foreach (GameObject bk in BikeList)
+		foreach (GameObject bk in BikeList.Values)
 		{
 			GameObject.Destroy(bk);
 		}
@@ -183,16 +185,18 @@ public class GameMain : MonoBehaviour {
 
 	public void RemoveOneBike(GameObject bikeObj)
 	{
-		BikeList.Remove(bikeObj);
+		BaseBike bb = bikeObj.GetComponent<Bike>().bb;
+		BikeList.Remove(bb.bikeId);
 		uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", bikeObj); // TODO: find better way
 		if (inputDispatch.localPlayerBike != null && bikeObj == inputDispatch.localPlayerBike.gameObject)
 		{
 			Debug.Log("Boom! Player");
 			uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
 		}
+		backend.RemoveBike(bb);
 		ground.RemovePlacesForBike(bikeObj.GetComponent<Bike>());
 		GameObject.Instantiate(boomPrefab, bikeObj.transform.position, Quaternion.identity);
-		Object.Destroy(bikeObj);
+		UnityEngine.Object.Destroy(bikeObj);
 	}
 
 	public void ReportScoreEvent(Bike bike, ScoreEvent evt, Ground.Place place)
@@ -211,7 +215,7 @@ public class GameMain : MonoBehaviour {
 			}
 
 			IEnumerable<Bike> rewardedOtherBikes = 
-				BikeList.Select(go =>  go.transform.GetComponent<Bike>()) // all bikes (yuk! fix this)
+				BikeList.Values.Select(go =>  go.transform.GetComponent<Bike>()) // all bikes (yuk! fix this)
 				.Where( b => b != bike && b.player.Team == place.bike.player.Team);  // Bikes other the "bike" on affected team
 
 			if (rewardedOtherBikes.Count() > 0)
@@ -227,4 +231,13 @@ public class GameMain : MonoBehaviour {
 		}
 	}
 
+	//
+	// C# event handlers  
+	// TODO: probably need to stop calling other, regular messaging calls "Events"
+	//
+	public void bikeAtPointHandler(object sender, BackendEvents.BikeAtPointArgs args)
+	{
+		GameObject bike = BikeList[args.bikeId];
+		bike.transform.GetComponent<Bike>().DealWithPlace(args.pos);
+	}
 }

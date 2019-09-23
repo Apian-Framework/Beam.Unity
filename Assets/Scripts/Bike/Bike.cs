@@ -165,9 +165,10 @@ public class Bike : MonoBehaviour
         transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
     }
 
-    protected virtual Ground.Place DealWithPlace(Vector3 pos) // returns place in case override wants to do something with it.
+    public virtual Ground.Place DealWithPlace(Vector2 pos2) // returns place in case override wants to do something with it.
     {
         Ground g = GameMain.GetInstance().ground;
+        Vector3 pos = new Vector3(pos2.x, 0, pos2.y);
         Ground.Place p = g.GetPlace(pos);
         if (p == null)
         {
@@ -224,11 +225,11 @@ public class Bike : MonoBehaviour
         };
     }
 
-    protected List<Ground.Place> PossiblePlacesForPointAndHeading(Ground g, Vector3 curPtPos, Heading curHead)
-    {
-        return PossiblePointsForPointAndHeading(curPtPos, curHead).Select((pos) =>
-           g.GetPlace(pos)).ToList();
-    }
+    // protected List<Ground.Place> PossiblePlacesForPointAndHeading(Ground g, Vector3 curPtPos, Heading curHead)
+    // {
+    //     return PossiblePointsForPointAndHeading(curPtPos, curHead).Select((pos) =>
+    //        g.GetPlace(pos)).ToList();
+    // }
 
     protected TurnDir TurnTowardsPos(Vector3 targetPos, Vector3 curPos, Heading curHead)
     {
@@ -241,7 +242,7 @@ public class Bike : MonoBehaviour
     protected GameObject ClosestBike(GameObject thisBike)
     {
         GameMain gm = GameMain.GetInstance();
-        GameObject closest = gm.BikeList.Where(b => b != thisBike)
+        GameObject closest = gm.BikeList.Values.Where(b => b != thisBike)
             .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).First();
         return closest;
     }
@@ -249,7 +250,7 @@ public class Bike : MonoBehaviour
     protected List<Vector3> UpcomingEnemyPos(GameObject thisBike, int maxCnt)
     {
         GameMain gm = GameMain.GetInstance();
-        return gm.BikeList.Where(b => b != thisBike)
+        return gm.BikeList.Values.Where(b => b != thisBike)
             .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).Take(maxCnt) // gameObjects
             .Select(go => go.transform.position).ToList();
     }

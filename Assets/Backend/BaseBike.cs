@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class BaseBike
 {
     public static readonly float length = 2.0f;
@@ -14,6 +13,8 @@ public class BaseBike
     // NOTE: 2D position: x => east, y => north (in 3-space z is north and y is up)
     public Heading heading { get; private set;} = Heading.kNorth;
 
+    protected BackendMain _backend = null;
+
     //
     // Temporary stuff for refactoring
     //
@@ -23,8 +24,9 @@ public class BaseBike
 
     public void TempSetHeading(Heading h) => heading = h;
 
-    public BaseBike(string ID, Player p, Vector3 initialPos, Heading head)
+    public BaseBike(BackendMain be, string ID, Player p, Vector3 initialPos, Heading head)
     { 
+        _backend = be;
         bikeId = ID;
         SetPos3(initialPos); // probably don't need this, but it doesn;t hurt
         heading = head;
@@ -56,21 +58,22 @@ public class BaseBike
 
         if (secs >= timeToPoint) 
         {
-            DoAtGridPoint(upcomingPoint, heading);
             secs -= timeToPoint;
             newPos =  upcomingPoint;
             newHead = GameConstants.NewHeadForTurn(heading, pendingTurn);
             pendingTurn = TurnDir.kUnset;
+            DoAtGridPoint(upcomingPoint, heading);    
+            heading = newHead;                    
         }
+
         newPos += GameConstants.UnitOffset2ForHeading(heading) * secs * speed;
 
         position = newPos;
-        heading = newHead;
     }
 
     protected virtual void DoAtGridPoint(Vector2 pos, Heading head)
     {
-
+        _backend.EventPub.ReportBikeAtPoint(bikeId, pos);
     }
 
     //

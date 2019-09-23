@@ -54,12 +54,4 @@ public class LocalPlayerBike : Bike
         bb.TempSetPendingTurn(TurnDir.kRight);
     }
 
-    protected override Ground.Place DealWithPlace(Vector3 pos)
-    {
-        Ground.Place p = base.DealWithPlace(pos);
-            
-        //if (p != null && p.bike != this)
-        //    Debug.Log(string.Format("Hit place ({0},{1}) TimeLeft: {2}", p.xIdx, p.zIdx, p.secsLeft));
-        return p;
-    }
 }
