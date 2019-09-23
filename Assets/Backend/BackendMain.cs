@@ -21,6 +21,8 @@ public class BackendMain
     // NOT A MONO CLASS!!!
     public void DoUpdate(float deltaSecs)
     {
+        // TODO: get rid of this "long first frame" guard
+        deltaSecs = Mathf.Min(deltaSecs, .125f);
         Time += deltaSecs;
         // Players do not update 
         foreach( BaseBike bb in Bikes.Values)
