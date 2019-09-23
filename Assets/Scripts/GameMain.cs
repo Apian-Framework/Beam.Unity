@@ -46,6 +46,7 @@ public class GameMain : MonoBehaviour {
 	public GameCamera gameCamera;
 	public UICamera uiCamera;	
 	public InputDispatch inputDispatch;
+	
 	public Ground ground;
     public GameObject boomPrefab;  	
 
@@ -93,7 +94,6 @@ public class GameMain : MonoBehaviour {
 		uiCamera = (UICamera)utils.findObjectComponent("UICamera", "UICamera");		
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");		
 		eth = new EthereumProxy();
-
 
 		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using
 		//eth.Connect(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using		
