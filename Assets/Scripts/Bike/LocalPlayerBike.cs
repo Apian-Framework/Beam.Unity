@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LocalPlayerBike : Bike
+public class LocalPlayerBike : FrontendBike
 {
 
     public override void Update()

@@ -185,7 +185,7 @@ public class GameMain : MonoBehaviour {
 
 	public void RemoveOneBike(GameObject bikeObj)
 	{
-		BaseBike bb = bikeObj.GetComponent<Bike>().bb;
+		BaseBike bb = bikeObj.GetComponent<FrontendBike>().bb;
 		BikeList.Remove(bb.bikeId);
 		uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", bikeObj); // TODO: find better way
 		if (inputDispatch.localPlayerBike != null && bikeObj == inputDispatch.localPlayerBike.gameObject)
@@ -194,12 +194,12 @@ public class GameMain : MonoBehaviour {
 			uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
 		}
 		backend.RemoveBike(bb);
-		ground.RemovePlacesForBike(bikeObj.GetComponent<Bike>());
+		ground.RemovePlacesForBike(bikeObj.GetComponent<FrontendBike>());
 		GameObject.Instantiate(boomPrefab, bikeObj.transform.position, Quaternion.identity);
 		UnityEngine.Object.Destroy(bikeObj);
 	}
 
-	public void ReportScoreEvent(Bike bike, ScoreEvent evt, Ground.Place place)
+	public void ReportScoreEvent(FrontendBike bike, ScoreEvent evt, Ground.Place place)
 	{
 		int scoreDelta = GameConstants.eventScores[(int)evt];
 		bike.player.Score += scoreDelta;
@@ -214,13 +214,13 @@ public class GameMain : MonoBehaviour {
 				place.bike.player.Score -= scoreDelta; // adds
 			}
 
-			IEnumerable<Bike> rewardedOtherBikes = 
-				BikeList.Values.Select(go =>  go.transform.GetComponent<Bike>()) // all bikes (yuk! fix this)
+			IEnumerable<FrontendBike> rewardedOtherBikes = 
+				BikeList.Values.Select(go =>  go.transform.GetComponent<FrontendBike>()) // all bikes (yuk! fix this)
 				.Where( b => b != bike && b.player.Team == place.bike.player.Team);  // Bikes other the "bike" on affected team
 
 			if (rewardedOtherBikes.Count() > 0)
 			{
-				foreach (Bike b in rewardedOtherBikes) 
+				foreach (FrontendBike b in rewardedOtherBikes) 
 					b.player.Score -= scoreDelta / rewardedOtherBikes.Count();
 			}
 		}
@@ -238,6 +238,6 @@ public class GameMain : MonoBehaviour {
 	public void bikeAtPointHandler(object sender, BackendEvents.BikeAtPointArgs args)
 	{
 		GameObject bike = BikeList[args.bikeId];
-		bike.transform.GetComponent<Bike>().DealWithPlace(args.pos);
+		bike.transform.GetComponent<FrontendBike>().DealWithPlace(args.pos);
 	}
 }

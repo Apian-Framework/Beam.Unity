@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIBike : Bike
+public class AIBike : FrontendBike
 {
     public float turnTime = 2f;
 

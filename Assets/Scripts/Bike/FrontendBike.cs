@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bike : MonoBehaviour
+public class FrontendBike : MonoBehaviour
 {
     protected class dirAndScore { public TurnDir turnDir; public int score; };
 

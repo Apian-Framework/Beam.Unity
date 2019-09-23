@@ -119,7 +119,7 @@ public class GameModePlay : GameMode
         List<GameObject> delBikes = new List<GameObject>();
         foreach ( GameObject go in _mainObj.BikeList.Values)
         {
-            if (go.transform.GetComponent<Bike>().player.Score <=0)
+            if (go.transform.GetComponent<FrontendBike>().player.Score <=0)
                 delBikes.Add(go);            
         }
         foreach ( GameObject go in delBikes) 

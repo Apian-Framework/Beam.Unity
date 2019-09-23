@@ -15,13 +15,13 @@ public class Ground : MonoBehaviour
 
     public static Vector3 zeroPos = new Vector3(0f, 0f, 0f);
 
-    public static float secsHeld = 15; // TODO: Maybe should ber per-bike and increase with time? Bike Trail FX would have to as well.
+    public static float secsHeld = 15; // TODO: Maybe should be per-bike and increase with time? Bike Trail FX would have to as well.
 
     public class Place
     {
         public int xIdx; // x index into array.
         public int zIdx;
-        public Bike bike;
+        public FrontendBike bike;
         public float secsLeft;
         public GameObject marker;
 
@@ -80,7 +80,7 @@ public class Ground : MonoBehaviour
         freePlaces = new Stack<Place>();         
     }
 
-    public void RemovePlacesForBike(Bike bike)
+    public void RemovePlacesForBike(FrontendBike bike)
     {
         activePlaces.RemoveAll( p => {
                 if (p.bike == bike)
@@ -98,7 +98,7 @@ public class Ground : MonoBehaviour
         return IndicesAreOnMap(xIdx,zIdx) ? placeArray[xIdx,zIdx] : null;
     }
 
-    public Place ClaimPlace(Bike bike, Vector3 pos)
+    public Place ClaimPlace(FrontendBike bike, Vector3 pos)
     {
         Vector3 gridPos = NearestGridPoint(pos);        
         int xIdx = (int)Mathf.Floor((gridPos.x - minX) / gridSize );
@@ -116,7 +116,7 @@ public class Ground : MonoBehaviour
     } 
 
     // Set up a place instance for use or re-use
-    protected Place SetupPlace(Bike bike, int xIdx, int zIdx)
+    protected Place SetupPlace(FrontendBike bike, int xIdx, int zIdx)
     {
         Place p = freePlaces.Count > 0 ? freePlaces.Pop() : new Place(); 
         // Maybe populating a new one, maybe re-populating a used one.

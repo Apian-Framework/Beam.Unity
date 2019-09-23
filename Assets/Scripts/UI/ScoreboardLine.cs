@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ScoreboardLine : MonoBehaviour
 {
-    public Bike bike = null;
+    public FrontendBike bike = null;
 
     public int prevScore = -1;
     protected TextMeshPro whoTextMesh = null;
@@ -28,7 +28,7 @@ public class ScoreboardLine : MonoBehaviour
         }
     }
 
-    public void SetBike(Bike b)
+    public void SetBike(FrontendBike b)
     {
         bike = b;
         whoTextMesh.text = bike.player.ScreenName;

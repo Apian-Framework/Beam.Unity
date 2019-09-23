@@ -78,7 +78,7 @@ public class BikeFactory : MonoBehaviour
         GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, bb.GetPos3(), Quaternion.identity) as GameObject;
 		newBike.AddComponent(bikeType);
         newBike.transform.parent = ground.transform;
-        Bike bk = (Bike)newBike.transform.GetComponent("Bike");
+        FrontendBike bk = (FrontendBike)newBike.transform.GetComponent("FrontendBike");
 		bk.Setup(bb);		
         return newBike;
     }    
