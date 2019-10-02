@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackendEvents 
+public class FrontendProxy 
 {
     public void ReportBikeAtPoint(string bikeId, Vector2 pos)
     {

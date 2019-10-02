@@ -235,7 +235,7 @@ public class GameMain : MonoBehaviour {
 	// C# event handlers  
 	// TODO: probably need to stop calling other, regular messaging calls "Events"
 	//
-	public void bikeAtPointHandler(object sender, BackendEvents.BikeAtPointArgs args)
+	public void bikeAtPointHandler(object sender, FrontendProxy.BikeAtPointArgs args)
 	{
 		GameObject bike = BikeList[args.bikeId];
 		bike.transform.GetComponent<FrontendBike>().DealWithPlace(args.pos);
