@@ -1,9 +1,7 @@
 using UnityEngine;
 using System;
 using System.Linq;
-using UnityEngine.Assertions;
-using System.Collections;
-using System.Collections.Generic;
+using BeamBackend;
 	
 
 public class GameModeSplash : GameMode

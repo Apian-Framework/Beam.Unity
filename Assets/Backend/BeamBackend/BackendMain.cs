@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace BeamBackend
+{
 public class BackendMain
 {
     public FrontendProxy EventPub {get; private set;} = null;
@@ -73,3 +75,4 @@ public class BackendMain
     }    
 }
 
+}

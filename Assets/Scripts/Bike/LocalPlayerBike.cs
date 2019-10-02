@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using BeamBackend;
 
 public class LocalPlayerBike : FrontendBike
 {
