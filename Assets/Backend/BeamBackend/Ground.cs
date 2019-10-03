@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeamBackend
 {
-    public class BaseGround 
+    public class Ground 
     {
         // North is Z, East is X,  Y is up
         public static float gridSize = 10f; // assume a square grid    
@@ -94,10 +94,10 @@ namespace BeamBackend
             return (p?.bike == bike) ? p : null;
         }
 
-        public static Vector3 NearestGridPoint(Vector3 pos) 
+        public static Vector3 NearestGridPoint(Vector2 pos) 
         {
             float invGridSize = 1.0f / gridSize;
-            return new Vector3( Mathf.Round(pos.x * invGridSize) * gridSize, pos.y, Mathf.Round(pos.z * invGridSize) * gridSize);
+            return new Vector2( Mathf.Round(pos.x * invGridSize) * gridSize, Mathf.Round(pos.y * invGridSize) * gridSize);
         } 
 
         // Set up a place instance for use or re-use
