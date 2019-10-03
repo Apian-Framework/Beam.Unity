@@ -20,14 +20,14 @@ public class GameModeSplash : GameMode
             Player p = DemoPlayerData.CreatePlayer(); 
             _mainObj.backend.AddPlayer(p);
 
-		    Heading heading = BikeFactory.PickRandomHeading();
-		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, FeGround.zeroPos, FeGround.gridSize * 10 );
+		    Heading heading = FeBikeFactory.PickRandomHeading();
+		    Vector3 pos = FeBikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, FeGround.zeroPos, FeGround.gridSize * 10 );
             string bikeId = Guid.NewGuid().ToString();
 
             BaseBike bb = new BaseBike(_mainObj.backend, bikeId, p, pos, heading);
             _mainObj.backend.AddBike(bb);            
 
-            GameObject bike =  BikeFactory.CreateDemoBike(bb, _mainObj.ground);
+            GameObject bike =  FeBikeFactory.CreateDemoBike(bb, _mainObj.ground);
             _mainObj.BikeList.Add(bb.bikeId, bike);
         }
 

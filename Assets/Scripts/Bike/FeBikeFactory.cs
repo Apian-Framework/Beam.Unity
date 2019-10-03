@@ -4,17 +4,17 @@ using System.Linq;
 using UnityEngine;
 using BeamBackend;
 
-public class BikeFactory : MonoBehaviour
+public class FeBikeFactory : MonoBehaviour
 {
     public GameObject bikePrefab;   
 
     // Singleton management
-    private static BikeFactory instance = null;
-    public static BikeFactory GetInstance()
+    private static FeBikeFactory instance = null;
+    public static FeBikeFactory GetInstance()
     {
         if (instance == null)
         {
-            instance = (BikeFactory)GameObject.FindObjectOfType(typeof(BikeFactory));
+            instance = (FeBikeFactory)GameObject.FindObjectOfType(typeof(FeBikeFactory));
             if (!instance)
                 Debug.LogError("There needs to be one active BikeFactory script on a GameObject in your scene.");
         }
@@ -76,7 +76,7 @@ public class BikeFactory : MonoBehaviour
 
     static GameObject CreateBike(System.Type bikeType, BaseBike bb, FeGround ground)
     {
-        GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, bb.GetPos3(), Quaternion.identity) as GameObject;
+        GameObject newBike = GameObject.Instantiate(FeBikeFactory.GetInstance().bikePrefab, bb.GetPos3(), Quaternion.identity) as GameObject;
 		newBike.AddComponent(bikeType);
         newBike.transform.parent = ground.transform;
         FrontendBike bk = (FrontendBike)newBike.transform.GetComponent("FrontendBike");

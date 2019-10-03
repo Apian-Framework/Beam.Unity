@@ -65,8 +65,8 @@ public class GameModePlay : GameMode
 
     protected BaseBike CreateBaseBike(Player p)
     {
-        Heading heading = BikeFactory.PickRandomHeading();
-        Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, FeGround.zeroPos, FeGround.gridSize * 10 );   
+        Heading heading = FeBikeFactory.PickRandomHeading();
+        Vector3 pos = FeBikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, FeGround.zeroPos, FeGround.gridSize * 10 );   
         string bikeId = Guid.NewGuid().ToString();
          BaseBike bb = new BaseBike(_mainObj.backend, bikeId, p, pos, heading);
          p.Score = Player.kStartScore;
@@ -84,7 +84,7 @@ public class GameModePlay : GameMode
         }
            
         BaseBike bb = CreateBaseBike(p);  
-        GameObject playerBike =  BikeFactory.CreateLocalPlayerBike(bb, _mainObj.ground);
+        GameObject playerBike =  FeBikeFactory.CreateLocalPlayerBike(bb, _mainObj.ground);
         _mainObj.BikeList.Add(bb.bikeId, playerBike);   
         _mainObj.inputDispatch.SetLocalPlayerBike(playerBike);              
         return playerBike;
@@ -93,7 +93,7 @@ public class GameModePlay : GameMode
     protected GameObject SpawnAIBike(Player p)
     {
         BaseBike bb = CreateBaseBike(p);  
-        GameObject bike =  BikeFactory.CreateAIBike(bb, _mainObj.ground);
+        GameObject bike =  FeBikeFactory.CreateAIBike(bb, _mainObj.ground);
         _mainObj.BikeList.Add(bb.bikeId, bike);
         return bike;
     }
