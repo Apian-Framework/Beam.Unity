@@ -21,7 +21,7 @@ public class GameModeSplash : GameMode
             _mainObj.backend.AddPlayer(p);
 
 		    Heading heading = BikeFactory.PickRandomHeading();
-		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, Ground.zeroPos, Ground.gridSize * 10 );
+		    Vector3 pos = BikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, FeGround.zeroPos, FeGround.gridSize * 10 );
             string bikeId = Guid.NewGuid().ToString();
 
             BaseBike bb = new BaseBike(_mainObj.backend, bikeId, p, pos, heading);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ground : MonoBehaviour
+public class FeGround : MonoBehaviour
 {
     // North is Z, East is X,  Y is up
     public static float gridSize = 10f; // assume a square grid    

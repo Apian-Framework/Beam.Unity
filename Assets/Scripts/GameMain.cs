@@ -48,7 +48,7 @@ public class GameMain : MonoBehaviour {
 	public UICamera uiCamera;	
 	public InputDispatch inputDispatch;
 	
-	public Ground ground;
+	public FeGround ground;
     public GameObject boomPrefab;  	
 
 	// here's the currently implemented modes:
@@ -200,7 +200,7 @@ public class GameMain : MonoBehaviour {
 		UnityEngine.Object.Destroy(bikeObj);
 	}
 
-	public void ReportScoreEvent(FrontendBike bike, ScoreEvent evt, Ground.Place place)
+	public void ReportScoreEvent(FrontendBike bike, ScoreEvent evt, FeGround.Place place)
 	{
 		int scoreDelta = GameConstants.eventScores[(int)evt];
 		bike.player.Score += scoreDelta;

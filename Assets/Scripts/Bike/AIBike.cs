@@ -12,14 +12,14 @@ public class AIBike : FrontendBike
 
     public float secsSinceLastAiCheck = 0;
 
-    public float maxX = Ground.maxX - 10*Ground.gridSize; // assumes min === -max
-    public float maxZ = Ground.maxZ - 10*Ground.gridSize;
+    public float maxX = FeGround.maxX - 10*FeGround.gridSize; // assumes min === -max
+    public float maxZ = FeGround.maxZ - 10*FeGround.gridSize;
 
     public override void DecideToTurn()
     {
         Vector3 pos = transform.position;
 
-        Ground g = GameMain.GetInstance().ground;
+        FeGround g = GameMain.GetInstance().ground;
 
         if (_curTurn == TurnDir.kStraight) { // not currently turning
             secsSinceLastAiCheck += Time.deltaTime;   
@@ -29,7 +29,7 @@ public class AIBike : FrontendBike
                 // If not gonna turn maybe go towards the closest bike?
                 if (pendingTurn == TurnDir.kUnset) {
                     Vector3 closestBikePos = ClosestBike(this.gameObject).transform.position;
-                    if ( Vector3.Distance(pos, closestBikePos) > Ground.gridSize * 6) // only if it's not really close
+                    if ( Vector3.Distance(pos, closestBikePos) > FeGround.gridSize * 6) // only if it's not really close
                         bb.TempSetPendingTurn(TurnTowardsPos( closestBikePos, pos, heading )); 
                     else
                     {

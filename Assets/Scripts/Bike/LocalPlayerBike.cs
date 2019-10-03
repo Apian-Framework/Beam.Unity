@@ -11,7 +11,7 @@ public class LocalPlayerBike : FrontendBike
     {
         base.Update();
 
-         Ground g = GameMain.GetInstance().ground;
+         FeGround g = GameMain.GetInstance().ground;
          if (_curTurn == TurnDir.kStraight) {
             // Vector3 pos = transform.position;
             // Vector3 otherPos = ClosestBike(this.gameObject).transform.position;

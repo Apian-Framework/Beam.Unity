@@ -26,17 +26,17 @@ public class BikeFactory : MonoBehaviour
     // API
     // 
 
-    public static GameObject CreateDemoBike( BaseBike bb,  Ground ground )
+    public static GameObject CreateDemoBike( BaseBike bb,  FeGround ground )
 	{ 
         return CreateBike(typeof(DemoBike), bb, ground);
     }
 
-    public static GameObject CreateAIBike( BaseBike bb,  Ground ground)
+    public static GameObject CreateAIBike( BaseBike bb,  FeGround ground)
 	{ 
         return CreateBike(typeof(AIBike), bb, ground);
     }
 
-    public static GameObject CreateLocalPlayerBike( BaseBike bb,  Ground ground)
+    public static GameObject CreateLocalPlayerBike( BaseBike bb,  FeGround ground)
     {    
         GameObject bike  = CreateBike(typeof(LocalPlayerBike), bb, ground ); 
         return bike;
@@ -57,9 +57,9 @@ public class BikeFactory : MonoBehaviour
 
 	static  Vector3 PickRandomPos( Heading head, Vector3 basePos, float radius)
 	{
-		Vector3 p = Ground.NearestGridPoint(
+		Vector3 p = FeGround.NearestGridPoint(
 					new Vector3(Random.Range(-radius, radius), 0, Random.Range(-radius, radius)) + basePos );
-		return p + GameConstants.UnitOffset3ForHeading(head) * .5f * Ground.gridSize;
+		return p + GameConstants.UnitOffset3ForHeading(head) * .5f * FeGround.gridSize;
 	}
 	public static Vector3 PositionForNewBike(List<GameObject> otherBikes, Heading head, Vector3 basePos, float radius)
 	{
@@ -74,7 +74,7 @@ public class BikeFactory : MonoBehaviour
 		return newPos;
 	}
 
-    static GameObject CreateBike(System.Type bikeType, BaseBike bb, Ground ground)
+    static GameObject CreateBike(System.Type bikeType, BaseBike bb, FeGround ground)
     {
         GameObject newBike = GameObject.Instantiate(BikeFactory.GetInstance().bikePrefab, bb.GetPos3(), Quaternion.identity) as GameObject;
 		newBike.AddComponent(bikeType);
