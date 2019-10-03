@@ -7,10 +7,37 @@ namespace BeamBackend
 {
     public class FrontendProxy 
     {
+        //
+        // API
+        // 
+
+
+        public void SetupPlaceMarker(Ground.Place p)
+        {
+            throw(new Exception("Not Implmented"));            
+        }
+        public void FreePlaceMarker(Ground.Place p)
+        {
+            throw(new Exception("Not Implmented"));            
+        }        
+        public void ClearPlaceMarkers()
+        {
+            throw(new Exception("Not Implmented"));
+        }
+ 
+
+        public void DestroyBikes()
+        {
+            throw(new Exception("Not Implmented"));
+        }
+
         public void ReportBikeAtPoint(string bikeId, Vector2 pos)
         {
             OnBikeAtPoint(new BikeAtPointArgs(bikeId, pos));
         }
+        //
+        // Events
+        //
 
         public class BikeAtPointArgs
         {

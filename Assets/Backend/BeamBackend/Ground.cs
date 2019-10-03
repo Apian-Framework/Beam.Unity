@@ -36,6 +36,13 @@ namespace BeamBackend
         protected List<Place> activePlaces = null;
         protected Stack<Place> freePlaces = null; // re-use released/expired ones
 
+        protected FrontendProxy _feProxy = null;
+        public Ground(FrontendProxy fep)
+        {
+            _feProxy = fep;
+            ClearPlaces();
+        }
+
 
         // Update is called once per frame
         void DoUpdate(float deltaSecs)
@@ -53,6 +60,7 @@ namespace BeamBackend
         }
 
         protected void RecyclePlace(Place p){
+            _feProxy?.FreePlaceMarker(p);
             p.bike = null;                 
             freePlaces.Push(p); // add to free list
             placeArray[p.xIdx, p.zIdx] = null;
@@ -60,6 +68,7 @@ namespace BeamBackend
 
         public void ClearPlaces()
         {
+            _feProxy?.ClearPlaceMarkers();            
             placeArray = new Place[pointsPerAxis,pointsPerAxis];
             activePlaces = new List<Place>();
             freePlaces = new Stack<Place>();         
@@ -110,6 +119,7 @@ namespace BeamBackend
             p.zIdx = zIdx;
             p.bike = bike;
             placeArray[xIdx, zIdx] = p;
+            _feProxy.SetupPlaceMarker(p);
             activePlaces.Add(p);
             return p;
         }

@@ -13,7 +13,7 @@ public class FeGround : MonoBehaviour
 
     void Awake() 
     {
-        beGround = new Ground();
+        beGround = new Ground(null);
         markerList = new List<GameObject>();        
     }
     void Start()
