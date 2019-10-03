@@ -67,7 +67,7 @@ public class FrontendBike : MonoBehaviour
 
         DecideToTurn();
 
-        Vector3 gridPt = NearestGridPoint(pos, FeGround.gridSize);
+        Vector3 gridPt = NearestGridPoint(pos, Ground.gridSize);
         bool prevAtGridPt = AtGridPoint(gridPt, pos, BaseBike.length, turnRadius); // see if this frame's motion changes the status
 
         // 
@@ -112,7 +112,7 @@ public class FrontendBike : MonoBehaviour
             if (!prevAtGridPt)
             {
                 // Just crossed onto a grid point
-                DealWithPlace(pos);
+                // DealWithPlace(pos);
 
                 // Waiting to turn?
                 if (!prevAtGridPt && pendingTurn != TurnDir.kStraight && pendingTurn != TurnDir.kUnset && _curTurn == TurnDir.kStraight)
@@ -166,27 +166,27 @@ public class FrontendBike : MonoBehaviour
         transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
     }
 
-    public virtual FeGround.Place DealWithPlace(Vector2 pos2) // returns place in case override wants to do something with it.
-    {
-        FeGround g = GameMain.GetInstance().ground;
-        Vector3 pos = new Vector3(pos2.x, 0, pos2.y);
-        FeGround.Place p = g.GetPlace(pos);
-        if (p == null)
-        {
-            p = g.ClaimPlace(this, pos);
-            if (p == null)
-                GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kOffMap, null);
-            else
-                GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kClaimPlace, null);
-        }
-        else
-        {
-            ouchObj.SetActive(false); // restart in case the anim is already running
-            ouchObj.SetActive(true);
-            GameMain.GetInstance().ReportScoreEvent(this, p.bike.player.Team == player.Team ? ScoreEvent.kHitFriendPlace : ScoreEvent.kHitEnemyPlace, p);
-        }
-        return p;
-    }
+    // public virtual FeGround.Place DealWithPlace(Vector2 pos2) // returns place in case override wants to do something with it.
+    // {
+    //     FeGround g = GameMain.GetInstance().ground;
+    //     Vector3 pos = new Vector3(pos2.x, 0, pos2.y);
+    //     FeGround.Place p = g.GetPlace(pos);
+    //     if (p == null)
+    //     {
+    //         p = g.ClaimPlace(this, pos);
+    //         if (p == null)
+    //             GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kOffMap, null);
+    //         else
+    //             GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kClaimPlace, null);
+    //     }
+    //     else
+    //     {
+    //         ouchObj.SetActive(false); // restart in case the anim is already running
+    //         ouchObj.SetActive(true);
+    //         GameMain.GetInstance().ReportScoreEvent(this, p.bike.player.Team == player.Team ? ScoreEvent.kHitFriendPlace : ScoreEvent.kHitEnemyPlace, p);
+    //     }
+    //     return p;
+    // }
 
     protected bool AtGridPoint(Vector3 gridPos, Vector3 bikePos, float bikeLen, float turnRadius)
     {
@@ -206,10 +206,10 @@ public class FrontendBike : MonoBehaviour
     {
         // it's either the current closest point (if direction to it is the same as heading)
         // or is the closest point + gridSize*unitOffsetForHeading[curHead] if closest point is behind us
-        Vector3 point = NearestGridPoint(curPos, FeGround.gridSize);
+        Vector3 point = NearestGridPoint(curPos, Ground.gridSize);
         if (Vector3.Dot(GameConstants.UnitOffset3ForHeading(curHead), point - curPos) < 0)
         {
-            point += GameConstants.UnitOffset3ForHeading(curHead) * FeGround.gridSize;
+            point += GameConstants.UnitOffset3ForHeading(curHead) * Ground.gridSize;
         }
         return point;
     }
@@ -220,9 +220,9 @@ public class FrontendBike : MonoBehaviour
         // The entries correspond to turn directions (none, left, right) 
         // TODO use something like map() ?
         return new List<Vector3> {
-            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kStraight))*FeGround.gridSize,
-            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kLeft))*FeGround.gridSize,
-            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kRight))*FeGround.gridSize,
+            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kStraight))*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kLeft))*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kRight))*Ground.gridSize,
         };
     }
 
@@ -259,14 +259,14 @@ public class FrontendBike : MonoBehaviour
 
     // AI Move stuff (here so player bike can display it)
 
-    protected static int ScoreForPoint(FeGround g, Vector3 point, FeGround.Place place)
+    protected static int ScoreForPoint(Ground g, Vector3 point, Ground.Place place)
     {
         return g.PointIsOnMap(point) ? (place == null ? 5 : 1) : 0; // 5 pts for a good place, 1 for a claimed one, zero for off-map
     }
 
     protected MoveNode BuildMoveTree(Vector3 curPos, Heading curHead, int depth, List<Vector3> otherBadPos = null)
     {
-        FeGround g = GameMain.GetInstance().ground;
+        Ground g = GameMain.GetInstance().feGround.beGround;
         Vector3 nextPos = UpcomingGridPoint(curPos, heading);
         MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1, otherBadPos);
         return root;
@@ -282,11 +282,11 @@ public class FrontendBike : MonoBehaviour
     {
         public TurnDir dir; // the turn direction that got to here (index in parent's "next" list)
         public Vector3 pos;
-        public FeGround.Place place;
+        public Ground.Place place;
         public int score;
         public List<MoveNode> next; // length 3
 
-        public MoveNode(FeGround g, Vector3 p, Heading head, TurnDir d, int depth, List<Vector3> otherClaimedPos)
+        public MoveNode(Ground g, Vector3 p, Heading head, TurnDir d, int depth, List<Vector3> otherClaimedPos)
         {
             pos = p;
             dir = d; // for later lookup
@@ -296,7 +296,7 @@ public class FrontendBike : MonoBehaviour
                 score = 1; // TODO: use named scoring constants
             next = depth < 1 ? null : PossiblePointsForPointAndHeading(pos, head)
                     .Select((pt, childTurnDir) => new MoveNode(g,
-                       pos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(head, (TurnDir)childTurnDir)) * FeGround.gridSize,
+                       pos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(head, (TurnDir)childTurnDir)) * Ground.gridSize,
                        head,
                        (TurnDir)childTurnDir,
                        depth - 1,
@@ -304,7 +304,7 @@ public class FrontendBike : MonoBehaviour
                     .ToList();
         }
 
-        public static MoveNode GenerateTree(FeGround g, Vector3 rootPos, Heading initialHead, int depth, List<Vector3> otherBadPos)
+        public static MoveNode GenerateTree(Ground g, Vector3 rootPos, Heading initialHead, int depth, List<Vector3> otherBadPos)
         {
             return new MoveNode(g, rootPos, initialHead, TurnDir.kStraight, depth, otherBadPos);
         }

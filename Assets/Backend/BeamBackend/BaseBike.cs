@@ -53,7 +53,7 @@ namespace BeamBackend
 
         private void _updatePosition(float secs)
         {
-            Vector2 upcomingPoint = UpcomingGridPoint(this, BaseGround.gridSize);
+            Vector2 upcomingPoint = UpcomingGridPoint(this, Ground.gridSize);
             float timeToPoint = Vector2.Distance(position, upcomingPoint) / speed;
 
             Vector2 newPos = position;

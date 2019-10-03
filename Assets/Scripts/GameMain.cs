@@ -48,7 +48,7 @@ public class GameMain : MonoBehaviour {
 	public UICamera uiCamera;	
 	public InputDispatch inputDispatch;
 	
-	public FeGround ground;
+	public FeGround feGround;
     public GameObject boomPrefab;  	
 
 	// here's the currently implemented modes:
@@ -194,13 +194,13 @@ public class GameMain : MonoBehaviour {
 			Debug.Log("Boom! Player");
 			uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
 		}
-		backend.RemoveBike(bb);
-		ground.RemovePlacesForBike(bikeObj.GetComponent<FrontendBike>());
+		feGround.beGround.RemovePlacesForBike(bb); // TODO: call to removeBike should do this
+		backend.RemoveBike(bb); 
 		GameObject.Instantiate(boomPrefab, bikeObj.transform.position, Quaternion.identity);
 		UnityEngine.Object.Destroy(bikeObj);
 	}
 
-	public void ReportScoreEvent(FrontendBike bike, ScoreEvent evt, FeGround.Place place)
+	public void ReportScoreEvent(FrontendBike bike, ScoreEvent evt, Ground.Place place)
 	{
 		int scoreDelta = GameConstants.eventScores[(int)evt];
 		bike.player.Score += scoreDelta;
@@ -210,7 +210,7 @@ public class GameMain : MonoBehaviour {
 			// half of the deduction goes to the owner of the place, the rest is divded 
 			// among the owner's team 
 			// UNLESS: the bike doing the hitting IS the owner - then the rest of the team just splits it
-			if (bike != place.bike) {
+			if (bike.bb != place.bike) {
 				scoreDelta /= 2;
 				place.bike.player.Score -= scoreDelta; // adds
 			}
@@ -239,6 +239,6 @@ public class GameMain : MonoBehaviour {
 	public void bikeAtPointHandler(object sender, FrontendProxy.BikeAtPointArgs args)
 	{
 		GameObject bike = BikeList[args.bikeId];
-		bike.transform.GetComponent<FrontendBike>().DealWithPlace(args.pos);
+		//bike.transform.GetComponent<FrontendBike>().DealWithPlace(args.pos);
 	}
 }

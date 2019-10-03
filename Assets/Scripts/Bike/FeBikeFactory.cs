@@ -59,7 +59,7 @@ public class FeBikeFactory : MonoBehaviour
 	{
 		Vector3 p = FeGround.NearestGridPoint(
 					new Vector3(Random.Range(-radius, radius), 0, Random.Range(-radius, radius)) + basePos );
-		return p + GameConstants.UnitOffset3ForHeading(head) * .5f * FeGround.gridSize;
+		return p + GameConstants.UnitOffset3ForHeading(head) * .5f * Ground.gridSize;
 	}
 	public static Vector3 PositionForNewBike(List<GameObject> otherBikes, Heading head, Vector3 basePos, float radius)
 	{

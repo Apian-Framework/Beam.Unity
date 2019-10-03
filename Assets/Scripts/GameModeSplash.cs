@@ -10,10 +10,13 @@ public class GameModeSplash : GameMode
 	public override void init() 
 	{
 		base.init();
+
+        //_mainObj.feGround.beGround = new Ground();
+
         _mainObj.backend.ClearPlayers();
         _mainObj.DestroyBikes();
         _mainObj.backend.ClearBikes();        
-        _mainObj.ground.ClearPlaces();
+        _mainObj.feGround.beGround.ClearPlaces();
 
         for( int i=0;i<kSplashBikeCount; i++) 
         {
@@ -21,13 +24,13 @@ public class GameModeSplash : GameMode
             _mainObj.backend.AddPlayer(p);
 
 		    Heading heading = FeBikeFactory.PickRandomHeading();
-		    Vector3 pos = FeBikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, FeGround.zeroPos, FeGround.gridSize * 10 );
+		    Vector3 pos = FeBikeFactory.PositionForNewBike( _mainObj.BikeList.Values.ToList(), heading, Ground.zeroPos, Ground.gridSize * 10 );
             string bikeId = Guid.NewGuid().ToString();
 
             BaseBike bb = new BaseBike(_mainObj.backend, bikeId, p, pos, heading);
             _mainObj.backend.AddBike(bb);            
 
-            GameObject bike =  FeBikeFactory.CreateDemoBike(bb, _mainObj.ground);
+            GameObject bike =  FeBikeFactory.CreateDemoBike(bb, _mainObj.feGround);
             _mainObj.BikeList.Add(bb.bikeId, bike);
         }
 
