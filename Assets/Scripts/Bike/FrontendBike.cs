@@ -41,7 +41,7 @@ public class FrontendBike : MonoBehaviour
     {
         bb = baseBike;
         transform.position = bb.GetPos3(); // Is probably already set to this
-        SetColor(bb.player.Team.Color);        
+        SetColor(utils.hexToColor(bb.player.Team.Color));    
     }
 
     // Start is called before the first frame update

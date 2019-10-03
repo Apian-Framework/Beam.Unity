@@ -140,7 +140,7 @@ public class Ground : MonoBehaviour
         }
         marker.transform.position = p.GetPos();
         GroundMarker gm = (GroundMarker)marker.transform.GetComponent("GroundMarker");
-		gm.SetColor(p.bike.player.Team.Color);	
+		gm.SetColor(utils.hexToColor(p.bike.player.Team.Color));	
         marker.SetActive(true);	
         return marker;
     }

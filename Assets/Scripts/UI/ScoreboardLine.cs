@@ -32,6 +32,6 @@ public class ScoreboardLine : MonoBehaviour
     {
         bike = b;
         whoTextMesh.text = bike.player.ScreenName;
-        whoTextMesh.color = bike.player.Team.Color;
+        whoTextMesh.color = utils.hexToColor(bike.player.Team.Color);
     }
 }
