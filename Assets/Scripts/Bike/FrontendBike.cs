@@ -242,7 +242,7 @@ public class FrontendBike : MonoBehaviour
 
     protected GameObject ClosestBike(GameObject thisBike)
     {
-        GameMain gm = GameMain.GetInstance();
+        OldGameMain gm = OldGameMain.GetInstance();
         GameObject closest = gm.BikeList.Values.Where(b => b != thisBike)
             .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).First();
         return closest;
@@ -250,7 +250,7 @@ public class FrontendBike : MonoBehaviour
 
     protected List<Vector3> UpcomingEnemyPos(GameObject thisBike, int maxCnt)
     {
-        GameMain gm = GameMain.GetInstance();
+        OldGameMain gm = OldGameMain.GetInstance();
         return gm.BikeList.Values.Where(b => b != thisBike)
             .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).Take(maxCnt) // gameObjects
             .Select(go => go.transform.position).ToList();
@@ -266,7 +266,7 @@ public class FrontendBike : MonoBehaviour
 
     protected MoveNode BuildMoveTree(Vector3 curPos, Heading curHead, int depth, List<Vector3> otherBadPos = null)
     {
-        Ground g = GameMain.GetInstance().feGround.beGround;
+        Ground g = OldGameMain.GetInstance().feGround.beGround;
         Vector3 nextPos = UpcomingGridPoint(curPos, heading);
         MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1, otherBadPos);
         return root;

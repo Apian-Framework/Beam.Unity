@@ -5,13 +5,13 @@ public class ViewRightBtn : UIBtn  {
 	
 	public float lookRadians = -1f;
 	public float decayRate = 1f;
-	protected GameMain _main = null;	
+	protected OldGameMain _main = null;	
 
 	// Use this for initialization
 	protected override void Start () 
 	{
 		base.Start();		
-		_main = (GameMain)utils.findObjectComponent("GameMain", "GameMain");	
+		_main = (OldGameMain)utils.findObjectComponent("GameMain", "GameMain");	
 		
 	}
 

@@ -19,7 +19,7 @@ public class AIBike : FrontendBike
     {
         Vector3 pos = transform.position;
 
-        FeGround g = GameMain.GetInstance().feGround;
+        FeGround g = OldGameMain.GetInstance().feGround;
 
         if (_curTurn == TurnDir.kStraight) { // not currently turning
             secsSinceLastAiCheck += Time.deltaTime;   

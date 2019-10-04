@@ -11,11 +11,11 @@ using BeamBackend;
 public abstract class GameMode
 {	
     protected Dictionary<int,dynamic> _cmdDispatch = new Dictionary<int, dynamic>();  	
-	public GameMain _mainObj; 
+	public OldGameMain _mainObj; 
 		
 	public virtual void init()
 	{
-		_mainObj = (GameMain)utils.findObjectComponent("GameMain", "GameMain");
+		_mainObj = (OldGameMain)utils.findObjectComponent("OldGameMain", "OldGameMain");
 	}
 	public virtual void update() {}
 	public virtual void end() {}
@@ -37,7 +37,7 @@ public abstract class ModeState
 };
 
 
-public class GameMain : MonoBehaviour {
+public class OldGameMain : MonoBehaviour {
 	
 	public EthereumProxy eth = null;
 
@@ -59,12 +59,12 @@ public class GameMain : MonoBehaviour {
 	};
  
     // Singleton management
-    private static GameMain instance = null;
-    public static GameMain GetInstance()
+    private static OldGameMain instance = null;
+    public static OldGameMain GetInstance()
     {
         if (instance == null)
         {
-            instance = (GameMain)GameObject.FindObjectOfType(typeof(GameMain));
+            instance = (OldGameMain)GameObject.FindObjectOfType(typeof(OldGameMain));
             if (!instance)
                 Debug.LogError("There needs to be one active GameMain script on a GameObject in your scene.");
         }
@@ -114,7 +114,7 @@ public class GameMain : MonoBehaviour {
 		if (firstFrame)
 		{	
 			// do first frame stuff	          
-            setGameMode(GameMain.ModeID.kSplash);  // gives everything a chance to Start()  
+            setGameMode(OldGameMain.ModeID.kSplash);  // gives everything a chance to Start()  
             uiCamera.setToNamedStage("SplashStage"); 			 
 			firstFrame = false;
 		}

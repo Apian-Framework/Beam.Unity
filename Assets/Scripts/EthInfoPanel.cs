@@ -17,7 +17,7 @@ public class EthInfoPanel : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        eth = GameMain.GetInstance().eth;
+        eth = OldGameMain.GetInstance().eth;
     }
 
     // Update is called once per frame
@@ -26,7 +26,7 @@ public class EthInfoPanel : MonoBehaviour
         secsSinceLastPoll += Time.deltaTime;
 
         if (eth == null)
-            eth = GameMain.GetInstance().eth;
+            eth = OldGameMain.GetInstance().eth;
 
         if ( (eth != null) && (eth.web3 != null)  && (secsSinceLastPoll >= pollSecs))
         {   

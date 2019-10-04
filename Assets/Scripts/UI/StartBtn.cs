@@ -3,13 +3,13 @@ using System.Collections;
 
 public class StartBtn : UIBtn  {
 	
-	protected GameMain _main = null;	
+	protected OldGameMain _main = null;	
 
 	// Use this for initialization
 	protected override void Start () 
 	{
 		base.Start();		
-		_main = (GameMain)utils.findObjectComponent("GameMain", "GameMain");	
+		_main = (OldGameMain)utils.findObjectComponent("GameMain", "GameMain");	
 		
 	}
 
@@ -17,12 +17,12 @@ public class StartBtn : UIBtn  {
 	{
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.Return))
-			_main.setGameMode(GameMain.ModeID.kPlay);	
+			_main.setGameMode(OldGameMain.ModeID.kPlay);	
 	}
 
 	public override void doSelect()
 	{
-		_main.setGameMode(GameMain.ModeID.kPlay);
+		_main.setGameMode(OldGameMain.ModeID.kPlay);
 	}
 }
 

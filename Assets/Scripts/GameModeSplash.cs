@@ -55,6 +55,6 @@ public class GameModeSplash : GameMode
     public override void HandleTap(bool isDown)     
     {
         if (isDown == false)
-            _mainObj.setGameMode(GameMain.ModeID.kPlay);
+            _mainObj.setGameMode(OldGameMain.ModeID.kPlay);
     }
 }

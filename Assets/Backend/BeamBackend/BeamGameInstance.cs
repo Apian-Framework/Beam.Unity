@@ -23,10 +23,10 @@ namespace BeamBackend
         protected BeamGameData _data;
         protected FrontendProxy _feProxy;
 
-        public BeamGameInstance()
+        public BeamGameInstance(FrontendProxy fep = null)
         {
             _modeMgr = new ModeManager(new BeamModeFactory());
-            _feProxy = new FrontendProxy();
+            _feProxy = fep; // Should work without one
             _data = new BeamGameData(_feProxy);            
         }
 
@@ -49,7 +49,7 @@ namespace BeamBackend
         // Bike-related
         public void DestroyBikes()
         {
-            _feProxy.DestroyBikes();
+            _feProxy?.DestroyBikes();
             _data.Bikes.Clear();
         }
 

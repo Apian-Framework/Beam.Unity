@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 139603162}
   - component: {fileID: 139603163}
   m_Layer: 0
-  m_Name: BikeFactory
+  m_Name: FeBikeFactory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 357892377}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &139603163
 MonoBehaviour:
@@ -447,12 +447,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245336447}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 357892377}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &357892376
 GameObject:
@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 357892377}
   - component: {fileID: 357892378}
   m_Layer: 0
-  m_Name: GameMain
+  m_Name: OldGameMain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -482,9 +482,9 @@ Transform:
   m_LocalPosition: {x: 13.388586, y: 27.033634, z: 131.65027}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 139603162}
   - {fileID: 649358060}
   - {fileID: 245336449}
-  - {fileID: 139603162}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -497,7 +497,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 357892376}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21617c3c17c64b148938c7c2ef05282c, type: 3}
+  m_Script: {fileID: 11500000, guid: bc0138dbfe4659e4686d91df846ad218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameCamera: {fileID: 963194229}
@@ -990,7 +990,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 357892377}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &649358061
 MonoBehaviour:
