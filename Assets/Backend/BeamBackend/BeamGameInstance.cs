@@ -9,7 +9,7 @@ namespace BeamBackend
         public Dictionary<string, BaseBike> Bikes { get; private set; } = null;
 	    public Ground Ground { get; private set; } = null;
 
-        public BeamGameData(FrontendProxy fep)
+        public BeamGameData(IFrontendProxy fep)
         {
             Players = new Dictionary<string, Player>();
             Bikes = new Dictionary<string, BaseBike>();
@@ -21,9 +21,9 @@ namespace BeamBackend
     {
         protected ModeManager _modeMgr;
         protected BeamGameData _data;
-        protected FrontendProxy _feProxy;
+        protected IFrontendProxy _feProxy;
 
-        public BeamGameInstance(FrontendProxy fep = null)
+        public BeamGameInstance(IFrontendProxy fep = null)
         {
             _modeMgr = new ModeManager(new BeamModeFactory());
             _feProxy = fep; // Should work without one

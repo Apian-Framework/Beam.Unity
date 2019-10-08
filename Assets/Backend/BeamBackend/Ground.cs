@@ -36,8 +36,8 @@ namespace BeamBackend
         protected List<Place> activePlaces = null;
         protected Stack<Place> freePlaces = null; // re-use released/expired ones
 
-        protected FrontendProxy _feProxy = null;
-        public Ground(FrontendProxy fep)
+        protected IFrontendProxy _feProxy = null;
+        public Ground(IFrontendProxy fep)
         {
             _feProxy = fep;
             ClearPlaces();

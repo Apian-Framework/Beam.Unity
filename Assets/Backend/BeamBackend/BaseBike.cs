@@ -16,8 +16,6 @@ namespace BeamBackend
         // NOTE: 2D position: x => east, y => north (in 3-space z is north and y is up)
         public Heading heading { get; private set;} = Heading.kNorth;
 
-        protected BackendMain _backend = null;
-
         //
         // Temporary stuff for refactoring
         //
@@ -27,9 +25,8 @@ namespace BeamBackend
 
         public void TempSetHeading(Heading h) => heading = h;
 
-        public BaseBike(BackendMain be, string ID, Player p, Vector3 initialPos, Heading head)
+        public BaseBike(string ID, Player p, Vector3 initialPos, Heading head)
         { 
-            _backend = be;
             bikeId = ID;
             SetPos3(initialPos); // probably don't need this, but it doesn;t hurt
             heading = head;
