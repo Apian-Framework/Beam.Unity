@@ -15,7 +15,7 @@ namespace BeamBackend
 
         public static readonly int pointsPerAxis = 101;
 
-        public static Vector3 zeroPos = new Vector3(0f, 0f, 0f);
+        public static Vector2 zeroPos = new Vector2(0f, 0f);
 
         public static float secsHeld = 15; // TODO: Maybe should be per-bike and increase with time? Bike Trail FX would have to as well.
 
@@ -45,7 +45,7 @@ namespace BeamBackend
 
 
         // Update is called once per frame
-        void DoUpdate(float deltaSecs)
+        public void Loop(float deltaSecs)
         {
             // Assume that if it's in the active list it's not nulll
             // If secsLeft runs out then remove it.

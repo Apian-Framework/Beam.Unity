@@ -22,6 +22,13 @@ namespace BeamBackend
             Players.Clear();
             Bikes.Clear();
         }
+
+        public void Loop(float frameSecs)
+        {
+            Ground.Loop(frameSecs);
+            foreach( IBike ib in Bikes.Values)
+                ib.Loop(frameSecs);            
+        }
     }
 
     public class BeamGameInstance : IGameInstance
@@ -44,6 +51,8 @@ namespace BeamBackend
 
         public bool Loop(float frameSecs)
         {
+            UnityEngine.Debug.Log("Inst.Loop()");
+            gameData.Loop(frameSecs);
             return modeMgr.Loop(frameSecs);
         }
 
@@ -61,6 +70,7 @@ namespace BeamBackend
         // Bike-related
         public void NewBike(IBike b)
         {
+            UnityEngine.Debug.Log(string.Format("NEW BIKE. ID: {0}, Pos: {1}", b.bikeId, b.position));            
             gameData.Bikes[b.bikeId] = b;
             feProxy?.NewBike(b);
         }        

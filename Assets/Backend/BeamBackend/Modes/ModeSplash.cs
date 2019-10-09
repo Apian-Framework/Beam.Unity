@@ -10,7 +10,7 @@ namespace BeamBackend
 	//	gameInst == GameInstance    
     public class ModeSplash : BaseGameMode
     {
-	    public readonly int kSplashBikeCount = 12;
+	    public readonly int kSplashBikeCount = 3;
         public BeamGameInstance game = null;
 
 		public override void Start( object param = null)	
@@ -21,8 +21,9 @@ namespace BeamBackend
             game.DestroyBikes();    
             game.ClearPlaces();
 
+            UnityEngine.Debug.Log("Before CreateBikes");            
             CreateTheBikes();
-
+            UnityEngine.Debug.Log("After CreateBikes");
         }
 
 		public override void Loop(float frameSecs) 

@@ -45,8 +45,9 @@ namespace BeamBackend
             return new Vector3(position.x, height, position.y);
         }
 
-        public void DoUpdate(float secs)
+        public void Loop(float secs)
         {
+            UnityEngine.Debug.Log("** BaseBike.DoUpdate()");            
             _updatePosition(secs);
         }
 
@@ -75,6 +76,7 @@ namespace BeamBackend
 
         protected virtual void DoAtGridPoint(Vector2 pos, Heading head)
         {
+            UnityEngine.Debug.Log("** BaseBike.DoAtGridPoint()");            
             feProxy?.ReportBikeAtPoint(bikeId, pos);
         }
 
@@ -95,7 +97,7 @@ namespace BeamBackend
             if (Vector2.Dot(GameConstants.UnitOffset2ForHeading(bb.heading), point - bb.position) < 0)
             {
                 point += GameConstants.UnitOffset2ForHeading(bb.heading) * gridSize;
-            }
+            }            
             return point;
         }    
     }

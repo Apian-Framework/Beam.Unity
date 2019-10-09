@@ -32,6 +32,7 @@ public class FrontendProxy : IFrontendProxy
 
     public void ReportBikeAtPoint(string bikeId, Vector2 pos)
     {
+        UnityEngine.Debug.Log(string.Format("** Reporting bike {0} at {1}", bikeId, pos));        
         OnBikeAtPoint(new BikeAtPointArgs(bikeId, pos));
     }    
 

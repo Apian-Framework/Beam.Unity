@@ -11,7 +11,7 @@ namespace BeamBackend
         Player player {get;}   
         Vector2 position {get;}   
         Heading heading { get;}   
-        void DoUpdate(float secs);                              
+        void Loop(float secs);                              
     }
 
 }
