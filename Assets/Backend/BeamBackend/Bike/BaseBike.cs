@@ -5,16 +5,18 @@ using UnityEngine;
 
 namespace BeamBackend
 {
-    public class BaseBike
+    public class BaseBike : IBike
     {
         public static readonly float length = 2.0f;
         public static readonly float speed =  15.0f;   
 
-        public string bikeId {get; private set;} = null; 
-        public Player player {get; private set;} = null;
+        public string bikeId {get; private set;} 
+        public Player player {get; private set;}
         public Vector2 position {get; private set;} = Vector2.zero; // always on the grid
         // NOTE: 2D position: x => east, y => north (in 3-space z is north and y is up)
         public Heading heading { get; private set;} = Heading.kNorth;
+
+        public IFrontendProxy feProxy = null;
 
         //
         // Temporary stuff for refactoring
@@ -73,7 +75,7 @@ namespace BeamBackend
 
         protected virtual void DoAtGridPoint(Vector2 pos, Heading head)
         {
-            _backend.EventPub.ReportBikeAtPoint(bikeId, pos);
+            feProxy?.ReportBikeAtPoint(bikeId, pos);
         }
 
         //

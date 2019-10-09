@@ -149,6 +149,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f39805fb269a94146bc65d817eb62e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameCamera: {fileID: 963194229}
+  uiCamera: {fileID: 1205679685}
+  inputDispatch: {fileID: 245336448}
+  boomPrefab: {fileID: 155807285494746714, guid: 4dbc3b9d661d7b6449067baad194d553,
+    type: 3}
+  feGround: {fileID: 157601948}
 --- !u!4 &45526652
 Transform:
   m_ObjectHideFlags: 0

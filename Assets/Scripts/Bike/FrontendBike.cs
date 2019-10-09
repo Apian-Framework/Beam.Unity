@@ -242,18 +242,20 @@ public class FrontendBike : MonoBehaviour
 
     protected GameObject ClosestBike(GameObject thisBike)
     {
-        OldGameMain gm = OldGameMain.GetInstance();
-        GameObject closest = gm.BikeList.Values.Where(b => b != thisBike)
-            .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).First();
-        return closest;
+        // OldGameMain gm = OldGameMain.GetInstance();
+        // GameObject closest = gm.BikeList.Values.Where(b => b != thisBike)
+        //     .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).First();
+        // return closest;
+        return null;
     }
 
     protected List<Vector3> UpcomingEnemyPos(GameObject thisBike, int maxCnt)
     {
-        OldGameMain gm = OldGameMain.GetInstance();
-        return gm.BikeList.Values.Where(b => b != thisBike)
-            .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).Take(maxCnt) // gameObjects
-            .Select(go => go.transform.position).ToList();
+        // OldGameMain gm = OldGameMain.GetInstance();
+        // return gm.BikeList.Values.Where(b => b != thisBike)
+        //     .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).Take(maxCnt) // gameObjects
+        //     .Select(go => go.transform.position).ToList();
+        return null;
     }
 
 
@@ -266,10 +268,11 @@ public class FrontendBike : MonoBehaviour
 
     protected MoveNode BuildMoveTree(Vector3 curPos, Heading curHead, int depth, List<Vector3> otherBadPos = null)
     {
-        Ground g = OldGameMain.GetInstance().feGround.beGround;
-        Vector3 nextPos = UpcomingGridPoint(curPos, heading);
-        MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1, otherBadPos);
-        return root;
+        // Ground g = OldGameMain.GetInstance().feGround.beGround;
+        // Vector3 nextPos = UpcomingGridPoint(curPos, heading);
+        // MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1, otherBadPos);
+        // return root;
+        return null;
     }
 
     protected List<dirAndScore> TurnScores(MoveNode moveTree)

@@ -4,7 +4,7 @@ using System.Collections;
 public abstract class UICamState
 {	
 	public UICamera _uiCam;
-    public OldGameMain _main = null;    
+    public BeamMain _main = null;    
     
     // buttons and stuff
     protected bool bUIPressed;
@@ -91,7 +91,7 @@ public abstract class UICamState
     public virtual void init(UICamera pc)
     {
         _uiCam = pc;
-        _main = (OldGameMain)utils.findObjectComponent("GameMain", "GameMain");             
+        _main = BeamMain.GetInstance();             
         curBtn = null;
         bUIPressed = false;  
     }

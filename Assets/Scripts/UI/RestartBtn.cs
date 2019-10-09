@@ -4,26 +4,28 @@ using System.Collections;
 
 public class RestartBtn : UIBtn  {
 	
-	protected OldGameMain _main = null;	
+	protected BeamMain _main = null;	
 
 	// Use this for initialization
 	protected override void Start () 
 	{
 		base.Start();		
-		_main = (OldGameMain)utils.findObjectComponent("GameMain", "GameMain");	
+		_main = BeamMain.GetInstance();	
 		
 	}
 
 	protected override void Update()
 	{
 		base.Update();
-		if (Input.GetKeyDown(KeyCode.Return))
-			_main.SendCmd((int)GameModePlay.Commands.kRespawn, null);	
+// &&&&& Call BeamMain.Respawn() which will tell the backend to add a new bike for the local player
+// Could ask the GameProxy directly, but this is just a button - it shouldnt know about the game
+//		if (Input.GetKeyDown(KeyCode.Return))
+//			_main.SendCmd((int)GameModePlay.Commands.kRespawn, null);	
 	}
 
 	public override void doSelect()
 	{
-		_main.SendCmd((int)GameModePlay.Commands.kRespawn, null);
+// &&& See above		_main.SendCmd((int)GameModePlay.Commands.kRespawn, null);
 	}
 }
 

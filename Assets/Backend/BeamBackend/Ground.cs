@@ -40,7 +40,7 @@ namespace BeamBackend
         public Ground(IFrontendProxy fep)
         {
             _feProxy = fep;
-            ClearPlaces();
+            InitPlaces();
         }
 
 
@@ -66,12 +66,17 @@ namespace BeamBackend
             placeArray[p.xIdx, p.zIdx] = null;
         }
 
-        public void ClearPlaces()
-        {
-            _feProxy?.ClearPlaceMarkers();            
+        protected void InitPlaces()
+        {         
             placeArray = new Place[pointsPerAxis,pointsPerAxis];
             activePlaces = new List<Place>();
             freePlaces = new Stack<Place>();         
+        }
+
+        public void ClearPlaces()
+        {
+            InitPlaces();
+            _feProxy?.ClearPlaceMarkers();                             
         }
 
         public void RemovePlacesForBike(BaseBike bike)

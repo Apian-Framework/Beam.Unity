@@ -8,17 +8,17 @@ namespace BeamBackend
     public interface IFrontendProxy {
 
         // Players
-
+        void NewPlayer(Player p);
         // Bikes
-        public void NewBike(BaseBike bb);
-        public void DestroyBike(string bikeId, bool doExplode);
-        public void DestroyBikes();
-        public void ReportBikeAtPoint(string bikeId, Vector2 pos);
+        void NewBike(IBike ib);
+        void DestroyBike(string bikeId, bool doExplode);
+        void DestroyBikes();
+        void ReportBikeAtPoint(string bikeId, Vector2 pos);
 
         // Places
-        public void SetupPlaceMarker(Ground.Place p);
-        public void FreePlaceMarker(Ground.Place p);     
-        public void ClearPlaceMarkers();
+        void SetupPlaceMarker(Ground.Place p);
+        void FreePlaceMarker(Ground.Place p);     
+        void ClearPlaceMarkers();
 
     }
 

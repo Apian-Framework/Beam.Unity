@@ -11,19 +11,23 @@ public class FrontendProxy : IFrontendProxy
     // 
 
     // Players
+    public void NewPlayer(Player p)
+    {
+        UnityEngine.Debug.Log("** Need to implement FEP.NewPlayer()");
+    }
 
     // Bikes
-    public void NewBike(BaseBike bb)
+    public void NewBike(IBike ib)
     {
-
+        UnityEngine.Debug.Log("** Need to implement FEP.NewBike()");
     }
     public void DestroyBike(string bikeId, bool doExplode)
     {
-
+        UnityEngine.Debug.Log("** Need to implement FEP.DestroyBike()");
     }  
     public void DestroyBikes()
     {
-        throw(new Exception("Not Implmented"));
+        UnityEngine.Debug.Log("** Need to implement FEP.DestroyBikes()");
     }    
 
     public void ReportBikeAtPoint(string bikeId, Vector2 pos)
@@ -34,15 +38,15 @@ public class FrontendProxy : IFrontendProxy
     // Ground
     public void SetupPlaceMarker(Ground.Place p)
     {
-        throw(new Exception("Not Implmented"));            
+        UnityEngine.Debug.Log("** Need to implement FEP.SetupPlaceMarker()");     
     }
     public void FreePlaceMarker(Ground.Place p)
     {
-        throw(new Exception("Not Implmented"));            
+        UnityEngine.Debug.Log("** Need to implement FEP.FreePlaceMarker()");           
     }        
     public void ClearPlaceMarkers()
     {
-        throw(new Exception("Not Implmented"));
+        UnityEngine.Debug.Log("** Need to implement FEP.ClearPlaceMarkers()"); 
     }
 
 

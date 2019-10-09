@@ -5,13 +5,13 @@ public class ViewUpBtn : UIBtn  {
 	
 	public float lookRadians = -1f;
 	public float decayRate = 1f;
-	protected OldGameMain _main = null;	
+	protected BeamMain _main = null;	
 
 	// Use this for initialization
 	protected override void Start () 
 	{
 		base.Start();		
-		_main = (OldGameMain)utils.findObjectComponent("GameMain", "GameMain");	
+		_main = BeamMain.GetInstance();
 		
 	}
 
@@ -20,13 +20,13 @@ public class ViewUpBtn : UIBtn  {
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
-			_main.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kToggleHighLow, null );
+			// _main.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kToggleHighLow, null );
 		}
 	}
 
 	public override void doSelect()
 	{
-		_main.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kToggleHighLow, null);
+		// _main.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kToggleHighLow, null);
 	}
 }
 
