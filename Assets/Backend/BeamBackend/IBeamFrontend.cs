@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeamBackend
 {
-    public interface IFrontendProxy {
+    public interface IBeamFrontend {
 
         // Players
         void NewPlayer(Player p);

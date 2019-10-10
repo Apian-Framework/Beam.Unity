@@ -4,17 +4,15 @@ using BeamBackend;
 
 public class BeamMain : MonoBehaviour
 {
-
+    public BeamFrontend frontend;
 	public GameCamera gameCamera;
 	public UICamera uiCamera;	
 	public InputDispatch inputDispatch;    
 	public EthereumProxy eth = null;
     public GameObject boomPrefab;      
-    public FeGround feGround;
 
     // Non-monobehaviors
     public BeamGameInstance backend;
-    public FrontendProxy feProxy;    
 
     // Singletone management(*yeah, kinda lame)
     private static BeamMain instance = null;
@@ -42,14 +40,14 @@ public class BeamMain : MonoBehaviour
 
 		// Semi-presistent Main-owned objects 
         // TODO: Should be in Awake()?
+        frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");	
 		uiCamera = (UICamera)utils.findObjectComponent("UICamera", "UICamera");		
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");		
 		
         eth = new EthereumProxy();
 		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using        
 		
-        feProxy = new FrontendProxy();
-        backend = new BeamGameInstance(feProxy);
+        backend = new BeamGameInstance((IBeamFrontend)frontend);
         backend.Start();
         UnityEngine.Debug.Log("BeamMain.Start() done");
         

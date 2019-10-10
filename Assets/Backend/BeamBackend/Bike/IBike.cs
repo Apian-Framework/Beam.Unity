@@ -9,9 +9,13 @@ namespace BeamBackend
     {
         string bikeId {get;}   
         Player player {get;}   
+        int ctrlType {get;}        
         Vector2 position {get;}   
-        Heading heading { get;}   
-        void Loop(float secs);                              
+        Heading heading { get;}           
+        void Loop(float secs);  
+
+        // Temporary ctrl stuff
+        TurnDir pendingTurn { get;}
     }
 
 }

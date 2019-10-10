@@ -3,6 +3,7 @@ using System.Collections;
 
 public class utils 
 {
+    public static Vector3 Vec3(Vector2 v2, float y=0) => new Vector3(v2.x, y, v2.y);	
 
 	static public Vector3 MeshObjSize(GameObject theObj)
 	{

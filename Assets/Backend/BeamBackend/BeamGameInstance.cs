@@ -10,7 +10,7 @@ namespace BeamBackend
         public Dictionary<string, IBike> Bikes { get; private set; } = null;
 	    public Ground Ground { get; private set; } = null;
 
-        public BeamGameData(IFrontendProxy fep)
+        public BeamGameData(IBeamFrontend fep)
         {
             Players = new Dictionary<string, Player>();
             Bikes = new Dictionary<string, IBike>();
@@ -31,19 +31,20 @@ namespace BeamBackend
         }
     }
 
-    public class BeamGameInstance : IGameInstance
+    public class BeamGameInstance : IGameInstance, IBeamBackend
     {
         public ModeManager modeMgr {get; private set;}
         public  BeamGameData gameData {get; private set;}
-        public  IFrontendProxy feProxy {get; private set;}
+        public  IBeamFrontend frontend {get; private set;}
 
-        public BeamGameInstance(IFrontendProxy fep = null)
+        public BeamGameInstance(IBeamFrontend fep = null)
         {
             modeMgr = new ModeManager(new BeamModeFactory(), this);
-            feProxy = fep; // Should work without one
-            gameData = new BeamGameData(feProxy);            
+            frontend = fep; // Should work without one
+            gameData = new BeamGameData(frontend);            
         }
 
+        // IGameInstance
         public void Start()
         {
             modeMgr.Start(BeamModeFactory.kSplash);
@@ -51,16 +52,30 @@ namespace BeamBackend
 
         public bool Loop(float frameSecs)
         {
-            UnityEngine.Debug.Log("Inst.Loop()");
+            //UnityEngine.Debug.Log("Inst.Loop()");
             gameData.Loop(frameSecs);
             return modeMgr.Loop(frameSecs);
         }
+
+        //
+        // IBeamBackend
+        // 
+        public void OnTurnRequested(string bikeId, TurnDir turn)
+        {
+            BaseBike b = (BaseBike)gameData.Bikes[bikeId];
+            b.PostPendingTurn(turn);
+        }       
+
+
+        //
+        // Hmm. Where do these go?
+        //
 
         // Player-related
         public void NewPlayer(Player p)
         {
             gameData.Players[p.ID] = p;
-            feProxy?.NewPlayer(p);
+            frontend?.NewPlayer(p);
         }
         public void DestroyPlayers()
         {
@@ -72,11 +87,11 @@ namespace BeamBackend
         {
             UnityEngine.Debug.Log(string.Format("NEW BIKE. ID: {0}, Pos: {1}", b.bikeId, b.position));            
             gameData.Bikes[b.bikeId] = b;
-            feProxy?.NewBike(b);
+            frontend?.NewBike(b);
         }        
         public void DestroyBikes()
         {
-            feProxy?.DestroyBikes();
+            frontend?.DestroyBikes();
             gameData.Bikes.Clear();
         }
 

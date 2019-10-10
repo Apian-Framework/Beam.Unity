@@ -36,8 +36,8 @@ namespace BeamBackend
         protected List<Place> activePlaces = null;
         protected Stack<Place> freePlaces = null; // re-use released/expired ones
 
-        protected IFrontendProxy _feProxy = null;
-        public Ground(IFrontendProxy fep)
+        protected IBeamFrontend _feProxy = null;
+        public Ground(IBeamFrontend fep)
         {
             _feProxy = fep;
             InitPlaces();
@@ -129,16 +129,16 @@ namespace BeamBackend
             return p;
         }
 
-        public bool PointIsOnMap(Vector3 pt)
+        public bool PointIsOnMap(Vector2 pt)
         {
             int xIdx = (int)Mathf.Floor((pt.x - minX) / gridSize );
-            int zIdx = (int)Mathf.Floor((pt.z - minZ) / gridSize );        
-            return IndicesAreOnMap(xIdx, zIdx);
+            int yIdx = (int)Mathf.Floor((pt.y - minZ) / gridSize );        
+            return IndicesAreOnMap(xIdx, yIdx);
         }
         
-        public bool IndicesAreOnMap(int xIdx, int zIdx)
+        public bool IndicesAreOnMap(int xIdx, int yIdx)
         {
-            return !(xIdx < 0 || zIdx < 0 || xIdx >= pointsPerAxis || zIdx >= pointsPerAxis);
+            return !(xIdx < 0 || yIdx < 0 || xIdx >= pointsPerAxis || yIdx >= pointsPerAxis);
         }
     }
 }

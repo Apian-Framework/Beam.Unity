@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using BeamBackend;
 
-public class LocalPlayerBike : FrontendBike
+public class FePlayerBike : FrontendBike
 {
 
     public override void Update()
@@ -47,12 +47,12 @@ public class LocalPlayerBike : FrontendBike
 
     public void FrobLeftButton()
     {
-        bb.TempSetPendingTurn(TurnDir.kLeft);
+        be.OnTurnRequested(bb.bikeId, TurnDir.kLeft);
     }
 
     public void FrobRightButton()
     {
-        bb.TempSetPendingTurn(TurnDir.kRight);
+        be.OnTurnRequested(bb.bikeId, TurnDir.kRight);
     }
 
 }

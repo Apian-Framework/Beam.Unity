@@ -8,9 +8,10 @@ public class FrontendBike : MonoBehaviour
 {
     protected class dirAndScore { public TurnDir turnDir; public int score; };
 
-    public BaseBike bb = null;
+    public IBike bb = null;
+    protected IBeamBackend be = null;
 
-    // Stuff that really lives in BaseBike. 
+    // Stuff that really lives in backend. 
     // TODO: maybe get rid of this? Or maybe it's ok    
     public Player player { get => bb.player; } 
     public Heading heading { get => bb.heading; }
@@ -31,16 +32,17 @@ public class FrontendBike : MonoBehaviour
     public static readonly float kRoot2Over2 = 2.0f / Mathf.Sqrt(2);
 
     Vector3 _turnAxis = Vector3.up; // just a dummy location
-    float _turnStartTheta = 0f;
-    float _turnTheta = 0f; // 0 is north, increases clockwise
+    //float _turnStartTheta = 0f;
+    //float _turnTheta = 0f; // 0 is north, increases clockwise
     protected TurnDir _curTurn = TurnDir.kStraight;
 
     // Important: Setup() is not called until after Awake() and Start() have been called on the
     // GameObject and components. Both of those are called when the GO is instantiated
-    public virtual void Setup(BaseBike baseBike)
+    public virtual void Setup(IBike beBike, IBeamBackend backEnd)
     {
-        bb = baseBike;
-        transform.position = bb.GetPos3(); // Is probably already set to this
+        be = backEnd;
+        bb = beBike;
+        transform.position = utils.Vec3(bb.position); // Is probably already set to this
         SetColor(utils.hexToColor(bb.player.Team.Color));    
     }
 
@@ -59,93 +61,90 @@ public class FrontendBike : MonoBehaviour
     }
 
     // Update is called once per frame
-    public virtual void OldUpdate()
-    {
-        Vector3 pos = transform.position;
-        Vector3 angles = transform.eulerAngles;
-        float deltaT = GameTime.DeltaTime();
+    // public virtual void OldUpdate()
+    // {
+    //     Vector3 pos = transform.position;
+    //     Vector3 angles = transform.eulerAngles;
+    //     float deltaT = GameTime.DeltaTime();
 
-        DecideToTurn();
+    //     DecideToTurn();
 
-        Vector3 gridPt = NearestGridPoint(pos, Ground.gridSize);
-        bool prevAtGridPt = AtGridPoint(gridPt, pos, BaseBike.length, turnRadius); // see if this frame's motion changes the status
+    //     Vector3 gridPt = NearestGridPoint(pos, Ground.gridSize);
+    //     bool prevAtGridPt = AtGridPoint(gridPt, pos, BaseBike.length, turnRadius); // see if this frame's motion changes the status
 
-        // 
-        // Do frame motion
-        //
-        if (_curTurn != TurnDir.kStraight)
-        {
-            // TODO: be consistent with degrees/radians
-            // Do a turn iteration
-            float dThetaRad = (_curTurn == TurnDir.kLeft ? -1f : 1f) * deltaT * BaseBike.speed / turnRadius;
-            _turnTheta += dThetaRad * Mathf.Rad2Deg;
-            float theta = _turnStartTheta + _turnTheta;
-            pos = _turnAxis + new Vector3(turnRadius * Mathf.Sin(theta * Mathf.Deg2Rad), 0, turnRadius * Mathf.Cos(theta * Mathf.Deg2Rad));
-            //Debug.Log(string.Format("startTheta: {0}", _turnStartTheta));             
-            //Debug.Log(string.Format("turnTheta: {0}", _turnTheta)); 
+    //     // 
+    //     // Do frame motion
+    //     //
+    //     if (_curTurn != TurnDir.kStraight)
+    //     {
+    //         // TODO: be consistent with degrees/radians
+    //         // Do a turn iteration
+    //         float dThetaRad = (_curTurn == TurnDir.kLeft ? -1f : 1f) * deltaT * BaseBike.speed / turnRadius;
+    //         _turnTheta += dThetaRad * Mathf.Rad2Deg;
+    //         float theta = _turnStartTheta + _turnTheta;
+    //         pos = _turnAxis + new Vector3(turnRadius * Mathf.Sin(theta * Mathf.Deg2Rad), 0, turnRadius * Mathf.Cos(theta * Mathf.Deg2Rad));
+    //         //Debug.Log(string.Format("startTheta: {0}", _turnStartTheta));             
+    //         //Debug.Log(string.Format("turnTheta: {0}", _turnTheta)); 
 
-            if (Mathf.Abs(_turnTheta) >= 90)
-            {
-                _curTurn = TurnDir.kStraight;
-                angles.z = 0;
-                angles.y = turnStartTheta[(int)heading] - 90f;
-            }
-            else
-            {
-                angles.z = -Mathf.Sin(_turnTheta * 2.0f * Mathf.Deg2Rad) * maxLean;
-                angles.y = theta + (_curTurn == TurnDir.kLeft ? -1f : 1f) * 90f;
-            }
-            transform.eulerAngles = angles;
+    //         if (Mathf.Abs(_turnTheta) >= 90)
+    //         {
+    //             _curTurn = TurnDir.kStraight;
+    //             angles.z = 0;
+    //             angles.y = turnStartTheta[(int)heading] - 90f;
+    //         }
+    //         else
+    //         {
+    //             angles.z = -Mathf.Sin(_turnTheta * 2.0f * Mathf.Deg2Rad) * maxLean;
+    //             angles.y = theta + (_curTurn == TurnDir.kLeft ? -1f : 1f) * 90f;
+    //         }
+    //         transform.eulerAngles = angles;
 
-        }
-        else
-        {
-            pos += GameTime.DeltaTime() * BaseBike.speed * GameConstants.UnitOffset3ForHeading(heading);
-        }
+    //     }
+    //     else
+    //     {
+    //         pos += GameTime.DeltaTime() * BaseBike.speed * GameConstants.UnitOffset3ForHeading(heading);
+    //     }
 
-        // Deal with this frame's motion
+    //     // Deal with this frame's motion
 
-        bool atGridPt = AtGridPoint(gridPt, pos, BaseBike.length, turnRadius);
+    //     bool atGridPt = AtGridPoint(gridPt, pos, BaseBike.length, turnRadius);
 
-        if (atGridPt)
-        {
-            if (!prevAtGridPt)
-            {
-                // Just crossed onto a grid point
-                // DealWithPlace(pos);
+    //     if (atGridPt)
+    //     {
+    //         if (!prevAtGridPt)
+    //         {
+    //             // Just crossed onto a grid point
+    //             // DealWithPlace(pos);
 
-                // Waiting to turn?
-                if (!prevAtGridPt && pendingTurn != TurnDir.kStraight && pendingTurn != TurnDir.kUnset && _curTurn == TurnDir.kStraight)
-                {
-                    // should be StartTurn()
-                    Heading prevHead = heading;
-                    _curTurn = pendingTurn;
-                    bb.TempSetHeading(GameConstants.NewHeadForTurn(heading, pendingTurn));
+    //             // // Waiting to turn?
+    //             // if (!prevAtGridPt && pendingTurn != TurnDir.kStraight && pendingTurn != TurnDir.kUnset && _curTurn == TurnDir.kStraight)
+    //             // {
+    //             //     // should be StartTurn()
+    //             //     Heading prevHead = heading;
+    //             //     _curTurn = pendingTurn;
+    //             //     bb.TempSetHeading(GameConstants.NewHeadForTurn(heading, pendingTurn));
 
-                    // set up turn axis and angle
-                    _turnAxis = gridPt - (GameConstants.UnitOffset3ForHeading(prevHead) - GameConstants.UnitOffset3ForHeading(heading)) * turnRadius;
-                    _turnStartTheta = turnStartTheta[(int)prevHead] + (_curTurn == TurnDir.kRight ? 180f : 0f);
-                    _turnTheta = 0;
-                    //Debug.Log(string.Format("gridPt: {0}", gridPt));             
-                    //Debug.Log(string.Format("turnAxis: {0}", _turnAxis));                
-                }
+    //             //     // set up turn axis and angle
+    //             //     _turnAxis = gridPt - (GameConstants.UnitOffset3ForHeading(prevHead) - GameConstants.UnitOffset3ForHeading(heading)) * turnRadius;
+    //             //     _turnStartTheta = turnStartTheta[(int)prevHead] + (_curTurn == TurnDir.kRight ? 180f : 0f);
+    //             //     _turnTheta = 0;
+    //             //     //Debug.Log(string.Format("gridPt: {0}", gridPt));             
+    //             //     //Debug.Log(string.Format("turnAxis: {0}", _turnAxis));                
+    //             // }
 
-                bb.TempSetPendingTurn(TurnDir.kUnset);  // reset when you get to a grid point        
-            }
-        }
+    //             // bb.TempSetPendingTurn(TurnDir.kUnset);  // reset when you get to a grid point        
+    //         }
+    //     }
 
-        transform.position = pos;
+    //     transform.position = pos;
 
-    }
+    // }
 
     public virtual void Update()
     {
         DecideToTurn();
 
-        //float deltaT = GameTime.DeltaTime();
-        //bb.DoUpdate(deltaT);
-
-        Vector3 pos = bb.GetPos3();
+        Vector3 pos = utils.Vec3(bb.position);
         Vector3 angles = transform.eulerAngles;
 
         angles.z = 0;
@@ -166,113 +165,104 @@ public class FrontendBike : MonoBehaviour
         transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
     }
 
-    // public virtual FeGround.Place DealWithPlace(Vector2 pos2) // returns place in case override wants to do something with it.
-    // {
-    //     FeGround g = GameMain.GetInstance().ground;
-    //     Vector3 pos = new Vector3(pos2.x, 0, pos2.y);
-    //     FeGround.Place p = g.GetPlace(pos);
-    //     if (p == null)
-    //     {
-    //         p = g.ClaimPlace(this, pos);
-    //         if (p == null)
-    //             GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kOffMap, null);
-    //         else
-    //             GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kClaimPlace, null);
-    //     }
-    //     else
-    //     {
-    //         ouchObj.SetActive(false); // restart in case the anim is already running
-    //         ouchObj.SetActive(true);
-    //         GameMain.GetInstance().ReportScoreEvent(this, p.bike.player.Team == player.Team ? ScoreEvent.kHitFriendPlace : ScoreEvent.kHitEnemyPlace, p);
-    //     }
-    //     return p;
-    // }
-
-    protected bool AtGridPoint(Vector3 gridPos, Vector3 bikePos, float bikeLen, float turnRadius)
+    public virtual void DealWithPlace(Vector2 pos2) // returns place in case override wants to do something with it.
     {
-        // Assumes grid spacing is >= 2*turnRadius 
-        float dist = Vector3.Distance(gridPos, bikePos);
-        return dist <= turnRadius;
+        // Backend has ALREADY done it's thing (claim, whatever)
+        
+        // TODO: Is this needed anymore?
+        
+        //FeGround g = BeamMain.GetInstance().frontend.feGround;
+        // Vector3 pos = new Vector3(pos2.x, 0, pos2.y);
+        // FeGround.Place p = g.GetPlace(pos);
+        // if (p == null)
+        // {
+        //     p = g.ClaimPlace(this, pos);
+        //     if (p == null)
+        //         GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kOffMap, null);
+        //     else
+        //         GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kClaimPlace, null);
+        // }
+        // else
+        // {
+        //     ouchObj.SetActive(false); // restart in case the anim is already running
+        //     ouchObj.SetActive(true);
+        //     GameMain.GetInstance().ReportScoreEvent(this, p.bike.player.Team == player.Team ? ScoreEvent.kHitFriendPlace : ScoreEvent.kHitEnemyPlace, p);
+        // }
+        //return p;
     }
 
-    protected Vector3 NearestGridPoint(Vector3 pos, float gridSize)
+
+    protected Vector2 NearestGridPoint(Vector2 pos, float gridSize)
     {
         float invGridSize = 1.0f / gridSize;
-        return new Vector3(Mathf.Round(pos.x * invGridSize) * gridSize, pos.y, Mathf.Round(pos.z * invGridSize) * gridSize);
+        return new Vector2(Mathf.Round(pos.x * invGridSize) * gridSize,  Mathf.Round(pos.y * invGridSize) * gridSize);
     }
 
     // Tools for AIs
-    protected Vector3 UpcomingGridPoint(Vector3 curPos, Heading curHead)
+    protected Vector3 UpcomingGridPoint(Vector2 curPos, Heading curHead)
     {
         // it's either the current closest point (if direction to it is the same as heading)
         // or is the closest point + gridSize*unitOffsetForHeading[curHead] if closest point is behind us
-        Vector3 point = NearestGridPoint(curPos, Ground.gridSize);
-        if (Vector3.Dot(GameConstants.UnitOffset3ForHeading(curHead), point - curPos) < 0)
+        Vector2 point = NearestGridPoint(curPos, Ground.gridSize);
+        if (Vector2.Dot(GameConstants.UnitOffset3ForHeading(curHead), point - curPos) < 0)
         {
-            point += GameConstants.UnitOffset3ForHeading(curHead) * Ground.gridSize;
+            point += GameConstants.UnitOffset2ForHeading(curHead) * Ground.gridSize;
         }
         return point;
     }
 
-    protected static List<Vector3> PossiblePointsForPointAndHeading(Vector3 curPtPos, Heading curHead)
+    protected static List<Vector2> PossiblePointsForPointAndHeading(Vector2 curPtPos, Heading curHead)
     {
         // returns a list of grid positions where you could go next if you are headed for one with the given heading
         // The entries correspond to turn directions (none, left, right) 
         // TODO use something like map() ?
-        return new List<Vector3> {
-            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kStraight))*Ground.gridSize,
-            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kLeft))*Ground.gridSize,
-            curPtPos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kRight))*Ground.gridSize,
+        return new List<Vector2> {
+            curPtPos + GameConstants.UnitOffset2ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kStraight))*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffset2ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kLeft))*Ground.gridSize,
+            curPtPos + GameConstants.UnitOffset2ForHeading(GameConstants.NewHeadForTurn(curHead, TurnDir.kRight))*Ground.gridSize,
         };
     }
 
-    // protected List<Ground.Place> PossiblePlacesForPointAndHeading(Ground g, Vector3 curPtPos, Heading curHead)
-    // {
-    //     return PossiblePointsForPointAndHeading(curPtPos, curHead).Select((pos) =>
-    //        g.GetPlace(pos)).ToList();
-    // }
-
-    protected TurnDir TurnTowardsPos(Vector3 targetPos, Vector3 curPos, Heading curHead)
+    protected TurnDir TurnTowardsPos(Vector2 targetPos, Vector2 curPos, Heading curHead)
     {
-        Vector3 bearing = targetPos - curPos;
-        float turnAngleDeg = Vector3.SignedAngle(bearing, GameConstants.UnitOffset3ForHeading(curHead), Vector3.up);
+        Vector2 bearing = targetPos - curPos;
+        float turnAngleDeg = Vector2.SignedAngle(bearing, GameConstants.UnitOffset2ForHeading(curHead));
         //Debug.Log(string.Format("Pos: {0}, Turn Angle: {1}", curPos, turnAngleDeg));
         return turnAngleDeg > 45f ? TurnDir.kLeft : (turnAngleDeg < -45f ? TurnDir.kRight : TurnDir.kStraight);
     }
 
-    protected GameObject ClosestBike(GameObject thisBike)
+    protected IBike ClosestBike(IBike thisBike)
     {
-        // OldGameMain gm = OldGameMain.GetInstance();
-        // GameObject closest = gm.BikeList.Values.Where(b => b != thisBike)
-        //     .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).First();
-        // return closest;
-        return null;
+        BeamGameData gd = ((BeamGameInstance)be).gameData;        
+        IBike closest = gd.Bikes.Values.Where(b => b != thisBike)
+                .OrderBy(b => Vector2.Distance(b.position, thisBike.position)).First();
+        return closest;
+
     }
 
-    protected List<Vector3> UpcomingEnemyPos(GameObject thisBike, int maxCnt)
+    protected List<Vector2> UpcomingEnemyPos(IBike thisBike, int maxCnt)
     {
-        // OldGameMain gm = OldGameMain.GetInstance();
-        // return gm.BikeList.Values.Where(b => b != thisBike)
-        //     .OrderBy(b => Vector3.Distance(b.transform.position, thisBike.transform.position)).Take(maxCnt) // gameObjects
-        //     .Select(go => go.transform.position).ToList();
-        return null;
+        BeamGameData gd = ((BeamGameInstance)be).gameData;         
+        return gd.Bikes.Values.Where(b => b != thisBike)
+            .OrderBy(b => Vector2.Distance(b.position, thisBike.position)).Take(maxCnt) // IBikes
+            .Select(go => go.position).ToList();
     }
 
 
     // AI Move stuff (here so player bike can display it)
 
-    protected static int ScoreForPoint(Ground g, Vector3 point, Ground.Place place)
+    protected static int ScoreForPoint(Ground g, Vector2 point, Ground.Place place)
     {
         return g.PointIsOnMap(point) ? (place == null ? 5 : 1) : 0; // 5 pts for a good place, 1 for a claimed one, zero for off-map
     }
 
-    protected MoveNode BuildMoveTree(Vector3 curPos, Heading curHead, int depth, List<Vector3> otherBadPos = null)
+    protected MoveNode BuildMoveTree(Vector2 curPos, Heading curHead, int depth, List<Vector2> otherBadPos = null)
     {
-        // Ground g = OldGameMain.GetInstance().feGround.beGround;
-        // Vector3 nextPos = UpcomingGridPoint(curPos, heading);
-        // MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1, otherBadPos);
-        // return root;
-        return null;
+        BeamGameData gd = ((BeamGameInstance)be).gameData;         
+        Ground g = gd.Ground;
+        Vector2 nextPos = UpcomingGridPoint(curPos, heading);
+         MoveNode root = MoveNode.GenerateTree(g, nextPos, curHead, 1, otherBadPos);
+        return root;
     }
 
     protected List<dirAndScore> TurnScores(MoveNode moveTree)
@@ -284,12 +274,12 @@ public class FrontendBike : MonoBehaviour
     public class MoveNode
     {
         public TurnDir dir; // the turn direction that got to here (index in parent's "next" list)
-        public Vector3 pos;
+        public Vector2 pos;
         public Ground.Place place;
         public int score;
         public List<MoveNode> next; // length 3
 
-        public MoveNode(Ground g, Vector3 p, Heading head, TurnDir d, int depth, List<Vector3> otherClaimedPos)
+        public MoveNode(Ground g, Vector2 p, Heading head, TurnDir d, int depth, List<Vector2> otherClaimedPos)
         {
             pos = p;
             dir = d; // for later lookup
@@ -299,7 +289,7 @@ public class FrontendBike : MonoBehaviour
                 score = 1; // TODO: use named scoring constants
             next = depth < 1 ? null : PossiblePointsForPointAndHeading(pos, head)
                     .Select((pt, childTurnDir) => new MoveNode(g,
-                       pos + GameConstants.UnitOffset3ForHeading(GameConstants.NewHeadForTurn(head, (TurnDir)childTurnDir)) * Ground.gridSize,
+                       pos + GameConstants.UnitOffset2ForHeading(GameConstants.NewHeadForTurn(head, (TurnDir)childTurnDir)) * Ground.gridSize,
                        head,
                        (TurnDir)childTurnDir,
                        depth - 1,
@@ -307,7 +297,7 @@ public class FrontendBike : MonoBehaviour
                     .ToList();
         }
 
-        public static MoveNode GenerateTree(Ground g, Vector3 rootPos, Heading initialHead, int depth, List<Vector3> otherBadPos)
+        public static MoveNode GenerateTree(Ground g, Vector2 rootPos, Heading initialHead, int depth, List<Vector2> otherBadPos)
         {
             return new MoveNode(g, rootPos, initialHead, TurnDir.kStraight, depth, otherBadPos);
         }

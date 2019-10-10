@@ -12,11 +12,11 @@ namespace BeamBackend
 
         public string bikeId {get; private set;} 
         public Player player {get; private set;}
+        public int ctrlType {get; private set;}
         public Vector2 position {get; private set;} = Vector2.zero; // always on the grid
         // NOTE: 2D position: x => east, y => north (in 3-space z is north and y is up)
         public Heading heading { get; private set;} = Heading.kNorth;
-
-        public IFrontendProxy feProxy = null;
+        public IBeamFrontend frontend = null;
 
         //
         // Temporary stuff for refactoring
@@ -27,27 +27,29 @@ namespace BeamBackend
 
         public void TempSetHeading(Heading h) => heading = h;
 
-        public BaseBike(string ID, Player p, Vector3 initialPos, Heading head)
+        public BaseBike(IBeamFrontend fe, string ID, Player p, int ctrl, Vector3 initialPos, Heading head)
         { 
+            frontend = fe;
             bikeId = ID;
             SetPos3(initialPos); // probably don't need this, but it doesn;t hurt
             heading = head;
-            player = p;        
+            player = p;    
+            ctrlType = ctrl;    
         }
+
+        // Commands from outside
+        public void PostPendingTurn(TurnDir t) => pendingTurn = t;
 
         public void SetPos3(Vector3 pos3)
         {
             position = new Vector2(pos3.x, pos3.z);
         }
 
-        public Vector3 GetPos3(float height = 0)
-        {
-            return new Vector3(position.x, height, position.y);
-        }
-
+        //
+  
         public void Loop(float secs)
         {
-            UnityEngine.Debug.Log("** BaseBike.DoUpdate()");            
+            //UnityEngine.Debug.Log("** BaseBike.DoUpdate()");            
             _updatePosition(secs);
         }
 
@@ -76,8 +78,8 @@ namespace BeamBackend
 
         protected virtual void DoAtGridPoint(Vector2 pos, Heading head)
         {
-            UnityEngine.Debug.Log("** BaseBike.DoAtGridPoint()");            
-            feProxy?.ReportBikeAtPoint(bikeId, pos);
+            //UnityEngine.Debug.Log("** BaseBike.DoAtGridPoint()");            
+            frontend?.ReportBikeAtPoint(bikeId, pos);
         }
 
         //
@@ -100,5 +102,7 @@ namespace BeamBackend
             }            
             return point;
         }    
+
+
     }
 }

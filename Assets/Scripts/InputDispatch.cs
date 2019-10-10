@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class InputDispatch : MonoBehaviour
 {
-    public LocalPlayerBike localPlayerBike {get; private set; } = null;
+    public FePlayerBike localPlayerBike {get; private set; } = null;
 
     public void SetLocalPlayerBike(GameObject playerBike)
     {
-       localPlayerBike = playerBike.transform.GetComponent<LocalPlayerBike>();
+       localPlayerBike = playerBike.transform.GetComponent<FePlayerBike>();
     }
 
     // Do domething better here
