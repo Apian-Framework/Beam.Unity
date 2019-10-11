@@ -27,11 +27,11 @@ namespace BeamBackend
 
         public void TempSetHeading(Heading h) => heading = h;
 
-        public BaseBike(IBeamFrontend fe, string ID, Player p, int ctrl, Vector3 initialPos, Heading head)
+        public BaseBike(IBeamFrontend fe, string ID, Player p, int ctrl, Vector2 initialPos, Heading head)
         { 
             frontend = fe;
             bikeId = ID;
-            SetPos3(initialPos); // probably don't need this, but it doesn;t hurt
+            position = initialPos;
             heading = head;
             player = p;    
             ctrlType = ctrl;    
@@ -40,10 +40,6 @@ namespace BeamBackend
         // Commands from outside
         public void PostPendingTurn(TurnDir t) => pendingTurn = t;
 
-        public void SetPos3(Vector3 pos3)
-        {
-            position = new Vector2(pos3.x, pos3.z);
-        }
 
         //
   

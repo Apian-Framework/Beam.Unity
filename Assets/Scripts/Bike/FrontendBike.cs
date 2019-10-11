@@ -226,7 +226,7 @@ public class FrontendBike : MonoBehaviour
     protected TurnDir TurnTowardsPos(Vector2 targetPos, Vector2 curPos, Heading curHead)
     {
         Vector2 bearing = targetPos - curPos;
-        float turnAngleDeg = Vector2.SignedAngle(bearing, GameConstants.UnitOffset2ForHeading(curHead));
+        float turnAngleDeg = Vector2.SignedAngle(GameConstants.UnitOffset2ForHeading(curHead), bearing);
         //Debug.Log(string.Format("Pos: {0}, Turn Angle: {1}", curPos, turnAngleDeg));
         return turnAngleDeg > 45f ? TurnDir.kLeft : (turnAngleDeg < -45f ? TurnDir.kRight : TurnDir.kStraight);
     }
@@ -242,10 +242,11 @@ public class FrontendBike : MonoBehaviour
 
     protected List<Vector2> UpcomingEnemyPos(IBike thisBike, int maxCnt)
     {
+        // Todo: this is actually "current enemy pos"
         BeamGameData gd = ((BeamGameInstance)be).gameData;         
         return gd.Bikes.Values.Where(b => b != thisBike)
             .OrderBy(b => Vector2.Distance(b.position, thisBike.position)).Take(maxCnt) // IBikes
-            .Select(go => go.position).ToList();
+            .Select(ob => ob.position).ToList();
     }
 
 

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using BeamBackend;
 
@@ -18,10 +19,17 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         feBikes = new Dictionary<string, GameObject>(); 
     }
 
+	public  int BikeCount() => feBikes.Count;   
+
     public GameObject GetBikeObj(string bikeId)
     {
         return feBikes[bikeId];
     }
+
+    public GameObject GetBikeObjByIndex(int idx)
+    {
+        return feBikes.Values.ElementAt(idx);
+    }    
     //
     // IBeamFrontend API
     //   

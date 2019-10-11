@@ -11,7 +11,7 @@ public static class BikeFactory
 	public static readonly int AiCtrl = 1;
 	public static readonly int LocalPlayerCtrl = 2;
 
-    public static IBike CreateBike(IBeamFrontend fe, string ID, Player p, int ctrl, Vector3 initialPos, Heading head)
+    public static IBike CreateBike(IBeamFrontend fe, string ID, Player p, int ctrl, Vector2 initialPos, Heading head)
 	{ 
         IBike ib = new BaseBike(fe, ID, p, ctrl, initialPos, head);
         return ib;
@@ -30,10 +30,10 @@ public static class BikeFactory
 		return (Heading)headInt;
 	}
 
-	static  Vector2 PickRandomPos( Heading head, Vector3 basePos, float radius)
+	static  Vector2 PickRandomPos( Heading head, Vector2 basePos, float radius)
 	{
 		Vector2 p = Ground.NearestGridPoint(
-					new Vector3(Random.Range(-radius, radius), Random.Range(-radius, radius)) + basePos );
+					new Vector2(Random.Range(-radius, radius), Random.Range(-radius, radius)) + basePos );
 		return p + GameConstants.UnitOffset2ForHeading(head) * .5f * Ground.gridSize;
 	}
 	public static Vector2 PositionForNewBike(List<IBike> otherBikes, Heading head, Vector2 basePos, float radius)

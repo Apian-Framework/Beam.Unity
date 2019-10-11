@@ -6,9 +6,10 @@ using BeamBackend;
 
 public class FeAiBike : FrontendBike
 {
+    public float kMaxBikeSeparation = Ground.gridSize * 6;
     public float turnTime = 2f;
 
-    public float aiCheckTimeout = .25f;
+    public float aiCheckTimeout = .7f;
 
     public float secsSinceLastAiCheck = 0;
 
@@ -18,20 +19,17 @@ public class FeAiBike : FrontendBike
     public override void DecideToTurn()
     {
         Vector2 pos = bb.position;
-
         BeamGameData gd = ((BeamGameInstance)be).gameData;
-
         Ground g = gd.Ground;
 
-        if (_curTurn == TurnDir.kStraight) { // not currently turning
-            secsSinceLastAiCheck += Time.deltaTime;   
-            if (secsSinceLastAiCheck > aiCheckTimeout) {         
+            secsSinceLastAiCheck += Time.deltaTime;   // TODO: be consistent with time
+            if (secsSinceLastAiCheck > aiCheckTimeout) 
+            {         
                 secsSinceLastAiCheck = 0;
-
                 // If not gonna turn maybe go towards the closest bike?
                 if (pendingTurn == TurnDir.kUnset) {
-                    Vector3 closestBikePos = ClosestBike(bb).position;
-                    if ( Vector3.Distance(pos, closestBikePos) > Ground.gridSize * 6) // only if it's not really close
+                    Vector2 closestBikePos = ClosestBike(bb).position;
+                    if ( Vector2.Distance(pos, closestBikePos) > kMaxBikeSeparation) // only if it's not really close
                         be.OnTurnRequested(bb.bikeId, TurnTowardsPos( closestBikePos, pos, heading )); 
                     else
                     {
@@ -41,12 +39,12 @@ public class FeAiBike : FrontendBike
                     }               
                 }
 
-                // Do some looking ahaed
-                Vector3 nextPos = UpcomingGridPoint(pos, heading);
+                // Do some looking ahead - maybe 
+                Vector2 nextPos = UpcomingGridPoint(pos, heading);
 
                 List<Vector2> othersPos = UpcomingEnemyPos(bb, 2); // up to 2 closest
 
-                MoveNode moveTree = BuildMoveTree(nextPos, heading, 5, othersPos);
+                MoveNode moveTree = BuildMoveTree(nextPos, heading, 4, othersPos);
                 List<dirAndScore> dirScores = TurnScores(moveTree);
                 dirAndScore best =  SelectGoodTurn(dirScores); 
                 if (  pendingTurn == TurnDir.kUnset || dirScores[(int)pendingTurn].score < best.score) 
@@ -55,7 +53,6 @@ public class FeAiBike : FrontendBike
                     be.OnTurnRequested(bb.bikeId, best.turnDir);
                 }
             }   
-        }
 
     }
 
