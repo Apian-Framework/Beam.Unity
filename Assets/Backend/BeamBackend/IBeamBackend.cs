@@ -8,6 +8,7 @@ namespace BeamBackend
     public interface IBeamBackend {
 
         void OnTurnRequested(string bikeId, TurnDir turn);
+        void ClaimPlace(string bikeId, Vector2 pos);
     }
 
 }

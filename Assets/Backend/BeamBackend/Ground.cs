@@ -26,12 +26,15 @@ namespace BeamBackend
             public BaseBike bike;
             public float secsLeft;
 
-            public Vector3 GetPos()
+            public int posHash() => xIdx + zIdx * Ground.pointsPerAxis;
+
+            public Vector2 GetPos()
             {
-                return new Vector3(xIdx*gridSize+minX, 0, zIdx*gridSize+minZ);
+                return new Vector2(xIdx*gridSize+minX,zIdx*gridSize+minZ);
             }
         }
 
+        // TODO: maybe use hash-indexed Dict instead of array? (See FeGround)
         public Place[,] placeArray = null; 
         protected List<Place> activePlaces = null;
         protected Stack<Place> freePlaces = null; // re-use released/expired ones
@@ -88,27 +91,27 @@ namespace BeamBackend
             });        
         }
 
-        public Place GetPlace(Vector3 pos)
+        public Place GetPlace(Vector2 pos)
         {
-            Vector3 gridPos = NearestGridPoint(pos);
+            Vector2 gridPos = NearestGridPoint(pos);
             int xIdx = (int)Mathf.Floor((gridPos.x - minX) / gridSize );
-            int zIdx = (int)Mathf.Floor((gridPos.z - minZ) / gridSize );
+            int zIdx = (int)Mathf.Floor((gridPos.y - minZ) / gridSize );
             //Debug.Log(string.Format("gridPos: {0}, xIdx: {1}, zIdx: {2}", gridPos, xIdx, zIdx));
             return IndicesAreOnMap(xIdx,zIdx) ? placeArray[xIdx,zIdx] : null;
         }
 
-        public Place ClaimPlace(BaseBike bike, Vector3 pos)
+        public Place ClaimPlace(BaseBike bike, Vector2 pos)
         {
-            Vector3 gridPos = NearestGridPoint(pos);        
+            Vector2 gridPos = NearestGridPoint(pos);        
             int xIdx = (int)Mathf.Floor((gridPos.x - minX) / gridSize );
-            int zIdx = (int)Mathf.Floor((gridPos.z - minZ) / gridSize );
+            int zIdx = (int)Mathf.Floor((gridPos.y - minZ) / gridSize );
 
             Place p = IndicesAreOnMap(xIdx,zIdx) ? ( placeArray[xIdx,zIdx] ?? SetupPlace(bike, xIdx, zIdx) ) : null;
             // TODO: Should claiming a place already held by team reset the timer?
             return (p?.bike == bike) ? p : null;
         }
 
-        public static Vector3 NearestGridPoint(Vector2 pos) 
+        public static Vector2 NearestGridPoint(Vector2 pos) 
         {
             float invGridSize = 1.0f / gridSize;
             return new Vector2( Mathf.Round(pos.x * invGridSize) * gridSize, Mathf.Round(pos.y * invGridSize) * gridSize);

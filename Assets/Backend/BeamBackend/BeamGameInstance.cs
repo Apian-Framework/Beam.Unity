@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GameModeMgr;
+using UnityEngine;
 
 namespace BeamBackend
 {
@@ -66,6 +67,12 @@ namespace BeamBackend
             b.PostPendingTurn(turn);
         }       
 
+        public void ClaimPlace(string bikeId, Vector2 pos)
+        {
+            BaseBike b = (BaseBike)gameData.Bikes[bikeId];            
+            Ground.Place p = gameData.Ground.ClaimPlace(b, pos);
+            // Ground sends message to FE when place s claimed
+        }
 
         //
         // Hmm. Where do these go?

@@ -62,17 +62,17 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void ReportBikeAtPoint(string bikeId, Vector2 pos)
     {
         //Debug.Log(string.Format("** Reporting bike {0} at {1}", bikeId, pos));        
-        feBikes[bikeId].GetComponent<FrontendBike>().DealWithPlace(pos);
+        feBikes[bikeId].GetComponent<FrontendBike>().OnBikeAtPoint(pos);
     }    
 
     // Ground
     public void SetupPlaceMarker(Ground.Place p)
     {
-        UnityEngine.Debug.Log("** Need to implement FE.SetupPlaceMarker()");     
+        feGround.SetupMarkerForPlace(p);    
     }
     public void FreePlaceMarker(Ground.Place p)
     {
-        Debug.Log("** Need to implement FE.FreePlaceMarker()");           
+        feGround.FreePlaceMarker(p);                   
     }        
     public void ClearPlaceMarkers()
     {
