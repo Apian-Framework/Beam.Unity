@@ -63,7 +63,7 @@ namespace BeamBackend
         }
 
         protected void RecyclePlace(Place p){
-            _feProxy?.FreePlaceMarker(p);
+            _feProxy?.OnFreePlace(p);
             p.bike = null;                 
             freePlaces.Push(p); // add to free list
             placeArray[p.xIdx, p.zIdx] = null;
@@ -79,7 +79,7 @@ namespace BeamBackend
         public void ClearPlaces()
         {
             InitPlaces();
-            _feProxy?.ClearPlaceMarkers();                             
+            _feProxy?.OnClearPlaces();                             
         }
 
         public void RemovePlacesForBike(BaseBike bike)
@@ -127,7 +127,6 @@ namespace BeamBackend
             p.zIdx = zIdx;
             p.bike = bike;
             placeArray[xIdx, zIdx] = p;
-            _feProxy.SetupPlaceMarker(p);
             activePlaces.Add(p);
             return p;
         }

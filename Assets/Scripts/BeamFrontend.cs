@@ -35,22 +35,22 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     //   
 
     // Players
-    public void NewPlayer(Player p)
+    public void OnNewPlayer(Player p)
     {
         UnityEngine.Debug.Log("FE.NewPlayer() currently does nothing");
     }
 
     // Bikes
-    public void NewBike(IBike ib)
+    public void OnNewBike(IBike ib)
     {
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround);
         feBikes[ib.bikeId] = bikeGo;
     }
-    public void DestroyBike(string bikeId, bool doExplode)
+    public void OnBikeDestroyed(string bikeId, bool doExplode)
     {
         Debug.Log("** Need to implement FE.DestroyBike()");
     }  
-    public void DestroyBikes()
+    public void OnClearBikes()
     {
 		foreach (GameObject bk in feBikes.Values)
 		{
@@ -59,10 +59,10 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 		feBikes.Clear();
     }    
 
-    public void ReportBikeAtPoint(string bikeId, Vector2 pos)
+    public void OnBikeAtPlace(string bikeId, Ground.Place place)
     {
         //Debug.Log(string.Format("** Reporting bike {0} at {1}", bikeId, pos));        
-        feBikes[bikeId].GetComponent<FrontendBike>().OnBikeAtPoint(pos);
+        feBikes[bikeId].GetComponent<FrontendBike>().OnBikeAtPlace(place);
     }    
 
     // Ground
@@ -70,11 +70,11 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         feGround.SetupMarkerForPlace(p);    
     }
-    public void FreePlaceMarker(Ground.Place p)
+    public void OnFreePlace(Ground.Place p)
     {
         feGround.FreePlaceMarker(p);                   
     }        
-    public void ClearPlaceMarkers()
+    public void OnClearPlaces()
     {
         feGround.ClearMarkers();
     }

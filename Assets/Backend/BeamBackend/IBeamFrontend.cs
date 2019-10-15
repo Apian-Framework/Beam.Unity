@@ -7,18 +7,18 @@ namespace BeamBackend
 {
     public interface IBeamFrontend {
 
+        // From backend
         // Players
-        void NewPlayer(Player p);
+        void OnNewPlayer(Player p);
         // Bikes
-        void NewBike(IBike ib);
-        void DestroyBike(string bikeId, bool doExplode);
-        void DestroyBikes();
-        void ReportBikeAtPoint(string bikeId, Vector2 pos);
+        void OnNewBike(IBike ib);
+        void OnBikeDestroyed(string bikeId, bool doExplode);
+        void OnClearBikes();
+        void OnBikeAtPlace(string bikeId, Ground.Place place);
 
         // Places
-        void SetupPlaceMarker(Ground.Place p);
-        void FreePlaceMarker(Ground.Place p);     
-        void ClearPlaceMarkers();
+        void OnFreePlace(Ground.Place p);     
+        void OnClearPlaces();
 
     }
 

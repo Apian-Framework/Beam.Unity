@@ -61,13 +61,22 @@ namespace BeamBackend
         //
         // IBeamBackend
         // 
-        public void OnTurnRequested(string bikeId, TurnDir turn)
+        public void OnNewPlayerReq(Player p)
+        {
+
+        }
+        public void OnNewBikeReq(IBike ib)
+        {
+            
+        }
+
+        public void OnTurnReq(string bikeId, TurnDir turn)
         {
             BaseBike b = (BaseBike)gameData.Bikes[bikeId];
             b.PostPendingTurn(turn);
         }       
 
-        public void ClaimPlace(string bikeId, Vector2 pos)
+        public void OnPlaceClaim(string bikeId, Vector2 pos)
         {
             BaseBike b = (BaseBike)gameData.Bikes[bikeId];            
             Ground.Place p = gameData.Ground.ClaimPlace(b, pos);
@@ -82,7 +91,7 @@ namespace BeamBackend
         public void NewPlayer(Player p)
         {
             gameData.Players[p.ID] = p;
-            frontend?.NewPlayer(p);
+            frontend?.OnNewPlayer(p);
         }
         public void DestroyPlayers()
         {
@@ -94,11 +103,11 @@ namespace BeamBackend
         {
             UnityEngine.Debug.Log(string.Format("NEW BIKE. ID: {0}, Pos: {1}", b.bikeId, b.position));            
             gameData.Bikes[b.bikeId] = b;
-            frontend?.NewBike(b);
+            frontend?.OnNewBike(b);
         }        
         public void DestroyBikes()
         {
-            frontend?.DestroyBikes();
+            frontend?.OnClearBikes();
             gameData.Bikes.Clear();
         }
 

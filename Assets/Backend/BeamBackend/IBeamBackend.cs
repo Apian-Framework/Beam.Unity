@@ -5,10 +5,11 @@ using UnityEngine;
 
 namespace BeamBackend
 {
+    // From FE
     public interface IBeamBackend {
-
-        void OnTurnRequested(string bikeId, TurnDir turn);
-        void ClaimPlace(string bikeId, Vector2 pos);
+        void OnNewPlayerReq(Player p);
+        void OnNewBikeReq(IBike ib);
+        void OnTurnReq(string bikeId, TurnDir turn);
     }
 
 }

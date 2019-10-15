@@ -165,17 +165,14 @@ public class FrontendBike : MonoBehaviour
         transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
     }
 
-    public virtual void OnBikeAtPoint(Vector2 pos)
+    public virtual void OnBikeAtPlace(Ground.Place place)
     {
-        Ground g = BeamMain.GetInstance().backend.gameData.Ground;
-        Ground.Place p = g.GetPlace(pos);
-        if (p == null)
+        if (place == null)
         {
-            be.ClaimPlace(bb.bikeId, pos);   
+            Debug.Log("** FE bike got to null place");            
         } else {
             ouchObj.SetActive(false); // restart in case the anim is already running
             ouchObj.SetActive(true);            
-            Debug.Log("** FE bike needs to report hitting claimed place");
         }
     }
     public virtual void DealWithPlace(Vector2 pos2) // returns place in case override wants to do something with it.

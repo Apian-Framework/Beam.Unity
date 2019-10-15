@@ -47,12 +47,12 @@ public class FePlayerBike : FrontendBike
 
     public void FrobLeftButton()
     {
-        be.OnTurnRequested(bb.bikeId, TurnDir.kLeft);
+        be.OnTurnReq(bb.bikeId, TurnDir.kLeft);
     }
 
     public void FrobRightButton()
     {
-        be.OnTurnRequested(bb.bikeId, TurnDir.kRight);
+        be.OnTurnReq(bb.bikeId, TurnDir.kRight);
     }
 
 }

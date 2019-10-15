@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace BeamBackend
 {
-    // Remeber, BaseGameMode is Setup() with:
-    // manager == ModeManager
+    // Remember, BaseGameMode is Setup() with:
+    //  manager == ModeManager
 	//	gameInst == GameInstance    
     public class ModeSplash : BaseGameMode
     {
@@ -78,7 +78,7 @@ namespace BeamBackend
             Heading heading = BikeFactory.PickRandomHeading();
             Vector2 pos = BikeFactory.PositionForNewBike( game.gameData.Bikes.Values.ToList(), heading, Ground.zeroPos, Ground.gridSize * 10 );
             string bikeId = Guid.NewGuid().ToString();
-            IBike ib = BikeFactory.CreateBike(game.frontend, bikeId, p, BikeFactory.AiCtrl,pos, heading);
+            IBike ib = BikeFactory.CreateBike(game, bikeId, p, BikeFactory.AiCtrl,pos, heading);
             game.NewBike(ib); 
             return ib.bikeId;          
         }

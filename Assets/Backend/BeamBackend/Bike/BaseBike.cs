@@ -16,7 +16,7 @@ namespace BeamBackend
         public Vector2 position {get; private set;} = Vector2.zero; // always on the grid
         // NOTE: 2D position: x => east, y => north (in 3-space z is north and y is up)
         public Heading heading { get; private set;} = Heading.kNorth;
-        public IBeamFrontend frontend = null;
+        public BeamGameInstance gameInst = null;
 
         //
         // Temporary stuff for refactoring
@@ -27,9 +27,9 @@ namespace BeamBackend
 
         public void TempSetHeading(Heading h) => heading = h;
 
-        public BaseBike(IBeamFrontend fe, string ID, Player p, int ctrl, Vector2 initialPos, Heading head)
+        public BaseBike(BeamGameInstance gi, string ID, Player p, int ctrl, Vector2 initialPos, Heading head)
         { 
-            frontend = fe;
+            gameInst = gi;
             bikeId = ID;
             position = initialPos;
             heading = head;
@@ -39,7 +39,6 @@ namespace BeamBackend
 
         // Commands from outside
         public void PostPendingTurn(TurnDir t) => pendingTurn = t;
-
 
         //
   
@@ -74,8 +73,18 @@ namespace BeamBackend
 
         protected virtual void DoAtGridPoint(Vector2 pos, Heading head)
         {
-            //UnityEngine.Debug.Log("** BaseBike.DoAtGridPoint()");            
-            frontend?.ReportBikeAtPoint(bikeId, pos);
+            Ground g = gameInst.gameData.Ground;
+            Ground.Place p = g.GetPlace(pos);
+
+            if (p == null)
+            {
+                p = g.ClaimPlace(this, pos); 
+            } else {
+                // Do score thing,
+            }            
+            
+            gameInst.frontend?.OnBikeAtPlace(bikeId, p); // TODO         
+            
         }
 
         //

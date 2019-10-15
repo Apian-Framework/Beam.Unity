@@ -11,9 +11,9 @@ public static class BikeFactory
 	public static readonly int AiCtrl = 1;
 	public static readonly int LocalPlayerCtrl = 2;
 
-    public static IBike CreateBike(IBeamFrontend fe, string ID, Player p, int ctrl, Vector2 initialPos, Heading head)
+    public static IBike CreateBike(BeamGameInstance gi, string ID, Player p, int ctrl, Vector2 initialPos, Heading head)
 	{ 
-        IBike ib = new BaseBike(fe, ID, p, ctrl, initialPos, head);
+        IBike ib = new BaseBike(gi, ID, p, ctrl, initialPos, head);
         return ib;
     }	
 

@@ -30,12 +30,12 @@ public class FeAiBike : FrontendBike
                 if (pendingTurn == TurnDir.kUnset) {
                     Vector2 closestBikePos = ClosestBike(bb).position;
                     if ( Vector2.Distance(pos, closestBikePos) > kMaxBikeSeparation) // only if it's not really close
-                        be.OnTurnRequested(bb.bikeId, TurnTowardsPos( closestBikePos, pos, heading )); 
+                        be.OnTurnReq(bb.bikeId, TurnTowardsPos( closestBikePos, pos, heading )); 
                     else
                     {
                         bool doTurn = ( Random.value * turnTime <  GameTime.DeltaTime() );
                         if (doTurn)    
-                            be.OnTurnRequested(bb.bikeId, (Random.value < .5f) ? TurnDir.kLeft : TurnDir.kRight);   
+                            be.OnTurnReq(bb.bikeId, (Random.value < .5f) ? TurnDir.kLeft : TurnDir.kRight);   
                     }               
                 }
 
@@ -50,7 +50,7 @@ public class FeAiBike : FrontendBike
                 if (  pendingTurn == TurnDir.kUnset || dirScores[(int)pendingTurn].score < best.score) 
                 {
                     //Debug.Log(string.Format("New Turn: {0}", best.turnDir));                    
-                    be.OnTurnRequested(bb.bikeId, best.turnDir);
+                    be.OnTurnReq(bb.bikeId, best.turnDir);
                 }
             }   
 
