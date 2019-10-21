@@ -5,12 +5,26 @@ using UnityEngine;
 
 namespace BeamBackend
 {
-    public interface IBeamFrontend {
+    public interface IFrontendModeHelper 
+    {
+        void OnStartMode(int modeId, object param);
+        void DispatchCmd(int modeId, int cmdId, object param);
+        void OnEndMode(int modeId, object param);
+    }
 
-        // From backend
+
+    public interface IBeamFrontend 
+    {
+
+        // Called by backend
+
+        // Game Modes
+        IFrontendModeHelper ModeHelper();
+
         // Players
         void OnNewPlayer(Player p);
         // Bikes
+        
         void OnNewBike(IBike ib);
         void OnBikeDestroyed(string bikeId, bool doExplode);
         void OnClearBikes();
@@ -19,7 +33,6 @@ namespace BeamBackend
         // Places
         void OnFreePlace(Ground.Place p);     
         void OnClearPlaces();
-
     }
 
 }

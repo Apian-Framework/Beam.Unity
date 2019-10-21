@@ -12,10 +12,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     protected BeamMain mainObj;
 
+    protected BeamModeHelper feModeHelper;
+
     // Start is called before the first frame update
     void Start()
     {
         mainObj = BeamMain.GetInstance();
+        feModeHelper = new BeamModeHelper(mainObj);
         feBikes = new Dictionary<string, GameObject>(); 
     }
 
@@ -33,6 +36,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     //
     // IBeamFrontend API
     //   
+
+    // Backend game modes
+    public IFrontendModeHelper ModeHelper() => (IFrontendModeHelper)feModeHelper;
 
     // Players
     public void OnNewPlayer(Player p)
