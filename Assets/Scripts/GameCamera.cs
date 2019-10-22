@@ -249,7 +249,7 @@ public class GameCamera : MonoBehaviour {
             
             Vector3 targetPos = _targetObj.transform.position;
             targetPos += offset;
-            
+
             // From target (w/offset) to camera
             Vector3 toCam =  _theGameCam.transform.position - targetPos;
             

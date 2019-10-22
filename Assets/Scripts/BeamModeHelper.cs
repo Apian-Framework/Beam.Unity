@@ -62,10 +62,10 @@ public class BeamModeHelper : IFrontendModeHelper
  //           _cmdDispatch[ModeSplash.kCmdTargetCamera] = new Action<object>(o => TargetCamera(o));            
         }
 
-        protected void TargetCamera(ModeSplash.TargetIdParams parm)
-        {
+        // protected void TargetCamera(ModeSplash.TargetIdParams parm)
+        // {
 
-        }
+        // }
 
         public override void OnStart(object parms=null)
         {
@@ -89,7 +89,9 @@ public class BeamModeHelper : IFrontendModeHelper
             GameObject tBike = _feMain.frontend.GetBikeObj(targetBikeId);
 
             _feMain.gameCamera.transform.position = new Vector3(100, 100, 100);
-            _feMain.gameCamera.MoveCameraToTarget(tBike, 5f, 2f, .5f,  .3f);
+            _feMain.gameCamera.MoveCameraToTarget(tBike, 5f, 2f, .5f,  0);
+            //_feMain.gameCamera.StartBikeMode(tBike);  
+            //_feMain.gameCamera.StartOrbit(tBike, 15f, new Vector3(0,3f,0));            
         }
 
         protected void SetupCameras(string targetBikeId)

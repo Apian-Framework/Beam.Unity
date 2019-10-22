@@ -65,15 +65,15 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 		feBikes.Clear();
     }    
 
-    public void OnBikeAtPlace(string bikeId, Ground.Place place)
+    public void OnBikeAtPlace(string bikeId, Ground.Place place, bool justClaimed)
     {
         //Debug.Log(string.Format("** Reporting bike {0} at {1}", bikeId, pos));        
-        feBikes[bikeId].GetComponent<FrontendBike>().OnBikeAtPlace(place);
+        feBikes[bikeId].GetComponent<FrontendBike>().OnBikeAtPlace(place, justClaimed);
     }    
 
     // Ground
     public void SetupPlaceMarker(Ground.Place p)
-    {
+    {         
         feGround.SetupMarkerForPlace(p);    
     }
     public void OnFreePlace(Ground.Place p)

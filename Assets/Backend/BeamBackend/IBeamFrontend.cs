@@ -28,9 +28,10 @@ namespace BeamBackend
         void OnNewBike(IBike ib);
         void OnBikeDestroyed(string bikeId, bool doExplode);
         void OnClearBikes();
-        void OnBikeAtPlace(string bikeId, Ground.Place place);
+        void OnBikeAtPlace(string bikeId, Ground.Place place, bool justClaimed);
 
         // Places
+        void SetupPlaceMarker(Ground.Place p);    
         void OnFreePlace(Ground.Place p);     
         void OnClearPlaces();
     }

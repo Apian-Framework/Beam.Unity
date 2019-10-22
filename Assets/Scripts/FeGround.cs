@@ -8,14 +8,14 @@ public class FeGround : MonoBehaviour
     public Ground beGround = null;
 
     protected Dictionary<int, GameObject> activeMarkers; 
-    protected List<GameObject> idleMarkers;
+    protected Stack<GameObject> idleMarkers;
 
     public GameObject markerPrefab;
 
     void Awake() 
     {
         activeMarkers = new Dictionary<int, GameObject>(); 
-        idleMarkers = new List<GameObject>();       
+        idleMarkers = new Stack<GameObject>();       
     }
 
     public void ClearMarkers()
@@ -27,25 +27,32 @@ public class FeGround : MonoBehaviour
     }
 
     public GameObject SetupMarkerForPlace(Ground.Place p)
-    {
-        int posHash = p .posHash();
+    {      
+        int posHash = p.posHash();
         GameObject marker = null;
         try {
             marker = activeMarkers[posHash];
         } catch(KeyNotFoundException) {
-            marker = GameObject.Instantiate(markerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+            marker = idleMarkers.Count > 0 ? idleMarkers.Pop() : GameObject.Instantiate(markerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
             marker.transform.parent = transform;            
             activeMarkers[posHash] =  marker;
         }
         marker.transform.position = utils.Vec3(p.GetPos());
         GroundMarker gm = (GroundMarker)marker.transform.GetComponent("GroundMarker");
-		//gm.SetColor(p.bike.player.Team.Color);	
+		gm.SetColor(utils.hexToColor(p.bike.player.Team.Color));	
         marker.SetActive(true);	
         return marker;
     }
 
     public void FreePlaceMarker(Ground.Place p)
     {
-       Debug.Log("** Need to implement FeGround.FreePlaceMarker()"); 
+        int posHash = p.posHash();
+        GameObject marker = null;
+        try {
+            marker = activeMarkers[posHash];
+            marker.SetActive(false);
+            idleMarkers.Push(marker);
+            activeMarkers.Remove(posHash);
+        }  catch(KeyNotFoundException) { }
     }
 }

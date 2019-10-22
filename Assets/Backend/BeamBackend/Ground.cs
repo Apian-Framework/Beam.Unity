@@ -128,6 +128,7 @@ namespace BeamBackend
             p.bike = bike;
             placeArray[xIdx, zIdx] = p;
             activePlaces.Add(p);
+            _feProxy?.SetupPlaceMarker(p);
             return p;
         }
 

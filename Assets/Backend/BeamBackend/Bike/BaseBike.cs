@@ -75,15 +75,16 @@ namespace BeamBackend
         {
             Ground g = gameInst.gameData.Ground;
             Ground.Place p = g.GetPlace(pos);
-
+            bool justClaimed = false;
             if (p == null)
             {
                 p = g.ClaimPlace(this, pos); 
+                justClaimed = true;
             } else {
                 // Do score thing,
             }            
             
-            gameInst.frontend?.OnBikeAtPlace(bikeId, p); // TODO         
+            gameInst.frontend?.OnBikeAtPlace(bikeId, p, justClaimed); // TODO         
             
         }
 
