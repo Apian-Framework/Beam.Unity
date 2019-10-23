@@ -8,8 +8,9 @@ public class BeamMain : MonoBehaviour
 	public GameCamera gameCamera;
 	public UICamera uiCamera;	
 	public InputDispatch inputDispatch;    
+    public GameObject boomPrefab;          
 	public EthereumProxy eth = null;
-    public GameObject boomPrefab;      
+
 
     // Non-monobehaviors
     public BeamGameInstance backend;
@@ -44,6 +45,8 @@ public class BeamMain : MonoBehaviour
 		uiCamera = (UICamera)utils.findObjectComponent("UICamera", "UICamera");		
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");		
 		
+        inputDispatch = new InputDispatch(this);
+
         eth = new EthereumProxy();
 		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using        
 		

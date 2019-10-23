@@ -79,12 +79,20 @@ namespace BeamBackend
             if (p == null)
             {
                 p = g.ClaimPlace(this, pos); 
-                justClaimed = true;
+                if ( p == null)
+                {
+                    // Off map
+                    gameInst.OnScoreEvent(this, ScoreEvent.kOffMap, null);                    
+                } else {
+                    justClaimed = true;
+                    gameInst.OnScoreEvent(this, ScoreEvent.kClaimPlace, null); 
+                }
             } else {
-                // Do score thing,
+                // Hit a marker. Do score thing,
+                gameInst.OnScoreEvent(this, p.bike.player.Team == player.Team ? ScoreEvent.kHitFriendPlace : ScoreEvent.kHitEnemyPlace, p);
             }            
             
-            gameInst.frontend?.OnBikeAtPlace(bikeId, p, justClaimed); // TODO         
+            gameInst.frontend?.OnBikeAtPlace(bikeId, p, justClaimed); 
             
         }
 

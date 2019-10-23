@@ -23,17 +23,18 @@ namespace BeamBackend
 
         // Players
         void OnNewPlayer(Player p);
+        void OnClearPlayers();        
         // Bikes
-        
         void OnNewBike(IBike ib);
-        void OnBikeDestroyed(string bikeId, bool doExplode);
+        void OnBikeRemoved(string bikeId, bool doExplode);
         void OnClearBikes();
         void OnBikeAtPlace(string bikeId, Ground.Place place, bool justClaimed);
-
         // Places
         void SetupPlaceMarker(Ground.Place p);    
         void OnFreePlace(Ground.Place p);     
         void OnClearPlaces();
+        // scoring
+        // void OnScoreEvent(string bikeId, ScoreEvent evt, Ground.Place place); Need this?
     }
 
 }

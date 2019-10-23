@@ -20,7 +20,7 @@ namespace BeamBackend
         kUnset = 3, 
     }
 
-    public enum ScoreEvent
+    public enum ScoreEvent // Is "event" a bad name (because C#)?
     {
         kClaimPlace = 0,
         kHitFriendPlace = 1,

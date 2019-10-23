@@ -7,9 +7,9 @@ using BeamBackend;
 public static class BikeFactory
 {
 	// Types are pretty lame, but don't mean much to the backend
-	public static readonly int RemoteCtrl = 0;
-	public static readonly int AiCtrl = 1;
-	public static readonly int LocalPlayerCtrl = 2;
+	public const int RemoteCtrl = 0;
+	public const int AiCtrl = 1;
+	public const int LocalPlayerCtrl = 2;
 
     public static IBike CreateBike(BeamGameInstance gi, string ID, Player p, int ctrl, Vector2 initialPos, Heading head)
 	{ 

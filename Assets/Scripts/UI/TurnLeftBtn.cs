@@ -16,13 +16,13 @@ public class TurnLeftBtn : UIBtn  {
 	protected override void Update()
 	{
 		base.Update();
-		// if (Input.GetKeyDown(KeyCode.LeftArrow))
-		// 	_main.inputDispatch.LocalPlayerBikeLeft();		
+		if (Input.GetKeyDown(KeyCode.LeftArrow))
+			_main.inputDispatch.LocalPlayerBikeLeft();		
 	}
 
 	public override void doSelect()
 	{
-		// _main.inputDispatch.LocalPlayerBikeLeft();
+		_main.inputDispatch.LocalPlayerBikeLeft();
 	}
 }
 

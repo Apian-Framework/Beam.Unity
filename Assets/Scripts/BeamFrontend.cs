@@ -22,11 +22,21 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         feBikes = new Dictionary<string, GameObject>(); 
     }
 
-	public  int BikeCount() => feBikes.Count;   
+	public  int BikeCount() => feBikes.Count;  
+
 
     public GameObject GetBikeObj(string bikeId)
     {
-        return feBikes[bikeId];
+        try {
+            return feBikes[bikeId];
+        } catch (KeyNotFoundException) {
+            return null;
+        }
+    }
+
+    public List<GameObject> GetBikeList()
+    {
+        return feBikes.Values.ToList();
     }
 
     public GameObject GetBikeObjByIndex(int idx)
@@ -43,18 +53,34 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     // Players
     public void OnNewPlayer(Player p)
     {
-        UnityEngine.Debug.Log("FE.NewPlayer() currently does nothing");
+        UnityEngine.Debug.Log("FE.OnNewPlayer() currently does nothing");
+    }
+
+    public void OnClearPlayers()
+    {
+        UnityEngine.Debug.Log("FE.OnClearPlayers() currently does nothing");
     }
 
     // Bikes
     public void OnNewBike(IBike ib)
     {
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround);
+        if (ib.player.IsLocal == true)
+            mainObj.inputDispatch.SetLocalPlayerBike(bikeGo);
         feBikes[ib.bikeId] = bikeGo;
     }
-    public void OnBikeDestroyed(string bikeId, bool doExplode)
+    public void OnBikeRemoved(string bikeId, bool doExplode)
     {
-        Debug.Log("** Need to implement FE.DestroyBike()");
+        GameObject go = feBikes[bikeId];
+        feBikes.Remove(bikeId);
+        mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
+		// if (inputDispatch.localPlayerBike != null && bikeObj == inputDispatch.localPlayerBike.gameObject)
+		// {
+		// 	Debug.Log("Boom! Player");
+		// 	uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
+		// }
+		GameObject.Instantiate(mainObj.boomPrefab, go.transform.position, Quaternion.identity);
+		UnityEngine.Object.Destroy(go);        
     }  
     public void OnClearBikes()
     {
@@ -66,9 +92,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     }    
 
     public void OnBikeAtPlace(string bikeId, Ground.Place place, bool justClaimed)
-    {
-        //Debug.Log(string.Format("** Reporting bike {0} at {1}", bikeId, pos));        
-        feBikes[bikeId].GetComponent<FrontendBike>().OnBikeAtPlace(place, justClaimed);
+    {        
+        GetBikeObj(bikeId)?.GetComponent<FrontendBike>().OnBikeAtPlace(place, justClaimed);
     }    
 
     // Ground

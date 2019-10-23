@@ -39,6 +39,16 @@ namespace GameModeMgr
 			}
 		}
 
+		protected class ModeData
+		{
+			public int modeId;
+			public IGameMode mode;
+			public ModeData(int mId, IGameMode m)
+			{
+				modeId = mId;
+				mode = m;
+			}
+		}
 	
 		// Singleton access
 		// TODO: do we REALLY want the singleton pattern?
@@ -50,14 +60,14 @@ namespace GameModeMgr
 
 		protected IModeFactory _factory;
 		protected IGameInstance _gameInst;
-		protected Stack<IGameMode> _modeStack = null;
+		protected Stack<ModeData> _modeDataStack = null;	
 		protected OpData _nextOpData = null;
 
 		public ModeManager(IModeFactory factory, IGameInstance gameInst = null) 
 		{
 			instance = this;
 			_factory = factory;
-			_modeStack = new Stack<IGameMode>();
+			_modeDataStack = new Stack<ModeData>();
 			_nextOpData = OpData.DoNothing;
 			_gameInst = gameInst;
 		} 
@@ -121,11 +131,11 @@ namespace GameModeMgr
 			}	
 
 			//# Now - whatever is current, call its loop
-			if (_modeStack.Count > 0)
+			if (_modeDataStack.Count > 0)
 				CurrentMode().Loop(frameSecs);
 			
 			// If nothing on stack - we're done
-			return _modeStack.Count > 0;
+			return _modeDataStack.Count > 0;
 		}	
 
 		public virtual void DispatchCmd(int cmd, object param = null) 
@@ -135,17 +145,26 @@ namespace GameModeMgr
 
 		public IGameMode CurrentMode()
 		{
-			// External access. Mostly this is to check for None - meaning the engine  has popped all states and is idle.
-			try {
-				return _modeStack.Peek();
-			} catch (InvalidOperationException) {
-				return null;
-			}
+			return _CurrentModeData()?.mode;
+		}
+
+		public int CurrentModeId()
+		{
+			return _CurrentModeData()?.modeId ?? -1;
 		}
 
 		//
 		// Internal calls
 		// 
+		protected ModeData _CurrentModeData()
+		{
+			try {
+				return _modeDataStack.Peek();
+			} catch (InvalidOperationException) {
+				return null;
+			}			
+		}
+
 		protected object _StopCurrentMode()
 		{
 			//  pop the current state from the stack and call it's end()
@@ -156,21 +175,21 @@ namespace GameModeMgr
 			if ( oldMode != null)
 			{      
 				retVal = oldMode.End(); // should still be on the stack (for potential GetCurrentState() during pop) TODO: Is this true?
-				_modeStack.Pop();  
+				_modeDataStack.Pop();  
 			}      
 			return retVal;
 		}
 		protected void _Stop()
 		{
 			// Unwind the stack
-			while(_modeStack.Count > 0)
+			while(_modeDataStack.Count > 0)
 				_StopCurrentMode();
 		}
 
 		protected void _StartMode(OpData opData)
 		{
 			IGameMode nextMode = _factory.Create(opData.nextModeId);
-			_modeStack.Push(nextMode);             
+			_modeDataStack.Push(new ModeData(opData.nextModeId, nextMode));
 			nextMode.Setup(this, _gameInst);
 			nextMode.Start(opData.nextParam);
 		}

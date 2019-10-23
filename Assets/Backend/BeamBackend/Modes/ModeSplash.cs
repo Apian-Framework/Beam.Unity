@@ -9,8 +9,7 @@ namespace BeamBackend
     //  manager == ModeManager
 	//	gameInst == GameInstance    
     public class ModeSplash : BaseGameMode
-    {
-        public class TargetIdParams {public string targetId;}        
+    {      
         static public readonly int kCmdTargetCamera = 1;
 
 	    static public readonly int kSplashBikeCount = 12;
@@ -20,8 +19,8 @@ namespace BeamBackend
         {
             base.Start();
             game = (BeamGameInstance)gameInst;
-            game.DestroyPlayers();
-            game.DestroyBikes();    
+            game.ClearPlayers();
+            game.ClearBikes();    
             game.ClearPlaces();     
 
             string cameraTargetBikeId = CreateADemoBike();
@@ -29,13 +28,17 @@ namespace BeamBackend
                 CreateADemoBike(); 
 
             game.frontend.ModeHelper()
-                .OnStartMode(BeamModeFactory.kSplash, new TargetIdParams{targetId = cameraTargetBikeId} );             
+                .OnStartMode(BeamModeFactory.kSplash, new BeamModeHelper.TargetIdParams{targetId = cameraTargetBikeId} );             
         }
 
 		public override void Loop(float frameSecs) {}
 
-		public override object End() {
-             return null;
+		public override object End() {            
+            game.frontend.ModeHelper().OnEndMode(game.modeMgr.CurrentModeId(), null);
+            game.ClearPlayers();
+            game.ClearBikes();    
+            game.ClearPlaces();              
+            return null;
         } 
 
         public override void HandleCmd(int cmd, object param)
@@ -46,7 +49,7 @@ namespace BeamBackend
         protected string CreateADemoBike()
         {
             Player p = DemoPlayerData.CreatePlayer(); 
-            game.NewPlayer(p);
+            game.AddNewPlayer(p);
             Heading heading = BikeFactory.PickRandomHeading();
             Vector2 pos = BikeFactory.PositionForNewBike( game.gameData.Bikes.Values.ToList(), heading, Ground.zeroPos, Ground.gridSize * 10 );
             string bikeId = Guid.NewGuid().ToString();

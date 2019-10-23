@@ -17,7 +17,7 @@ namespace GameModeMgr
 
 	public abstract class BaseGameMode : IGameMode
 	{	
-		protected Dictionary<int,dynamic> _cmdDispatch = new Dictionary<int, dynamic>();  	
+		protected Dictionary<int,dynamic> _cmdDispatch;  	
 		public ModeManager manager; 
 		public IGameInstance gameInst;
 			
@@ -26,6 +26,7 @@ namespace GameModeMgr
 			// Called by manager before Start()
 			// Not virtual
 			// TODO: this should be the engine and not the modeMgr - but what IS an engine...
+ 			_cmdDispatch = new Dictionary<int, dynamic>();
 			manager = mgr;
 			gameInst = gInst;
 

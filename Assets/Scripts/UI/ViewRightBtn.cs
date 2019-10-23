@@ -19,16 +19,12 @@ public class ViewRightBtn : UIBtn  {
 	{
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.X ))
-		{
-			// _main.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kLookAround, 
-			// 	(object)new GameCamera.ModeBikeView.LookParams(lookRadians, decayRate) );
-		}
+			_main.inputDispatch.LookAround(lookRadians, decayRate);
 	}
 
 	public override void doSelect()
 	{
-		// _main.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kLookAround, 
-		// 	(object)new GameCamera.ModeBikeView.LookParams(lookRadians, decayRate) );
+		_main.inputDispatch.LookAround(lookRadians, decayRate);		
 	}
 }
 
