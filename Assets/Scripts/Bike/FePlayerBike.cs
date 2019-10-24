@@ -12,7 +12,7 @@ public class FePlayerBike : FrontendBike
         base.Update();
 
          //FeGround g = BeamMain.GetInstance().feGround;
-         if (_curTurn == TurnDir.kStraight) {
+        // if (_curTurn == TurnDir.kStraight) {
             // Vector3 pos = transform.position;
             // Vector3 otherPos = ClosestBike(this.gameObject).transform.position;
 
@@ -36,7 +36,7 @@ public class FePlayerBike : FrontendBike
         //         Color c = dcc.score < 1 ? Color.red : Color.gray;
         //         Debug.DrawLine( nextPos, nextPos + GameConstants.UnitOffsetForHeading(newHead]*Ground.gridSize, c );                
         //     }
-        }
+        //}
     }
 
 

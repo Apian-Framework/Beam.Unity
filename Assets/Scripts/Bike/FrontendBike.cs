@@ -19,9 +19,9 @@ public class FrontendBike : MonoBehaviour
     // Temp (probably) stuff for refactoring to add BaseBike
     public TurnDir pendingTurn { get => bb.pendingTurn; }
 
-    public float turnRadius = 1; // 2.0f;
+    public float turnRadius = 1.5f;
 
-    public float maxLean = 50.0f;
+    public float maxLean = 40.0f;
 
     protected GameObject ouchObj;
 
@@ -31,10 +31,10 @@ public class FrontendBike : MonoBehaviour
 
     public static readonly float kRoot2Over2 = 2.0f / Mathf.Sqrt(2);
 
-    Vector3 _turnAxis = Vector3.up; // just a dummy location
-    //float _turnStartTheta = 0f;
-    //float _turnTheta = 0f; // 0 is north, increases clockwise
     protected TurnDir _curTurn = TurnDir.kStraight;
+    protected Vector2 _curTurnPt; // only has meaning when curTuen is set
+    protected Vector2 _curTurnCenter; // only has meaning when curTuen is set 
+    protected float _curTurnStartTheta;   
 
     // Important: Setup() is not called until after Awake() and Start() have been called on the
     // GameObject and components. Both of those are called when the GO is instantiated
@@ -144,9 +144,44 @@ public class FrontendBike : MonoBehaviour
     {
         DecideToTurn();
 
+        _curTurn = CurrentTurn();
+
+        if (_curTurn == TurnDir.kStraight)
+            DoStraight();
+        else
+            DoTurn();
+
+    }
+
+    protected TurnDir CurrentTurn()
+    {
+        // If we are not already in a turn, and a turn is pending
+        // and we are close enough to the upcomng point,
+        // Then set _curTurn, and _curTurnPt, and _curTurnCenter
+        if (_curTurn != TurnDir.kStraight) // once set must be turned off by code
+            return _curTurn;
+
+        Vector2 nextGridPt =  UpcomingGridPoint(bb.position, bb.heading);
+        float nextDist = Vector2.Distance(bb.position, nextGridPt);
+
+        if (  nextDist <= turnRadius 
+            && pendingTurn != TurnDir.kStraight 
+            && pendingTurn != TurnDir.kUnset)
+            {
+                _curTurnPt = nextGridPt;
+                Heading nextHead = GameConstants.NewHeadForTurn(heading, pendingTurn);
+                _curTurnCenter = nextGridPt - (GameConstants.UnitOffset2ForHeading(heading) - GameConstants.UnitOffset2ForHeading(nextHead)) * turnRadius; 
+                _curTurnStartTheta = turnStartTheta[(int)heading] + (pendingTurn == TurnDir.kRight ? 180f : 0f);                               
+                return pendingTurn;
+            }
+
+        return TurnDir.kStraight;
+    }
+
+    protected void DoStraight()
+    {
         Vector3 pos = utils.Vec3(bb.position);
         Vector3 angles = transform.eulerAngles;
-
         angles.z = 0;
         angles.y = turnStartTheta[(int)heading] - 90f;
         transform.eulerAngles = angles;
@@ -154,14 +189,71 @@ public class FrontendBike : MonoBehaviour
         transform.position = pos;
     }
 
-    //DealWithPlace(pos);
+    protected void DoTurn()
+    {
+        // Do a turn iteration
+
+        // What is the baseBike's fractional distance from the turn start to the turn end (total D => 2 * turnRadius)
+        
+        // Magnitude is the distance, if negative then we are heading towads it, positive is away
+        float dotVal =  Vector2.Dot(GameConstants.UnitOffset2ForHeading(heading),  bb.position - _curTurnPt);
+
+        // So, fractional  0 -> 1 distance along the turn is (dotVal + turnRadius) / (2* turnRadius)
+        float frac = (dotVal + turnRadius) / (turnRadius * 2);
+
+        if (frac < 1)    
+        {
+            // we're turning
+            float thetaDeg = _curTurnStartTheta + 90f * frac * (_curTurn == TurnDir.kRight ? 1 : -1);
+            //Debug.Log(string.Format("turnTheta: {0}", thetaDeg)); 
+
+            // Position            
+            Vector2 pos = _curTurnCenter + new Vector2(turnRadius * Mathf.Sin(thetaDeg * Mathf.Deg2Rad), turnRadius * Mathf.Cos(thetaDeg * Mathf.Deg2Rad));
+            transform.position = utils.Vec3(pos, 0);
+
+            // heading and lean
+            Vector3 angles = transform.eulerAngles;            
+            angles.z = -Mathf.Sin( frac * 180f * Mathf.Deg2Rad) * maxLean *  (_curTurn == TurnDir.kRight ? 1 : -1);
+            angles.y = thetaDeg + (_curTurn == TurnDir.kLeft ? -1f : 1f) * 90f;  
+            //Debug.Log(string.Format("lean: {0}", angles.z));            
+            transform.eulerAngles = angles;          
+
+        } else {
+            // we're done
+            //Debug.Log(string.Format("--------- turn done ---------- "));                  
+            _curTurn = TurnDir.kStraight;
+        }
+
+
+
+/* 
+        float dThetaRad = (_curTurn == TurnDir.kLeft ? -1f : 1f) * deltaT * BaseBike.speed / turnRadius;
+        _turnTheta += dThetaRad * Mathf.Rad2Deg;
+        float theta = _turnStartTheta + _turnTheta;
+        pos = _turnAxis + new Vector3(turnRadius * Mathf.Sin(theta * Mathf.Deg2Rad), 0, turnRadius * Mathf.Cos(theta * Mathf.Deg2Rad));
+        //Debug.Log(string.Format("startTheta: {0}", _turnStartTheta));             
+        //Debug.Log(string.Format("turnTheta: {0}", _turnTheta)); 
+
+        if (Mathf.Abs(_turnTheta) >= 90)
+        {
+            _curTurn = TurnDir.kStraight;
+            angles.z = 0;
+            angles.y = turnStartTheta[(int)heading] - 90f;
+        }
+        else
+        {
+            angles.z = -Mathf.Sin(_turnTheta * 2.0f * Mathf.Deg2Rad) * maxLean;
+            angles.y = theta + (_curTurn == TurnDir.kLeft ? -1f : 1f) * 90f;
+        }
+        transform.eulerAngles = angles;
+     */
+    }
 
     public virtual void DecideToTurn() { }
 
-
     public void SetColor(Color newC)
     {
-        transform.Find("BikeMesh").GetComponent<Renderer>().material.color = newC;
+        transform.Find("Model/BikeMesh").GetComponent<Renderer>().material.color = newC;
         transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
     }
 
@@ -178,31 +270,6 @@ public class FrontendBike : MonoBehaviour
             }
         }
     }
-    public virtual void DealWithPlace(Vector2 pos2) // returns place in case override wants to do something with it.
-    {
-        
-        // TODO: Is this needed anymore?
-        
-        //FeGround g = BeamMain.GetInstance().frontend.feGround;
-        // Vector3 pos = new Vector3(pos2.x, 0, pos2.y);
-        // FeGround.Place p = g.GetPlace(pos);
-        // if (p == null)
-        // {
-        //     p = g.ClaimPlace(this, pos);
-        //     if (p == null)
-        //         GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kOffMap, null);
-        //     else
-        //         GameMain.GetInstance().ReportScoreEvent(this, ScoreEvent.kClaimPlace, null);
-        // }
-        // else
-        // {
-        //     ouchObj.SetActive(false); // restart in case the anim is already running
-        //     ouchObj.SetActive(true);
-        //     GameMain.GetInstance().ReportScoreEvent(this, p.bike.player.Team == player.Team ? ScoreEvent.kHitFriendPlace : ScoreEvent.kHitEnemyPlace, p);
-        // }
-        //return p;
-    }
-
 
     protected Vector2 NearestGridPoint(Vector2 pos, float gridSize)
     {
@@ -246,7 +313,7 @@ public class FrontendBike : MonoBehaviour
     protected IBike ClosestBike(IBike thisBike)
     {
         BeamGameData gd = ((BeamGameInstance)be).gameData;        
-        IBike closest = gd.Bikes.Values.Where(b => b != thisBike)
+        IBike closest = gd.Bikes.Count <= 1 ? null : gd.Bikes.Values.Where(b => b != thisBike)
                 .OrderBy(b => Vector2.Distance(b.position, thisBike.position)).First();
         return closest;
 

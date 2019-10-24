@@ -28,10 +28,19 @@ public class FeAiBike : FrontendBike
                 secsSinceLastAiCheck = 0;
                 // If not gonna turn maybe go towards the closest bike?
                 if (pendingTurn == TurnDir.kUnset) {
-                    Vector2 closestBikePos = ClosestBike(bb).position;
-                    if ( Vector2.Distance(pos, closestBikePos) > kMaxBikeSeparation) // only if it's not really close
-                        be.OnTurnReq(bb.bikeId, TurnTowardsPos( closestBikePos, pos, heading )); 
-                    else
+                    bool closestBikeIsFarAway = false;
+                    IBike closestBike = ClosestBike(bb);
+                    if (closestBike != null)
+                    {
+                        Vector2 closestBikePos = ClosestBike(bb).position;
+                        if ( Vector2.Distance(pos, closestBikePos) > kMaxBikeSeparation) // only if it's not really close
+                        {
+                            closestBikeIsFarAway = true;
+                            be.OnTurnReq(bb.bikeId, TurnTowardsPos( closestBikePos, pos, heading ));                             
+                        }
+                    }
+                        
+                    if (!closestBikeIsFarAway) // Wow. This is some nasty conditional-nesting! TODO: Make it not suck.
                     {
                         bool doTurn = ( Random.value * turnTime <  GameTime.DeltaTime() );
                         if (doTurn)    
