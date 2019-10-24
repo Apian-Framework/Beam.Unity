@@ -68,6 +68,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (ib.player.IsLocal == true)
             mainObj.inputDispatch.SetLocalPlayerBike(bikeGo);
         feBikes[ib.bikeId] = bikeGo;
+         mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);
     }
     public void OnBikeRemoved(string bikeId, bool doExplode)
     {

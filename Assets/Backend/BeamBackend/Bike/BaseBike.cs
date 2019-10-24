@@ -7,10 +7,12 @@ namespace BeamBackend
 {
     public class BaseBike : IBike
     {
+        public const int kStartScore = 2000;        
         public static readonly float length = 2.0f;
         public static readonly float speed =  15.0f;   
 
         public string bikeId {get; private set;} 
+        public int score {get; set;}        
         public Player player {get; private set;}
         public int ctrlType {get; private set;}
         public Vector2 position {get; private set;} = Vector2.zero; // always on the grid
@@ -34,7 +36,9 @@ namespace BeamBackend
             position = initialPos;
             heading = head;
             player = p;    
-            ctrlType = ctrl;    
+            ctrlType = ctrl;  
+            score = kStartScore;  
+            player.bikeId = ID;
         }
 
         // Commands from outside

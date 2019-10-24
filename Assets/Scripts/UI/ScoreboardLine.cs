@@ -20,10 +20,10 @@ public class ScoreboardLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (bike.player.Score != prevScore)
+        if (bike.bb.score != prevScore)
         {
             transform.parent.GetComponent<Scoreboard>().SetDirty();
-            prevScore = bike.player.Score;
+            prevScore = bike.bb.score;
             scoreTextMesh.text = prevScore.ToString();
         }
     }

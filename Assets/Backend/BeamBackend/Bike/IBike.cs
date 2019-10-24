@@ -11,7 +11,8 @@ namespace BeamBackend
         Player player {get;}   
         int ctrlType {get;}        
         Vector2 position {get;}   
-        Heading heading { get;}           
+        Heading heading { get;} 
+        int score {get;}          
         void Loop(float secs);  
 
         // Temporary ctrl stuff

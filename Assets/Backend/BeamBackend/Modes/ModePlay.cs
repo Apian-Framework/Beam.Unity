@@ -84,7 +84,7 @@ namespace BeamBackend
         protected Player PlayerWithoutBike()
         {
             // Maybe ought to put a weak ref to a bike in the player class
-            return game.gameData.Players.Values.Where( (p) => !p.IsLocal && p.Score <= 0).FirstOrDefault();
+            return game.gameData.Players.Values.Where( (p) => !p.IsLocal && game.gameData.GetBaseBike(p.bikeId) == null).FirstOrDefault();
         }
 
         protected BaseBike CreateBaseBike(Player p)
@@ -94,7 +94,6 @@ namespace BeamBackend
             string bikeId = Guid.NewGuid().ToString();
             int ctrlType = p.IsLocal ? BikeFactory.LocalPlayerCtrl : BikeFactory.AiCtrl;
             BaseBike bb = new BaseBike(game, bikeId, p, ctrlType, pos, heading);
-            p.Score = Player.kStartScore;
             game.NewBike(bb); 
             return bb;
         }

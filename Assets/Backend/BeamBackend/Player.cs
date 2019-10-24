@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,18 +9,18 @@ namespace BeamBackend
         public string ID { get; private set;}    
         public string ScreenName { get; private set;}
         public Team Team {get; private set;}
-        public int Score { get; set;}
         public bool IsLocal { get; private set; }
 
-        public static readonly int kStartScore = 2000;
+
+        public string bikeId { get; set; } // this can be set publicly and is used to see if the player has an active bike. Kinda lame
 
         public Player(string id, string name, Team t, bool isLocal = false)
         { 
             ID = id;
             ScreenName = name;
             Team = t;
-            Score = kStartScore;
             IsLocal = isLocal;
+            bikeId = "";
         }
 
     }
@@ -43,12 +43,12 @@ namespace BeamBackend
 
         public static Player CreatePlayer(bool isLocal = false) {
             string name = string.Format("{0} {1}",
-                firstNames[(int)Random.Range(0,firstNames.Count)],
-                lastNames[(int)Random.Range(0,lastNames.Count)] );
+                firstNames[(int)UnityEngine.Random.Range(0,firstNames.Count)],
+                lastNames[(int)UnityEngine.Random.Range(0,lastNames.Count)] );
 
             string id = string.Format("{0:X8}", name.GetHashCode()); // Just making up an ID-looking string
 
-            Team team = Team.teamData[(int)Random.Range(0,Team.teamData.Count)];
+            Team team = Team.teamData[(int)UnityEngine.Random.Range(0,Team.teamData.Count)];
 
             return new Player(id, name, team, isLocal);
 

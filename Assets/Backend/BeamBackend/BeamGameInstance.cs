@@ -120,7 +120,7 @@ namespace BeamBackend
             // TODO: as with above: This is coming from the backend (BaseBike, mostly) and should
             // be comming from the Net/event/whatever layer
             int scoreDelta = GameConstants.eventScores[(int)evt];
-            bike.player.Score += scoreDelta;
+            bike.score += scoreDelta;
 
             if (evt == ScoreEvent.kHitEnemyPlace || evt == ScoreEvent.kHitFriendPlace)
             {
@@ -129,21 +129,21 @@ namespace BeamBackend
                 // UNLESS: the bike doing the hitting IS the owner - then the rest of the team just splits it
                 if (bike != place.bike) {
                     scoreDelta /= 2;
-                    place.bike.player.Score -= scoreDelta; // adds
+                    place.bike.score -= scoreDelta; // adds
                 }
 
                 IEnumerable<IBike> rewardedOtherBikes = 
                     gameData.Bikes.Values.Where( b => b != bike && b.player.Team == place.bike.player.Team);  // Bikes other the "bike" on affected team
                 if (rewardedOtherBikes.Count() > 0)
                 {
-                    foreach (IBike b in rewardedOtherBikes) 
-                        b.player.Score -= scoreDelta / rewardedOtherBikes.Count();
+                    foreach (BaseBike b  in rewardedOtherBikes) 
+                        b.score -= scoreDelta / rewardedOtherBikes.Count();
                 }
             }
 
-            if (evt == ScoreEvent.kOffMap || bike.player.Score <= 0)
+            if (evt == ScoreEvent.kOffMap || bike.score <= 0)
             {
-                bike.player.Score = 0;
+                bike.score = 0;
                 RemoveBike(bike);
             }
         }
@@ -180,6 +180,7 @@ namespace BeamBackend
         {
             gameData.Ground.RemovePlacesForBike(bb);
             frontend?.OnBikeRemoved(bb.bikeId, shouldBlowUp);  
+            bb.player.bikeId = ""; 
             gameData.PostBikeRemoval(bb.bikeId); // we're almost certainly iterating over the list of bikes so don;t remove it yet.
         }
         public void ClearBikes()
