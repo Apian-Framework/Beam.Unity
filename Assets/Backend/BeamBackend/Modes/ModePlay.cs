@@ -7,6 +7,7 @@ namespace BeamBackend
 {
     public class ModePlay : BaseGameMode
     {
+
         public enum Commands
         {
             kRespawn = 0,
@@ -17,6 +18,10 @@ namespace BeamBackend
         public BeamGameInstance game = null;
 
         protected BaseBike playerBike = null;
+
+        protected const float kRespawnCheckInterval = .33f;
+
+        protected float _secsToNextRespawnCheck = kRespawnCheckInterval; 
 
 		public override void Start(object param = null)	
         {
@@ -46,7 +51,22 @@ namespace BeamBackend
                 .OnStartMode(BeamModeFactory.kPlay, new BeamModeHelper.TargetIdParams{targetId = playerBike.bikeId} );             
         }
 
-		public override void Loop(float frameSecs) {}
+		public override void Loop(float frameSecs) 
+        {
+            _secsToNextRespawnCheck -= frameSecs;
+            if (_secsToNextRespawnCheck <= 0)
+            {
+			    //Debug.Log(string.Format("Checking for idle player"));                
+                Player p = PlayerWithoutBike();
+                if (p != null)
+                {
+			        Debug.Log(string.Format("Respawning AI: {0}", p.ScreenName));
+                    SpawnAIBike(p);
+                }
+
+                _secsToNextRespawnCheck = kRespawnCheckInterval;
+            }
+        }
 
 		public override object End() {            
             game.frontend.ModeHelper().OnEndMode(game.modeMgr.CurrentModeId(), null);
@@ -61,6 +81,11 @@ namespace BeamBackend
 
         }                
 
+        protected Player PlayerWithoutBike()
+        {
+            // Maybe ought to put a weak ref to a bike in the player class
+            return game.gameData.Players.Values.Where( (p) => !p.IsLocal && p.Score <= 0).FirstOrDefault();
+        }
 
         protected BaseBike CreateBaseBike(Player p)
         {
