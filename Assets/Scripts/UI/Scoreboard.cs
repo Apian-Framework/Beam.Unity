@@ -54,14 +54,14 @@ public class Scoreboard : MovableUISetItem
 
     public void SetLocalPlayerBike(GameObject localPlayerBike)
     {
-        LocalPlayerLine.SendMessage("SetBike", localPlayerBike.transform.GetComponent("Bike"));
+        LocalPlayerLine.SendMessage("SetBike", localPlayerBike.transform.GetComponent("FrontendBike"));
     }
 
     public void AddBike(GameObject bike)
     {
         GameObject newLine = GameObject.Instantiate(LocalPlayerLine, transform); //.position, LocalPlayerLine.transform.rotation);
         //newLine.transform.parent = transform; // set it as a child of this
-        newLine.SendMessage("SetBike", bike.transform.GetComponent("Bike"));   
+        newLine.SendMessage("SetBike", bike.transform.GetComponent("FrontendBike"));   
         OtherPlayerLines.Add(newLine);   
         _isDirty = true; // needs sorting
         //onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy * transform.localScale.y;
@@ -69,7 +69,7 @@ public class Scoreboard : MovableUISetItem
 
     public void RemoveBike(GameObject bikeObj)
     {
-        Bike remBike = bikeObj.GetComponent<Bike>();
+        FrontendBike remBike = bikeObj.GetComponent<FrontendBike>();
         GameObject line = OtherPlayerLines.Find(l => (l.GetComponent<ScoreboardLine>()).bike == remBike);
         if (line != null) {
             OtherPlayerLines.Remove(line);

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class ScoreboardLine : MonoBehaviour
 {
-    public Bike bike = null;
+    public FrontendBike bike = null;
 
     public int prevScore = -1;
     protected TextMeshPro whoTextMesh = null;
@@ -20,18 +20,18 @@ public class ScoreboardLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (bike.player.Score != prevScore)
+        if (bike.bb.score != prevScore)
         {
             transform.parent.GetComponent<Scoreboard>().SetDirty();
-            prevScore = bike.player.Score;
+            prevScore = bike.bb.score;
             scoreTextMesh.text = prevScore.ToString();
         }
     }
 
-    public void SetBike(Bike b)
+    public void SetBike(FrontendBike b)
     {
         bike = b;
         whoTextMesh.text = bike.player.ScreenName;
-        whoTextMesh.color = bike.player.Team.Color;
+        whoTextMesh.color = utils.hexToColor(bike.player.Team.Color);
     }
 }

@@ -3,13 +3,13 @@ using System.Collections;
 
 public class TurnRightBtn : UIBtn  {
 	
-	protected GameMain _main = null;	
+	protected BeamMain _main = null;	
 
 	// Use this for initialization
 	protected override void Start () 
 	{
 		base.Start();		
-		_main = (GameMain)utils.findObjectComponent("GameMain", "GameMain");	
+		_main = BeamMain.GetInstance();
 		
 	}
 

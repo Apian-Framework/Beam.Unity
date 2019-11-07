@@ -215,14 +215,20 @@ public class GameCamera : MonoBehaviour {
         
         public override void update()
         {
-            // Our target is on the line between the camera and the target, "dist" away from the target and at a height of "finalHeight".
-            Vector3 posOffset =  _finalDist * (_theGameCam.transform.position -_target.transform.position).normalized;
-            posOffset.y = _finalHeight;
-          
-            Vector3 pos = TargetCamPos(_target, posOffset);
-                   
-            if (_theGameCam.MoveTowards(pos, _target.transform.position, -1, _targetMoveSecs, _closeEnough))
+            // TODO: handle "target is gone" in a more generic way
+            if (_target == null) // target went away (gameobject refs get autonulled on destroy)
+            {
                 _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
+            } else {            
+                // Our target is on the line between the camera and the target, "dist" away from the target and at a height of "finalHeight".
+                Vector3 posOffset =  _finalDist * (_theGameCam.transform.position -_target.transform.position).normalized;
+                posOffset.y = _finalHeight;
+            
+                Vector3 pos = TargetCamPos(_target, posOffset);
+                    
+                if (_theGameCam.MoveTowards(pos, _target.transform.position, -1, _targetMoveSecs, _closeEnough))
+                    _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
+            }
                 
         }   
     }
@@ -249,7 +255,7 @@ public class GameCamera : MonoBehaviour {
             
             Vector3 targetPos = _targetObj.transform.position;
             targetPos += offset;
-            
+
             // From target (w/offset) to camera
             Vector3 toCam =  _theGameCam.transform.position - targetPos;
             
