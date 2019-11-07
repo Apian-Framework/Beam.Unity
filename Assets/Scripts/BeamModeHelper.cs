@@ -5,7 +5,7 @@ using BeamBackend;
 
 public class BeamModeHelper : IFrontendModeHelper
 {
-    public class TargetIdParams {public string targetId;}    
+ 
 
     protected abstract class ModeFuncs
     {      

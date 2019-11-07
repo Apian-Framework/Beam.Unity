@@ -17,6 +17,7 @@ namespace BeamBackend
 
 		public override void Start(object param = null)	
         {
+            UnityEngine.Debug.Log("Starting Splash");
             base.Start();
             game = (BeamGameInstance)gameInst;
             game.ClearPlayers();
@@ -28,13 +29,13 @@ namespace BeamBackend
                 CreateADemoBike(); 
 
             game.frontend.ModeHelper()
-                .OnStartMode(BeamModeFactory.kSplash, new BeamModeHelper.TargetIdParams{targetId = cameraTargetBikeId} );             
+                .OnStartMode(BeamModeFactory.kSplash, new TargetIdParams{targetId = cameraTargetBikeId} );             
         }
 
 		public override void Loop(float frameSecs) {}
 
 		public override object End() {            
-            game.frontend.ModeHelper().OnEndMode(game.modeMgr.CurrentModeId(), null);
+            game.frontend?.ModeHelper().OnEndMode(game.modeMgr.CurrentModeId(), null);
             game.ClearPlayers();
             game.ClearBikes();    
             game.ClearPlaces();              

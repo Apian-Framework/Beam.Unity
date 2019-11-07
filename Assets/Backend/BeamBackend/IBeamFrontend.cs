@@ -5,6 +5,8 @@ using UnityEngine;
 
 namespace BeamBackend
 {
+    public class TargetIdParams {public string targetId;}   
+        
     public interface IFrontendModeHelper 
     {
         void OnStartMode(int modeId, object param);
