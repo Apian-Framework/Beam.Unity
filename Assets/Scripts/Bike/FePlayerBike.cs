@@ -6,7 +6,10 @@ using BeamBackend;
 
 public class FePlayerBike : FrontendBike
 {
-
+    protected override void CreateControl()
+    {
+        control = new PlayerControl();
+    }
     public override void Update()
     {
         base.Update();
@@ -40,19 +43,14 @@ public class FePlayerBike : FrontendBike
     }
 
 
-    public override void DecideToTurn()
-    {
-
-    }
-
     public void FrobLeftButton()
     {
-        be.OnTurnReq(bb.bikeId, TurnDir.kLeft);
+        ((PlayerControl)control).OnPlayerTurnRequest( TurnDir.kLeft);
     }
 
     public void FrobRightButton()
     {
-        be.OnTurnReq(bb.bikeId, TurnDir.kRight);
+        ((PlayerControl)control).OnPlayerTurnRequest( TurnDir.kRight);        
     }
 
 }

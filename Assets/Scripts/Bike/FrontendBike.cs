@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using BeamBackend;
 
-public class FrontendBike : MonoBehaviour
+public abstract class FrontendBike : MonoBehaviour
 {
     public IBike bb = null;
     protected IBeamBackend be = null;
+
+    protected IBikeControl control = null;
 
     // Stuff that really lives in backend. 
     // TODO: maybe get rid of this? Or maybe it's ok    
@@ -32,19 +34,12 @@ public class FrontendBike : MonoBehaviour
     protected Vector2 _curTurnCenter; // only has meaning when curTuen is set 
     protected float _curTurnStartTheta;   
 
-    // Important: Setup() is not called until after Awake() and Start() have been called on the
-    // GameObject and components. Both of those are called when the GO is instantiated
-    public virtual void Setup(IBike beBike, IBeamBackend backEnd)
-    {
-        be = backEnd;
-        bb = beBike;
-        transform.position = utils.Vec3(bb.position); // Is probably already set to this
-        SetColor(utils.hexToColor(bb.player.Team.Color));    
-    }
+    protected abstract void CreateControl();
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
+        Debug.Log(string.Format("FrontendBike.Start()"));         
         // Initialize pointing direction based on heading;
         // assumes pos and heading are set on creation
         Vector3 angles = transform.eulerAngles;
@@ -54,6 +49,18 @@ public class FrontendBike : MonoBehaviour
 
         ouchObj = transform.Find("Ouch").gameObject;
         ouchObj.SetActive(false);
+    }
+
+    // Important: Setup() is not called until after Awake() and Start() have been called on the
+    // GameObject and components. Both of those are called when the GO is instantiated
+    public virtual void Setup(IBike beBike, IBeamBackend backend)
+    {           
+        be = backend;
+        bb = beBike;
+        transform.position = utils.Vec3(bb.position); // Is probably already set to this
+        SetColor(utils.hexToColor(bb.player.Team.Color));  
+        CreateControl();        
+        control.Setup(beBike, backend);  
     }
 
     // Update is called once per frame
@@ -138,8 +145,8 @@ public class FrontendBike : MonoBehaviour
 
     public virtual void Update()
     {
-        DecideToTurn();
-
+        control.Loop(Time.deltaTime); // TODO: is this the right place to get the frameTime?
+    
         _curTurn = CurrentTurn();
 
         if (_curTurn == TurnDir.kStraight)
@@ -221,8 +228,6 @@ public class FrontendBike : MonoBehaviour
         }
 
     }
-
-    public virtual void DecideToTurn() { }
 
     public void SetColor(Color newC)
     {
