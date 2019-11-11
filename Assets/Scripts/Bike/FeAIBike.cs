@@ -18,7 +18,7 @@ public class FeAiBike : FrontendBike
 
     public override void DecideToTurn()
     {
-        Vector2 pos = bb.position;
+        Vector2 pos2 = bb.position;
         BeamGameData gd = ((BeamGameInstance)be).gameData;
         Ground g = gd.Ground;
 
@@ -29,14 +29,14 @@ public class FeAiBike : FrontendBike
                 // If not gonna turn maybe go towards the closest bike?
                 if (pendingTurn == TurnDir.kUnset) {
                     bool closestBikeIsFarAway = false;
-                    IBike closestBike = ClosestBike(bb);
+                    IBike closestBike = gd.ClosestBike(bb);
                     if (closestBike != null)
                     {
-                        Vector2 closestBikePos = ClosestBike(bb).position;
-                        if ( Vector2.Distance(pos, closestBikePos) > kMaxBikeSeparation) // only if it's not really close
+                        Vector2 closestBikePos = gd.ClosestBike(bb).position;
+                        if ( Vector2.Distance(pos2, closestBikePos) > kMaxBikeSeparation) // only if it's not really close
                         {
                             closestBikeIsFarAway = true;
-                            be.OnTurnReq(bb.bikeId, TurnTowardsPos( closestBikePos, pos, heading ));                             
+                            be.OnTurnReq(bb.bikeId, BikeUtils.TurnTowardsPos( closestBikePos, pos2, heading ));                             
                         }
                     }
                         
@@ -49,13 +49,13 @@ public class FeAiBike : FrontendBike
                 }
 
                 // Do some looking ahead - maybe 
-                Vector2 nextPos = UpcomingGridPoint(pos, heading);
+                Vector2 nextPos = BikeUtils.UpcomingGridPoint(pos2, heading);
 
-                List<Vector2> othersPos = UpcomingEnemyPos(bb, 2); // up to 2 closest
+                List<Vector2> othersPos = gd.CloseBikePositions(bb, 2); // up to 2 closest
 
-                MoveNode moveTree = BuildMoveTree(nextPos, heading, 4, othersPos);
-                List<dirAndScore> dirScores = TurnScores(moveTree);
-                dirAndScore best =  SelectGoodTurn(dirScores); 
+                BikeUtils.MoveNode moveTree = BikeUtils.BuildMoveTree(g, nextPos, heading, 4, othersPos);
+                List<DirAndScore> dirScores = BikeUtils.TurnScores(moveTree);
+                DirAndScore best =  SelectGoodTurn(dirScores); 
                 if (  pendingTurn == TurnDir.kUnset || dirScores[(int)pendingTurn].score < best.score) 
                 {
                     //Debug.Log(string.Format("New Turn: {0}", best.turnDir));                    
@@ -65,12 +65,12 @@ public class FeAiBike : FrontendBike
 
     }
 
-    protected dirAndScore SelectGoodTurn(List<dirAndScore> dirScores) {
+    protected DirAndScore SelectGoodTurn(List<DirAndScore> dirScores) {
         int bestScore = dirScores.OrderBy( ds => ds.score).Last().score;
         // If you only take the best score you will almost always just go forwards.
         // But never select a 1 if there is anything better
         // &&& jkb - I suspect this doesn;t do exactly what I think it does.
-        List<dirAndScore> turns = dirScores.Where( ds => (bestScore > 2) ? (ds.score > bestScore * .5) : (ds.score == bestScore)).ToList(); 
+        List<DirAndScore> turns = dirScores.Where( ds => (bestScore > 2) ? (ds.score > bestScore * .5) : (ds.score == bestScore)).ToList(); 
         int sel = (int)(Random.value * (float)turns.Count);
         //Debug.Log(string.Format("Possible: {0}, Sel Idx: {1}", turns.Count, sel));
         return turns[sel];

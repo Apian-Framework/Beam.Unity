@@ -48,6 +48,20 @@ namespace BeamBackend
              _bikeIdsToRemoveAfterLoop.RemoveAll( bid => {Bikes.Remove(bid); return true; });
 
         }
+
+        public IBike ClosestBike(IBike thisBike)
+        {  
+            return Bikes.Count <= 1 ? null : Bikes.Values.Where(b => b != thisBike)
+                    .OrderBy(b => Vector2.Distance(b.position, thisBike.position)).First();
+        }   
+
+        public List<Vector2> CloseBikePositions(IBike thisBike, int maxCnt)
+        {
+            // Todo: this is actually "current enemy pos"         
+            return Bikes.Values.Where(b => b != thisBike)
+                .OrderBy(b => Vector2.Distance(b.position, thisBike.position)).Take(maxCnt) // IBikes
+                .Select(ob => ob.position).ToList();
+        }                 
     }
 
     public class BeamGameInstance : IGameInstance, IBeamBackend
@@ -196,5 +210,8 @@ namespace BeamBackend
             gameData.Ground.ClearPlaces();
         }
 
+        // Info    
+
     }
+
 }
