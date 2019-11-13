@@ -103,6 +103,7 @@ namespace BeamBackend
         {
             // TODO: In real life, this message from the FE should get sent to the net layer
             // and looped back, rather than directly talking to the bike
+            //UnityEngine.Debug.Log(string.Format("Backend.OnTurnReq({0}, {1})", bikeId, turn));               
             gameData.GetBaseBike(bikeId)?.PostPendingTurn(turn);            
         }       
 

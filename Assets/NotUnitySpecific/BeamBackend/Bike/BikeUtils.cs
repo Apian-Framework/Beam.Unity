@@ -13,7 +13,7 @@ namespace BeamBackend
             // it's either the current closest point (if direction to it is the same as heading)
             // or is the closest point + gridSize*unitOffsetForHeading[curHead] if closest point is behind us
             Vector2 point = Ground.NearestGridPoint(curPos);
-            if (Vector2.Dot(GameConstants.UnitOffset3ForHeading(curHead), point - curPos) < 0)
+            if (Vector2.Dot(GameConstants.UnitOffset2ForHeading(curHead), point - curPos) < 0)
             {
                 point += GameConstants.UnitOffset2ForHeading(curHead) * Ground.gridSize;
             }

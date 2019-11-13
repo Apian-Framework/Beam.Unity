@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using BeamBackend;
+using BikeControl;
 
 public abstract class FrontendBike : MonoBehaviour
 {
