@@ -64,7 +64,8 @@ public class BeamMain : MonoBehaviour
       
     public void HandleTap(bool isDown) // true is down
     {
-        throw(new Exception("Not Implmented"));        
+        //throw(new Exception("Not Implmented"));    
+        UnityEngine.Debug.Log("** BeamMain.HandleTap() fallthru not implmented");            
     }
 
 }
