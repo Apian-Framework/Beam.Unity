@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class SettingsBtn : UIBtn
 {
-    public GameObject target;
+    public UnityEvent onClick;
     // Start is called before the first frame update
     protected override void Start()
     {
@@ -20,6 +20,6 @@ public class SettingsBtn : UIBtn
 	public override void doSelect()
 	{
         Debug.Log(string.Format("FrontendBike.Start()"));          
-		target.transform.GetComponent<MovableUISetItem>().toggle();
+        onClick.Invoke();
 	}    
 }

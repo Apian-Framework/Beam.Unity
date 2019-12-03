@@ -435,6 +435,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &93528999 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5154882800549888308, guid: 08772d3f20aecee4587eec83a75d83e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1570262180}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &93529000 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5154882800549888309, guid: 08772d3f20aecee4587eec83a75d83e8,
@@ -608,6 +614,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 11400000, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
+--- !u!1 &192270986 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5154882800549888308, guid: 08772d3f20aecee4587eec83a75d83e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1937049829}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &192270987 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5154882800549888309, guid: 08772d3f20aecee4587eec83a75d83e8,
@@ -804,7 +816,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressOffset: 0.05
-  target: {fileID: 2233711639875194259}
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2233711639875194260}
+        m_MethodName: LoadAndShow
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &443470197 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100002, guid: 1f1256534aa3a4a4698f5acbd9fef60c,
@@ -1797,25 +1822,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 34728045}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &855939174
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 855939171}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c9157ac60f918a84d8241cd185953dc5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &925032336
 GameObject:
   m_ObjectHideFlags: 0
@@ -4519,6 +4525,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressOffset: 0.25
+--- !u!1 &1710160046 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5154882800549888308, guid: 08772d3f20aecee4587eec83a75d83e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 1178735593}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1710160047 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5154882800549888309, guid: 08772d3f20aecee4587eec83a75d83e8,
@@ -4950,7 +4962,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressOffset: 0.05
-  target: {fileID: 2233711639875194259}
+  onClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2233711639875194260}
+        m_MethodName: SaveAndHide
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1877156980
 GameObject:
   m_ObjectHideFlags: 0
@@ -5794,13 +5819,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 2233711639875194259}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb3d05b0695f1a44c8c490e29fbea3bb, type: 3}
+  m_Script: {fileID: 11500000, guid: 68cd80619c922aa46a3764c72aabbcbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   startOnScreen: 0
   switchSecs: 0.3
   offScreenPos: {x: 0, y: 16, z: -0.1}
   onScreenPos: {x: 0, y: 3, z: -0.1}
+  screenNameField: {fileID: 855939171}
+  p2pConnectionField: {fileID: 192270986}
+  ethNodeField: {fileID: 93528999}
+  ethAcctField: {fileID: 1710160046}
 --- !u!64 &3193417274380962808
 MeshCollider:
   m_ObjectHideFlags: 0
