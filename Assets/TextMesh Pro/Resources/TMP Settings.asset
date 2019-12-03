@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TMP Settings
   m_EditorClassIdentifier: 
   m_enableWordWrapping: 1
-  m_enableKerning: 1
+  m_enableKerning: 0
   m_enableExtraPadding: 0
   m_enableTintAllSprites: 0
   m_enableParseEscapeCharacters: 1
