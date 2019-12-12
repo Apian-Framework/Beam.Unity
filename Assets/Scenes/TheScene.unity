@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.23137131, g: 0.2338629, b: 0.27176738, a: 1}
+  m_IndirectSpecularColor: {r: 0.23188472, g: 0.23576865, b: 0.27134424, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1385,7 +1385,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <b>Block:</b> 5239079
+  m_text: <b>Block:</b> 5596067
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3583,6 +3583,10 @@ PrefabInstance:
       propertyPath: pressOffset
       value: 0.05
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
@@ -3590,10 +3594,6 @@ PrefabInstance:
     - target: {fileID: 100004, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
       propertyPath: m_IsActive

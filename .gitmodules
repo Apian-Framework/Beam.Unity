@@ -10,3 +10,11 @@
 	path = Assets/NotUnitySpecific/GameModeMgr
 	url = git@github.com:jimkberry/GameModeMgr.git
 	branch = master
+[submodule "Assets/NotUnitySpecific/P2pNet"]
+	path = Assets/NotUnitySpecific/P2pNet
+	url = git@github.com:jimkberry/P2pNet.git
+	branch = master
+[submodule "Assets/NotUnitySpecific/GameNet"]
+	path = Assets/NotUnitySpecific/GameNet
+	url = git@github.com:jimkberry/GameNet.git
+	branch = master

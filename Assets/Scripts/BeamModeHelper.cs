@@ -30,7 +30,7 @@ public class BeamModeHelper : IFrontendModeHelper
     {
         _modeFuncs = new Dictionary<int, ModeFuncs>()
         {
-            { BeamModeFactory.kStartup, new StartupModeFuncs(beamMain)},            
+            { BeamModeFactory.kConnect, new ConnectModeFuncs(beamMain)},            
             { BeamModeFactory.kSplash, new SplashModeFuncs(beamMain)},
             { BeamModeFactory.kPlay, new PlayModeFuncs(beamMain)}            
         };
@@ -50,9 +50,9 @@ public class BeamModeHelper : IFrontendModeHelper
     }
 
     // Implementations
-    class StartupModeFuncs : ModeFuncs
+    class ConnectModeFuncs : ModeFuncs
     {
-        public StartupModeFuncs(BeamMain bm) : base(bm) {}
+        public ConnectModeFuncs(BeamMain bm) : base(bm) {}
         public override void OnStart(object parms=null) {}      
         public override void OnEnd(object parms=null) {}       
     }    

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using UnityEngine;
 using BeamBackend;
+using P2pNet;
+using GameNet;
 
 public class BeamMain : MonoBehaviour
 {
@@ -13,6 +16,7 @@ public class BeamMain : MonoBehaviour
 
 
     // Non-monobehaviors
+    public BeamGameNet gameNet;    
     public BeamGameInstance backend;
 
     // Singletone management(*yeah, kinda lame)
@@ -23,7 +27,7 @@ public class BeamMain : MonoBehaviour
         {
             instance = (BeamMain)GameObject.FindObjectOfType(typeof(BeamMain));
             if (!instance)
-                Debug.LogError("There needs to be one active BeamMain script on a GameObject in your scene.");
+                UnityEngine.Debug.LogError("There needs to be one active BeamMain script on a GameObject in your scene.");
         }
  
         return instance;
@@ -41,17 +45,24 @@ public class BeamMain : MonoBehaviour
 
 		// Semi-presistent Main-owned objects 
         // TODO: Should be in Awake()?
-        frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");	
+        frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");	       
 		uiCamera = (UICamera)utils.findObjectComponent("UICamera", "UICamera");		
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");		
 		
         inputDispatch = new InputDispatch(this);
 
+        // TODO: get rid of this Eth stuff (goes in GameNet)
         eth = new EthereumProxy();
 		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using        
-		
-        backend = new BeamGameInstance((IBeamFrontend)frontend);
-        backend.Start();
+
+        gameNet = new BeamGameNet(); 
+        P2pNetTrace.InitInCode(TraceLevel.Verbose);
+        GameNetTrace.InitInCode(TraceLevel.Verbose);
+
+
+        backend = new BeamGameInstance((IBeamFrontend)frontend, gameNet);
+        gameNet.Init(backend);
+        backend.Start(BeamModeFactory.kSplash);
         UnityEngine.Debug.Log("BeamMain.Start() done");
         
     }
@@ -59,6 +70,7 @@ public class BeamMain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {      
+        gameNet.Loop();
         backend.Loop(GameTime.DeltaTime());
     }
       
