@@ -32,11 +32,8 @@ public class BeamMain : MonoBehaviour
         return instance;
     }    
 
-
     void Awake() {
-        DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
-        UniLogger.GetLogger("P2pNet").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("GameNet").LogLevel = UniLogger.Level.Info;        
+        DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)      
     }	
     // Start is called before the first frame update
     void Start()
