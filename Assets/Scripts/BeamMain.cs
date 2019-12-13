@@ -2,8 +2,7 @@
 using System.Diagnostics;
 using UnityEngine;
 using BeamBackend;
-using P2pNet;
-using GameNet;
+using UniLog;
 
 public class BeamMain : MonoBehaviour
 {
@@ -36,6 +35,8 @@ public class BeamMain : MonoBehaviour
 
     void Awake() {
         DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
+        UniLogger.GetLogger("P2pNet").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("GameNet").LogLevel = UniLogger.Level.Info;        
     }	
     // Start is called before the first frame update
     void Start()
@@ -55,10 +56,7 @@ public class BeamMain : MonoBehaviour
         eth = new EthereumProxy();
 		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using        
 
-        gameNet = new BeamGameNet(); 
-        P2pNetTrace.InitInCode(TraceLevel.Verbose);
-        GameNetTrace.InitInCode(TraceLevel.Verbose);
-
+        gameNet = new BeamGameNet();  
 
         backend = new BeamGameInstance((IBeamFrontend)frontend, gameNet);
         gameNet.Init(backend);
