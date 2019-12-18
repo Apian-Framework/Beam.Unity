@@ -14,7 +14,6 @@ public abstract class FrontendBike : MonoBehaviour
 
     // Stuff that really lives in backend. 
     // TODO: maybe get rid of this? Or maybe it's ok    
-    public Player player { get => bb.player; } 
     public Heading heading { get => bb.heading; }
     
     // Temp (probably) stuff for refactoring to add BaseBike
@@ -59,7 +58,7 @@ public abstract class FrontendBike : MonoBehaviour
         be = backend;
         bb = beBike;
         transform.position = utils.Vec3(bb.position); // Is probably already set to this
-        SetColor(utils.hexToColor(bb.player.Team.Color));  
+        SetColor(utils.hexToColor(bb.team.Color));  
         CreateControl();        
         control.Setup(beBike, backend);  
     }

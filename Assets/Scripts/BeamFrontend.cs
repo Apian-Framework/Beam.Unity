@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using BeamBackend;
+using UniLog;
 
 public class BeamFrontend : MonoBehaviour, IBeamFrontend
 {
@@ -16,6 +17,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     protected BeamModeHelper feModeHelper;
 
+    public UniLogger logger;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +26,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         mainObj = BeamMain.GetInstance();
         feModeHelper = new BeamModeHelper(mainObj);
         feBikes = new Dictionary<string, GameObject>(); 
+        logger = UniLogger.GetLogger("Frontend");
     }
 
 	public  int BikeCount() => feBikes.Count;  
@@ -56,24 +60,30 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public IFrontendModeHelper ModeHelper() => (IFrontendModeHelper)feModeHelper;
 
     // Players
-    public void OnNewPlayer(Player p)
+    public void OnNewPeer(BeamPeer p)
     {
-        UnityEngine.Debug.Log("FE.OnNewPlayer() currently does nothing");
+        logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
     }
 
-    public void OnClearPlayers()
+    public void OnPeerLeft(BeamPeer p)
     {
-        UnityEngine.Debug.Log("FE.OnClearPlayers() currently does nothing");
+        logger.Info("Peer Left: {p.name}, Id: {{p.peerId}");            
+    }
+
+    public void OnClearPeers()
+    {
+        logger.Info("OnClearPeers() currently does nothing");
     }
 
     // Bikes
     public void OnNewBike(IBike ib)
     {
+        logger.Info($"FE.OnNewBike(). Id: {ib.bikeId}, LocalPlayer: {ib.ctrlType == BikeFactory.LocalPlayerCtrl}"); 
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround);
-        if (ib.player.IsLocal == true)
+        if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
             mainObj.inputDispatch.SetLocalPlayerBike(bikeGo);
         feBikes[ib.bikeId] = bikeGo;
-         mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);
+        mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);
     }
     public void OnBikeRemoved(string bikeId, bool doExplode)
     {

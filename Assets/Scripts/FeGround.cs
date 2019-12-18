@@ -39,7 +39,7 @@ public class FeGround : MonoBehaviour
         }
         marker.transform.position = utils.Vec3(p.GetPos());
         GroundMarker gm = (GroundMarker)marker.transform.GetComponent("GroundMarker");
-		gm.SetColor(utils.hexToColor(p.bike.player.Team.Color));	
+		gm.SetColor(utils.hexToColor(p.bike.team.Color));	
         marker.SetActive(true);	
         return marker;
     }
