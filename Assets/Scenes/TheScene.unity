@@ -149,15 +149,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98877b0e13578814a932a4a285c5746b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  throwOnError: 0
   levelEntries:
   - LoggerName: BaseBike
-    level: 30
+    level: 20
   - LoggerName: BeamMode
-    level: 30
+    level: 10
   - LoggerName: Frontend
     level: 10
   - LoggerName: GameInstance
-    level: 30
+    level: 20
   - LoggerName: GameNet
     level: 30
   - LoggerName: P2pNet

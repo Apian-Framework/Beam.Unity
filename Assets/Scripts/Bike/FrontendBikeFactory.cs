@@ -9,7 +9,7 @@ public class FrontendBikeFactory : MonoBehaviour
     // Ordered by backend BikeFactory.CtrlType
 
     public static readonly System.Type[] bikeClassTypes = {
-        typeof(FrontendBike), // remote bike. Nothing to do here.
+        typeof(FeRemoteBike), // remote bike.
         typeof(FeAiBike),  // AiCtrl - AI - controlled local bike
         typeof(FePlayerBike) // LocalPlayerCtrl - a human on this machine
     };
