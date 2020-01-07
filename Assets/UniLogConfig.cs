@@ -1,17 +1,24 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UniLog;
 
 public class UniLogConfig : MonoBehaviour
 {
-    public UniLogger.Level P2pNetLevel = UniLogger.Level.Warn;
-    public UniLogger.Level GameNetLevel = UniLogger.Level.Warn;
+    [Serializable]
+    public struct LevelEntry
+    {
+        public string LoggerName;
+        public UniLogger.Level level;
+    }
+
+    public List<LevelEntry> levelEntries;
 
     // Start is called before the first frame update
     void Awake()
-    {
-       UpdateValues();
+    {      
+        UpdateValues();
     }
 
     void Start()
@@ -21,8 +28,11 @@ public class UniLogConfig : MonoBehaviour
 
     void UpdateValues()
     {
-        UniLogger.GetLogger("P2pNet").LogLevel = P2pNetLevel;
-        UniLogger.GetLogger("GameNet").LogLevel = GameNetLevel; 
+        foreach (LevelEntry le in levelEntries)
+        {
+            if ((le.LoggerName.Length > 0))
+                UniLogger.GetLogger(le.LoggerName).LogLevel = le.level; 
+        }
     }
 
 

@@ -37,8 +37,7 @@ public class BeamMain : MonoBehaviour
     }	
     // Start is called before the first frame update
     void Start()
-    {
-        UnityEngine.Debug.Log("BeamMain.Start() starting...");        
+    {      
 		Application.targetFrameRate = 30;
 
 		// Semi-presistent Main-owned objects 
@@ -58,7 +57,6 @@ public class BeamMain : MonoBehaviour
         backend = new BeamGameInstance((IBeamFrontend)frontend, gameNet);
         gameNet.Init(backend);
         backend.Start(BeamModeFactory.kSplash);
-        UnityEngine.Debug.Log("BeamMain.Start() done");
         
     }
 
