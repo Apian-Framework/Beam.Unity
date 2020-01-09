@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using BeamBackend;
 
-public class BeamModeHelper : IFrontendModeHelper
+public class BeamFeModeHelper : IFrontendModeHelper
 {
- 
-
     protected abstract class ModeFuncs
     {      
         public abstract void OnStart(object parms);
@@ -22,12 +20,12 @@ public class BeamModeHelper : IFrontendModeHelper
         }       
     }
 
-
-
     protected Dictionary<int, ModeFuncs> _modeFuncs;
+    protected  BeamMain _beamMain;
 
-    public BeamModeHelper(BeamMain beamMain) 
+    public BeamFeModeHelper(BeamMain beamMain) 
     {
+        _beamMain = beamMain;
         _modeFuncs = new Dictionary<int, ModeFuncs>()
         {
             { BeamModeFactory.kConnect, new ConnectModeFuncs(beamMain)},            
@@ -35,6 +33,8 @@ public class BeamModeHelper : IFrontendModeHelper
             { BeamModeFactory.kPlay, new PlayModeFuncs(beamMain)}            
         };
     }
+
+    private int _CurModeId() => _beamMain.backend.modeMgr.CurrentModeId();
 
     public void OnStartMode(int modeId, object parms=null)
     {

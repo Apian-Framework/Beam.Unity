@@ -7,6 +7,18 @@ using UniLog;
 
 public class BeamFrontend : MonoBehaviour, IBeamFrontend
 {
+    public enum ModeCmds : int {
+        kOnNewPeer,
+        kOnPeerLeft,
+        kOnPeersCleared,
+        kOnNewBike,
+        kOnBikeRemoved,
+        kOnBikesCleared,
+        kOnBikeAtPlace,
+        kSetupPlaceMarker,
+        kPlaceFreed,
+        kPlacesCleared,
+    }    
 	public FeGround feGround;
 
     protected Dictionary<string, GameObject> feBikes;
@@ -15,7 +27,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     protected BeamUserSettings userSettings;
 
-    protected BeamModeHelper feModeHelper;
+    protected BeamFeModeHelper _feModeHelper;
 
     public UniLogger logger;
 
@@ -24,7 +36,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         userSettings = BeamUserSettings.CreateDefault();
         mainObj = BeamMain.GetInstance();
-        feModeHelper = new BeamModeHelper(mainObj);
+        _feModeHelper = new BeamFeModeHelper(mainObj);
         feBikes = new Dictionary<string, GameObject>(); 
         logger = UniLogger.GetLogger("Frontend");
     }
@@ -56,27 +68,27 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public BeamUserSettings GetUserSettings() => userSettings;
 
-    // Backend game modes
-    public IFrontendModeHelper ModeHelper() => (IFrontendModeHelper)feModeHelper;
+    public void OnStartMode(int modeId, object param) =>  _feModeHelper.OnStartMode(modeId, param);
+    public void OnEndMode(int modeId, object param) => _feModeHelper.OnEndMode(modeId, param);
 
     // Players
-    public void OnNewPeer(BeamPeer p)
+    public void OnNewPeer(BeamPeer p, int modeId)
     {
         logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
     }
 
-    public void OnPeerLeft(BeamPeer p)
+    public void OnPeerLeft(string p2pId, int modeId) 
     {
-        logger.Info("Peer Left: {p.name}, Id: {{p.peerId}");            
+        logger.Info("Peer Left: {p2pId}");            
     }
 
-    public void OnClearPeers()
+    public void OnClearPeers(int modeId)
     {
         logger.Info("OnClearPeers() currently does nothing");
     }
 
     // Bikes
-    public void OnNewBike(IBike ib)
+    public void OnNewBike(IBike ib, int modeId)
     {
         logger.Info($"FE.OnNewBike(). Id: {ib.bikeId}, LocalPlayer: {ib.ctrlType == BikeFactory.LocalPlayerCtrl}"); 
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround);
@@ -85,7 +97,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         feBikes[ib.bikeId] = bikeGo;
         mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);
     }
-    public void OnBikeRemoved(string bikeId, bool doExplode)
+    public void OnBikeRemoved(string bikeId, bool doExplode, int modeId)
     {
         GameObject go = feBikes[bikeId];
         feBikes.Remove(bikeId);
@@ -98,7 +110,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 		GameObject.Instantiate(mainObj.boomPrefab, go.transform.position, Quaternion.identity);
 		UnityEngine.Object.Destroy(go);        
     }  
-    public void OnClearBikes()
+    public void OnClearBikes(int modeId)
     {
 		foreach (GameObject bk in feBikes.Values)
 		{
@@ -107,21 +119,21 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 		feBikes.Clear();
     }    
 
-    public void OnBikeAtPlace(string bikeId, Ground.Place place, bool justClaimed)
+    public void OnBikeAtPlace(string bikeId, Ground.Place place, bool justClaimed, int modeId)
     {        
         GetBikeObj(bikeId)?.GetComponent<FrontendBike>().OnBikeAtPlace(place, justClaimed);
     }    
 
     // Ground
-    public void SetupPlaceMarker(Ground.Place p)
+    public void SetupPlaceMarker(Ground.Place p, int modeId)
     {         
         feGround.SetupMarkerForPlace(p);    
     }
-    public void OnFreePlace(Ground.Place p)
+    public void OnFreePlace(Ground.Place p, int modeId)
     {
         feGround.FreePlaceMarker(p);                   
     }        
-    public void OnClearPlaces()
+    public void OnClearPlaces(int modeId)
     {
         feGround.ClearMarkers();
     }

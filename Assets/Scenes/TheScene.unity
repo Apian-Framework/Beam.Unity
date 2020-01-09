@@ -158,7 +158,7 @@ MonoBehaviour:
   - LoggerName: Frontend
     level: 10
   - LoggerName: GameInstance
-    level: 20
+    level: 10
   - LoggerName: GameNet
     level: 30
   - LoggerName: P2pNet
