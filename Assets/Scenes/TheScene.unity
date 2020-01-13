@@ -154,11 +154,11 @@ MonoBehaviour:
   - LoggerName: BaseBike
     level: 20
   - LoggerName: BeamMode
-    level: 10
+    level: 20
   - LoggerName: Frontend
     level: 10
   - LoggerName: GameInstance
-    level: 10
+    level: 20
   - LoggerName: GameNet
     level: 30
   - LoggerName: P2pNet
