@@ -30,7 +30,8 @@ public class BeamFeModeHelper : IFrontendModeHelper
         {
             { BeamModeFactory.kConnect, new ConnectModeFuncs(beamMain)},            
             { BeamModeFactory.kSplash, new SplashModeFuncs(beamMain)},
-            { BeamModeFactory.kPlay, new PlayModeFuncs(beamMain)}            
+            { BeamModeFactory.kPlay, new PlayModeFuncs(beamMain)},         
+            { BeamModeFactory.kPractice, new PracticeModeFuncs(beamMain)},             
         };
     }
 
@@ -38,6 +39,7 @@ public class BeamFeModeHelper : IFrontendModeHelper
 
     public void OnStartMode(int modeId, object parms=null)
     {
+        Debug.Assert(_modeFuncs.ContainsKey(modeId));
         _modeFuncs[modeId].OnStart(parms);
     }
     public void DispatchCmd(int modeId, int cmdId, object parms=null) 
@@ -142,6 +144,11 @@ public class BeamFeModeHelper : IFrontendModeHelper
             _feMain.gameCamera.StartBikeMode( playerBike);        
             _feMain.gameCamera.gameObject.SetActive(true);              
         }        
+    }     
+
+class PracticeModeFuncs : PlayModeFuncs
+    {
+        public PracticeModeFuncs(BeamMain bm) : base(bm) {}
     }     
 
 
