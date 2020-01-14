@@ -235,19 +235,25 @@ public abstract class FrontendBike : MonoBehaviour
         transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
     }
 
-    public virtual void OnBikeAtPlace(Ground.Place place, bool justClaimed)
+    public virtual void OnPlaceHit(Ground.Place place)
     {
-        if (place == null)
-        {
-            Debug.Log("** FE bike got to null place");            
-        } else {
-            if (!justClaimed) 
-            {
-                ouchObj.SetActive(false); // restart in case the anim is already running
-                ouchObj.SetActive(true);            
-            }
-        }
+        ouchObj.SetActive(false); // restart in case the anim is already running
+        ouchObj.SetActive(true); 
     }
+
+    // public virtual void OnBikeAtPlace(Ground.Place place, bool justClaimed)
+    // {
+    //     if (place == null)
+    //     {
+    //         Debug.Log("** FE bike got to null place");            
+    //     } else {
+    //         if (!justClaimed) 
+    //         {
+    //             ouchObj.SetActive(false); // restart in case the anim is already running
+    //             ouchObj.SetActive(true);            
+    //         }
+    //     }
+    // }
 
 
 
