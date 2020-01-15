@@ -18,6 +18,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     void Start()
     {
         userSettings = BeamUserSettings.CreateDefault();
+        userSettings.localPlayerCtrlType = BikeFactory.LocalPlayerCtrl; // Kinda hackly
+
         mainObj = BeamMain.GetInstance();
         _feModeHelper = new BeamFeModeHelper(mainObj);
         feBikes = new Dictionary<string, GameObject>(); 
@@ -32,6 +34,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         back.BikesClearedEvt +=OnBikesClearedEvt;   
         back.PlaceClaimedEvt += OnPlaceClaimedEvt;
         back.PlaceHitEvt += OnPlaceHitEvt;
+
+        back.ReadyToPlayEvt += OnReadyToPlay;
+
         back.GetGround().PlaceFreedEvt += OnPlaceFreedEvt;
         back.GetGround().PlacesClearedEvt += OnPlacesClearedEvt; 
         back.GetGround().SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;         
@@ -150,5 +155,11 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         feGround.ClearMarkers();
     }
+
+    public void OnReadyToPlay(object sender, EventArgs e)
+    {
+        logger.Info($"OnReadyToPlay()");    
+        mainObj.backend.OnSwitchModeReq(BeamModeFactory.kPlay, null);        
+    }    
 
 }
