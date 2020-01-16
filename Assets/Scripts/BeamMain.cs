@@ -38,7 +38,7 @@ public class BeamMain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {      
-		Application.targetFrameRate = 30;
+		Application.targetFrameRate = 60;
 
 		// Semi-presistent Main-owned objects 
         // TODO: Should be in Awake()?
