@@ -28,6 +28,14 @@ public class SettingsPanel : MovableUISetItem
 
     public void SaveAndHide()
     {
+        BeamMain mainObj = BeamMain.GetInstance();
+        BeamUserSettings settings = mainObj.frontend.GetUserSettings();
+
+        settings.screenName = screenNameField.GetComponent<InputField>().text;
+        settings.p2pConnectionString = p2pConnectionField.GetComponent<InputField>().text;
+        settings.ethNodeUrl = ethNodeField.GetComponent<InputField>().text;
+        settings.ethAcct = ethAcctField.GetComponent<InputField>().text;
+
         base.moveOffScreen();
     }
 
