@@ -17,8 +17,8 @@ public class InputDispatch
        localPlayerBike = playerBike.transform.GetComponent<FePlayerBike>();
     }
 
-    public void LocalPlayerBikeLeft() => feMain.backend.OnTurnReq(localPlayerBike.bb.bikeId, TurnDir.kLeft);
-    public void LocalPlayerBikeRight() => feMain.backend.OnTurnReq(localPlayerBike.bb.bikeId, TurnDir.kRight);    
+    public void LocalPlayerBikeLeft() => feMain.backend.PostBikeTurn(localPlayerBike.bb, TurnDir.kLeft);
+    public void LocalPlayerBikeRight() => feMain.backend.PostBikeTurn(localPlayerBike.bb, TurnDir.kRight);    
     public void ToggleCamHeight() => feMain.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kToggleHighLow, null );
     public void LookAround(float angleRad, float decayRate)
     {
