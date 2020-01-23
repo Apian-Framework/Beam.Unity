@@ -621,7 +621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100002, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 1f1256534aa3a4a4698f5acbd9fef60c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5669,6 +5669,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   feGround: {fileID: 157601948}
+  startBtn: {fileID: 1547960405}
+  connectBtn: {fileID: 53834398}
 --- !u!1 &1923996580
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,16 +14,22 @@ public class ConnectBtn : UIBtn  {
 		
 	}
 
+	protected void _DoConnect()
+	{	
+		_main.backend.OnSwitchModeReq(BeamModeFactory.kConnect, null);	
+	}
+
 	protected override void Update() 
 	{
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.Return))
-			_main.backend.OnSwitchModeReq(BeamModeFactory.kConnect, null);	
+			_DoConnect();
+				
 	}
 
 	public override void doSelect()
 	{
-		_main.backend.OnSwitchModeReq(BeamModeFactory.kConnect, null);
+		_DoConnect();
 	}
 }
 
