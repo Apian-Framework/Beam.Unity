@@ -25,6 +25,8 @@ public class SettingsPanel : MovableUISetItem
         gameIdField.GetComponent<InputField>().text = 
             settings.tempSettings.ContainsKey("gameId") ? settings.tempSettings["gameId"] : "";
 
+        UserSettingsMgr.Save(settings);
+
         base.moveOnScreen();
     }
 

@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using BeamBackend;
 
-
-public class RestartBtn : UIBtn  {
+public class ConnectBtn : UIBtn  {
 	
 	protected BeamMain _main = null;	
 
@@ -14,17 +14,16 @@ public class RestartBtn : UIBtn  {
 		
 	}
 
-	protected override void Update()
+	protected override void Update() 
 	{
 		base.Update();
-		//  Call RaiseRespawnPlayer() which will signal ModeLPlay to do so.
 		if (Input.GetKeyDown(KeyCode.Return))
-			_main.backend.RaiseRespawnPlayer();
+			_main.backend.OnSwitchModeReq(BeamModeFactory.kConnect, null);	
 	}
 
 	public override void doSelect()
 	{
-		_main.backend.RaiseRespawnPlayer();
+		_main.backend.OnSwitchModeReq(BeamModeFactory.kConnect, null);
 	}
 }
 

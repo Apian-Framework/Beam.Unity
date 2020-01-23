@@ -7,6 +7,7 @@ using UniLog;
 
 public class BeamFrontend : MonoBehaviour, IBeamFrontend
 { 
+    public const string kSettingsFileBaseName = "unitybeambettings";
 	public FeGround feGround;
     protected Dictionary<string, GameObject> feBikes;
     protected BeamMain mainObj;
@@ -17,7 +18,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     // Start is called before the first frame update
     void Start()
     {
-        userSettings = BeamUserSettings.CreateDefault();
+        userSettings = UserSettingsMgr.Load(kSettingsFileBaseName);
+        //userSettings = BeamUserSettings.CreateDefault();
         userSettings.localPlayerCtrlType = BikeFactory.LocalPlayerCtrl; // Kinda hackly
 
         mainObj = BeamMain.GetInstance();
@@ -98,22 +100,29 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         logger.Info($"OnNewBikeEvt(). Id: {ib.bikeId}, LocalPlayer: {ib.ctrlType == BikeFactory.LocalPlayerCtrl}"); 
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround);
+        feBikes[ib.bikeId] = bikeGo;        
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
+        {
             mainObj.inputDispatch.SetLocalPlayerBike(bikeGo);
-        feBikes[ib.bikeId] = bikeGo;
-        mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);
+            mainObj.uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOffScreen", null);
+            mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("SetLocalPlayerBike", bikeGo);
+            mainObj.gameCamera.StartBikeMode(bikeGo);            
+        }
+        else
+            mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);           
     }
-    //public void OnBikeRemoved(string bikeId, bool doExplode, int modeId)
+
     public void OnBikeRemovedEvt(object sender, BikeRemovedData rData)
     {
         GameObject go = feBikes[rData.bikeId];
+        IBike ib = mainObj.backend.gameData.GetBaseBike(rData.bikeId);
         feBikes.Remove(rData.bikeId);
         mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
-		// if (inputDispatch.localPlayerBike != null && bikeObj == inputDispatch.localPlayerBike.gameObject)
-		// {
-		// 	Debug.Log("Boom! Player");
-		// 	uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
-		// }
+        if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
+		 {
+		 	logger.Info("Boom! Player");
+		 	mainObj.uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
+		}
 		GameObject.Instantiate(mainObj.boomPrefab, go.transform.position, Quaternion.identity);
 		UnityEngine.Object.Destroy(go);        
     }  

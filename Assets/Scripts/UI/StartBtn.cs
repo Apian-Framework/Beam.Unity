@@ -23,7 +23,7 @@ public class StartBtn : UIBtn  {
 
 	public override void doSelect()
 	{
-		_main.backend.OnSwitchModeReq(BeamModeFactory.kConnect, null);
+		_main.backend.OnSwitchModeReq(BeamModeFactory.kPlay, null);
 	}
 }
 
