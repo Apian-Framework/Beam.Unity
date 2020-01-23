@@ -55,25 +55,28 @@ public class BeamFeModeHelper : IFrontendModeHelper
     class ConnectModeFuncs : ModeFuncs
     {
         public ConnectModeFuncs(BeamMain bm) : base(bm) {}
-        public override void OnStart(object parms=null) {}      
+        public override void OnStart(object parms=null) 
+        {
+            _feMain.frontend.startBtn.SetActive(false);            
+            _feMain.frontend.connectBtn.SetActive(false);
+        }      
         public override void OnEnd(object parms=null) {}       
     }    
     class SplashModeFuncs : ModeFuncs
     {
         public SplashModeFuncs(BeamMain bm) : base(bm)
         {
- //           _cmdDispatch[ModeSplash.kCmdTargetCamera] = new Action<object>(o => TargetCamera(o));            
+        
         }
 
-        // protected void TargetCamera(ModeSplash.TargetIdParams parm)
-        // {
 
-        // }
 
         public override void OnStart(object parms=null)
         {
             TargetIdParams p = (TargetIdParams)parms;
             SetupCameras(p.targetId);
+            _feMain.frontend.startBtn.SetActive(false);            
+            _feMain.frontend.connectBtn.SetActive(true);            
         }
        
         public override void OnEnd(object parms=null)

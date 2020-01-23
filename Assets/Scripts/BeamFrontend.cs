@@ -7,8 +7,11 @@ using UniLog;
 
 public class BeamFrontend : MonoBehaviour, IBeamFrontend
 { 
-    public const string kSettingsFileBaseName = "unitybeambettings";
+    
 	public FeGround feGround;
+    public GameObject startBtn;
+    public GameObject connectBtn;
+    public const string kSettingsFileBaseName = "unitybeamsettings";
     protected Dictionary<string, GameObject> feBikes;
     protected BeamMain mainObj;
     protected BeamUserSettings userSettings;
@@ -76,26 +79,23 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     // Players
     
-    //public void OnNewPeer(BeamPeer p, int modeId)
     public void OnPeerJoinedEvt(object sender, BeamPeer p)
     {
         logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
     }
 
-    //public void OnPeerLeft(string p2pId, int modeId) 
     public void OnPeerLeftEvt(object sender, string p2pId) 
     {
         logger.Info("Peer Left: {p2pId}");            
     }
 
-    //public void OnClearPeers(int modeId)
     public void OnPeersClearedEvt(object sender, EventArgs e)
     {
         logger.Info("OnPeersClearedEvt() currently does nothing");
     }
 
     // Bikes
-    //public void OnNewBike(IBike ib, int modeId)
+
     public void OnNewBikeEvt(object sender, IBike ib)
     {
         logger.Info($"OnNewBikeEvt(). Id: {ib.bikeId}, LocalPlayer: {ib.ctrlType == BikeFactory.LocalPlayerCtrl}"); 
@@ -141,15 +141,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         GetBikeObj(args.ib.bikeId)?.GetComponent<FrontendBike>().OnPlaceHit(args.p);        
     }
     public void OnPlaceClaimedEvt(object sender, Ground.Place p) {} 
-
-
-    // public void OnBikeAtPlace(string bikeId, Ground.Place place, bool justClaimed, int modeId)
-    // {        
-    //     GetBikeObj(bikeId)?.GetComponent<FrontendBike>().OnBikeAtPlace(place, justClaimed);
-    // }    
-
+ 
     // Ground
-    //public void SetupPlaceMarker(Ground.Place p, int modeId)
     public void OnSetupPlaceMarkerEvt(object sender, Ground.Place p)
     {         
         feGround.SetupMarkerForPlace(p);    
@@ -168,7 +161,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnReadyToPlay(object sender, EventArgs e)
     {
         logger.Info($"OnReadyToPlay()");    
-        mainObj.backend.OnSwitchModeReq(BeamModeFactory.kPlay, null);        
+        startBtn.SetActive(true);        
+        //mainObj.backend.OnSwitchModeReq(BeamModeFactory.kPlay, null);        
     }    
 
 }
