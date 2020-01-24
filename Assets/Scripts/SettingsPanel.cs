@@ -43,6 +43,8 @@ public class SettingsPanel : MovableUISetItem
         if (gameId != "")
             settings.tempSettings["gameId"] = gameId;
 
+        UserSettingsMgr.Save(settings);
+
         base.moveOffScreen();
     }
 
