@@ -66,19 +66,3 @@ public class UIBtn : MonoBehaviour {
 	
 }
 
-
-/*
-		float z = _basePos.z;
-		float xRange = 2.0f;
-		
-		_hilight.SetActive(false);		
-		if ( Mathf.Abs(x) < xRange)
-		{
-			_hilight.SetActive(true);			
-			float theta = (Mathf.PI / 2.0f ) * x  / xRange;
-			float dZ = -2.0f * Mathf.Cos(theta);	
-			z += dZ;
-			newPos.z = z;
-		}
-*/
-

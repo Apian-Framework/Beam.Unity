@@ -22,7 +22,9 @@ public class UICamera : MonoBehaviour {
 	
 	public delegate void CaptureSwipeDelegate(bool bIsDone); // != bIsDone means it's started.	
 	
-	TextMeshPro _dbgFPSMesh = null;
+	protected TextMeshPro _dbgFPSMesh = null;
+
+	protected ToastMgr _toastMgr;
 	
 	public LayerMask getBtnLayerMask()
 	{
@@ -93,7 +95,7 @@ public class UICamera : MonoBehaviour {
         setState(new StateIdle() );           
         
 		_dbgFPSMesh = (TextMeshPro)transform.Find("fpsdisp").GetComponent<TextMeshPro>(); // might or might not be there
-
+		_toastMgr  = (ToastMgr)transform.Find("ToastMgr").GetComponent<ToastMgr>();
 	}
 	
 
@@ -212,5 +214,8 @@ public class UICamera : MonoBehaviour {
         return stages[targetStageIdx];    
     }
 	
-
+    public void ShowToast(string msg, Toast.Color color=Toast.Color.kBlue)
+	{
+		_toastMgr.ShowToast(msg,color);
+	}
 }
