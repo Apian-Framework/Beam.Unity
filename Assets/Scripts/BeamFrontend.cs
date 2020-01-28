@@ -123,7 +123,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 		 	logger.Info("Boom! Player");
 		 	mainObj.uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
 		}
-        mainObj.uiCamera.ShowToast("Bike Blowed up!!!", Toast.Color.kOrange);        
+        //mainObj.uiCamera.ShowToast("Bike Blowed up!!!", Toast.Color.kOrange);        
 		GameObject.Instantiate(mainObj.boomPrefab, go.transform.position, Quaternion.identity);
 		UnityEngine.Object.Destroy(go);        
     }  

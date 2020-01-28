@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-public class SettingsBtn : UIBtn
+public class SettingsDoneBtn : UIBtn
 {
     public UnityEvent onClick;
     // Start is called before the first frame update
