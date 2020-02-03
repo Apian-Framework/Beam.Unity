@@ -70,7 +70,6 @@ public abstract class UICamState
                             UIBtn btn = (UIBtn)hit.transform.GetComponent<UIBtn>();
                             if (btn == curBtn)
                             {
-                                Debug.Log("YOW!!!!");
                                 // It's still over
                                 curBtn.doSelect();
                             }

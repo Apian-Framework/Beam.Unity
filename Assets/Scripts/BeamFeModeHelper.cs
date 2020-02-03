@@ -69,8 +69,6 @@ public class BeamFeModeHelper : IFrontendModeHelper
         
         }
 
-
-
         public override void OnStart(object parms=null)
         {
             TargetIdParams p = (TargetIdParams)parms;

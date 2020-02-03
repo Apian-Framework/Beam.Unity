@@ -119,11 +119,11 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         feBikes.Remove(rData.bikeId);
         mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
-		 {
-		 	logger.Info("Boom! Player");
+		{
+		 	logger.Info("Boom! Local Player");
 		 	mainObj.uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
 		}
-        //mainObj.uiCamera.ShowToast("Bike Blowed up!!!", Toast.Color.kOrange);        
+        mainObj.uiCamera.ShowToast($"{ib.name} Destroyed!!!", Toast.Color.kOrange);        
 		GameObject.Instantiate(mainObj.boomPrefab, go.transform.position, Quaternion.identity);
 		UnityEngine.Object.Destroy(go);        
     }  

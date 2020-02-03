@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 
-public class SettingsPanel : MovableUISetItem
+public class SettingsPanel : MovableUICanvasItem
 {  
     public GameObject screenNameField;
     public GameObject p2pConnectionField;

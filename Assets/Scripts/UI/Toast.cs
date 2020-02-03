@@ -1,8 +1,9 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.Events;
 
-public class Toast : MonoBehaviour {
+public class Toast : UIBtn {
 	
     public enum Color 
     { 
@@ -30,14 +31,16 @@ public class Toast : MonoBehaviour {
 	public const float kZeroDist = .01f;
 	
 	// Use this for initialization
-	protected virtual void Start () 
+	protected override void Start () 
 	{
+		base.Start ();
+		// Note that this pretty much ignores all the UIBtn
    		transform.localPosition = offScreenPos;				
 		bMoving = true;		   
 	}
 	
 	// Update is called once per frame
-	protected virtual void Update () 
+	protected override void Update () 
 	{
 		float frameMs = GameTime.DeltaTime();
 		if (bMoving)
@@ -100,4 +103,9 @@ public class Toast : MonoBehaviour {
 	{
 		secsLeft = secs;
 	}
+
+	public override void doSelect()
+	{            
+		mgr?.RemoveToast(this);
+	}   	
 }

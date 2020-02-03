@@ -21,8 +21,8 @@ public class UIBtn : MonoBehaviour {
 		
 		_uiCamScript = (UICamera)uiCamera.GetComponent("UICamera");	
 		
-		_hilight = transform.Find("hilight").gameObject;
-		_halo = transform.Find("halo").gameObject;		
+		_hilight = transform.Find("hilight")?.gameObject;
+		_halo = transform.Find("halo")?.gameObject;		
 		
 		_basePos = transform.position;		
 		_bIsHighLit = false;			
