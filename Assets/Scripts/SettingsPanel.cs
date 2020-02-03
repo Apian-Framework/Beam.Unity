@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using BeamBackend;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.Events;
 
 public class SettingsPanel : MovableUICanvasItem
@@ -18,11 +19,11 @@ public class SettingsPanel : MovableUICanvasItem
         BeamMain mainObj = BeamMain.GetInstance();
         BeamUserSettings settings = mainObj.frontend.GetUserSettings();
 
-        screenNameField.GetComponent<InputField>().text = settings.screenName;
-        p2pConnectionField.GetComponent<InputField>().text = settings.p2pConnectionString;
-        ethNodeField.GetComponent<InputField>().text = settings.ethNodeUrl;
-        ethAcctField.GetComponent<InputField>().text = settings.ethAcct;
-        gameIdField.GetComponent<InputField>().text = 
+        screenNameField.GetComponent<TMP_InputField>().text = settings.screenName;
+        p2pConnectionField.GetComponent<TMP_InputField>().text = settings.p2pConnectionString;
+        ethNodeField.GetComponent<TMP_InputField>().text = settings.ethNodeUrl;
+        ethAcctField.GetComponent<TMP_InputField>().text = settings.ethAcct;
+        gameIdField.GetComponent<TMP_InputField>().text = 
             settings.tempSettings.ContainsKey("gameId") ? settings.tempSettings["gameId"] : "";
 
         UserSettingsMgr.Save(settings);
@@ -35,11 +36,11 @@ public class SettingsPanel : MovableUICanvasItem
         BeamMain mainObj = BeamMain.GetInstance();
         BeamUserSettings settings = mainObj.frontend.GetUserSettings();
 
-        settings.screenName = screenNameField.GetComponent<InputField>().text;
-        settings.p2pConnectionString = p2pConnectionField.GetComponent<InputField>().text;
-        settings.ethNodeUrl = ethNodeField.GetComponent<InputField>().text;
-        settings.ethAcct = ethAcctField.GetComponent<InputField>().text;
-        string gameId = gameIdField.GetComponent<InputField>().text;
+        settings.screenName = screenNameField.GetComponent<TMP_InputField>().text;
+        settings.p2pConnectionString = p2pConnectionField.GetComponent<TMP_InputField>().text;
+        settings.ethNodeUrl = ethNodeField.GetComponent<TMP_InputField>().text;
+        settings.ethAcct = ethAcctField.GetComponent<TMP_InputField>().text;
+        string gameId = gameIdField.GetComponent<TMP_InputField>().text;
         if (gameId != "")
             settings.tempSettings["gameId"] = gameId;
 
