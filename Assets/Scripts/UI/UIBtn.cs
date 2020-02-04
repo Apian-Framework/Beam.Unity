@@ -32,7 +32,8 @@ public class UIBtn : MonoBehaviour {
 	public void setHighLit(bool doIt)
 	{
 		_bIsHighLit = doIt;
-		_hilight.SetActive(doIt);
+        if (_hilight != null)		
+			_hilight.SetActive(doIt);
         
         if (_halo != null)
 		    _halo.SetActive(doIt);
