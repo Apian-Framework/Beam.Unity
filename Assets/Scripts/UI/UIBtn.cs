@@ -11,15 +11,12 @@ public class UIBtn : MonoBehaviour {
 	protected const float hiZSpeed = 15.0f;
 	
 	protected bool _bIsHighLit;
-	
-	protected UICamera _uiCamScript;		
+			
 	
 	// Use this for initialization
 	protected virtual void Start () 
 	{
-		GameObject uiCamera = GameObject.Find("UICamera");
-		
-		_uiCamScript = (UICamera)uiCamera.GetComponent("UICamera");	
+
 		
 		_hilight = transform.Find("hilight")?.gameObject;
 		_halo = transform.Find("halo")?.gameObject;		

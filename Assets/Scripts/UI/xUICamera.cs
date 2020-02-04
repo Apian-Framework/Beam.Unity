@@ -2,7 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class UICamera : MonoBehaviour {
+public class xUICamera : MonoBehaviour {
 	
 		
 	public GameObject[] stages; // these are "sets". We want to go to the "UICamPos" for each
@@ -17,8 +17,6 @@ public class UICamera : MonoBehaviour {
 	
 	protected LayerMask  _btnLayerMask; // set in Start layer	
 	protected const float kZeroDist = .1f;
-
-	protected UICamState _curState = null;
 	
 	public delegate void CaptureSwipeDelegate(bool bIsDone); // != bIsDone means it's started.	
 	
@@ -92,7 +90,7 @@ public class UICamera : MonoBehaviour {
         
         _btnLayerMask = (1 << gameObject.layer);      
         setInitialStage();
-        setState(new StateIdle() );           
+        setState( );           
         
 		_dbgFPSMesh = (TextMeshPro)transform.Find("fpsdisp").GetComponent<TextMeshPro>(); // might or might not be there
 		_toastMgr  = (ToastMgr)transform.Find("ToastMgr").GetComponent<ToastMgr>();
@@ -104,8 +102,6 @@ public class UICamera : MonoBehaviour {
 		
 		updateStageSwitch();
 		
-		if (_curState != null)
-			_curState.update();
 		
 		if (_dbgFPSMesh != null)
 		{
@@ -117,9 +113,7 @@ public class UICamera : MonoBehaviour {
 	
 	void FixedUpdate () 
 	{
-		
-		if (_curState != null)
-			_curState.fixedUpdate();
+
 
 	}	
 	
@@ -193,20 +187,14 @@ public class UICamera : MonoBehaviour {
 	
 	// This is ugly. If the state classes  are to beuse they should at least get created and stashed
 	// when not active - that would a) reduce alloc/free overhead and b) allow push/pop pause and resume.
-	public void setState(UICamState newState)
+	public void setState()
 	{
-		if (_curState != null)
-			_curState.end();
-		
-		_curState = newState;
-		_curState.init(this);
 		
 	}
 
     public void CancelTaps()
     {
-        if (_curState != null)
-            _curState.CancelTaps();
+
     }
     
     public GameObject CurrentStage()

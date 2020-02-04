@@ -8,7 +8,7 @@ public class BeamMain : MonoBehaviour
 {
     public BeamFrontend frontend;
 	public GameCamera gameCamera;
-	public UICamera uiCamera;	
+	public GameUiController uiController;	
 	public InputDispatch inputDispatch;    
     public GameObject boomPrefab;          
 	public EthereumProxy eth = null;
@@ -43,7 +43,7 @@ public class BeamMain : MonoBehaviour
 		// Semi-presistent Main-owned objects 
         // TODO: Should be in Awake()?
         frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");	       
-		uiCamera = (UICamera)utils.findObjectComponent("UICamera", "UICamera");		
+		uiController = (GameUiController)utils.findObjectComponent("GameUiController", "GameUiController");		
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");		
 		
         inputDispatch = new InputDispatch(this);

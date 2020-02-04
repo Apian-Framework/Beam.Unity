@@ -104,12 +104,12 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
         {
             mainObj.inputDispatch.SetLocalPlayerBike(bikeGo);
-            mainObj.uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOffScreen", null);
-            mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("SetLocalPlayerBike", bikeGo);
+            mainObj.uiController.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOffScreen", null);
+            mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("SetLocalPlayerBike", bikeGo);
             mainObj.gameCamera.StartBikeMode(bikeGo);            
         }
-        else
-            mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);           
+        // &&&&& else
+        //    mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);           
     }
 
     public void OnBikeRemovedEvt(object sender, BikeRemovedData rData)
@@ -117,13 +117,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         GameObject go = feBikes[rData.bikeId];
         IBike ib = mainObj.backend.gameData.GetBaseBike(rData.bikeId);
         feBikes.Remove(rData.bikeId);
-        mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
+        mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
 		{
 		 	logger.Info("Boom! Local Player");
-		 	mainObj.uiCamera.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
+		 	mainObj.uiController.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
 		}
-        mainObj.uiCamera.ShowToast($"{ib.name} Destroyed!!!", Toast.Color.kOrange);        
+        mainObj.uiController.ShowToast($"{ib.name} Destroyed!!!", Toast.Color.kOrange);        
 		GameObject.Instantiate(mainObj.boomPrefab, go.transform.position, Quaternion.identity);
 		UnityEngine.Object.Destroy(go);        
     }  

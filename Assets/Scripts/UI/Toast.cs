@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.Events;
 
-public class Toast : UIBtn {
+public class Toast : MonoBehaviour
+ {
 	
     public enum Color 
     { 
@@ -31,16 +33,15 @@ public class Toast : UIBtn {
 	public const float kZeroDist = .01f;
 	
 	// Use this for initialization
-	protected override void Start () 
+	protected  void Start () 
 	{
-		base.Start ();
 		// Note that this pretty much ignores all the UIBtn
    		transform.localPosition = offScreenPos;				
 		bMoving = true;		   
 	}
 	
 	// Update is called once per frame
-	protected override void Update () 
+	protected void Update () 
 	{
 		float frameMs = GameTime.DeltaTime();
 		if (bMoving)
@@ -91,12 +92,12 @@ public class Toast : UIBtn {
 		if (color == Toast.Color.kRed)
 			mat = redMaterial;
 
-    	transform.GetComponent<Renderer>().material = mat;
+    	gameObject.transform.GetComponent<Image>().material = mat;
 	}
 
 	public void SetText(string msg)
 	{
-		gameObject.transform.Find("Text").GetComponent<TextMeshPro>().text = msg;
+		gameObject.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = msg;
 	}
 
 	public void SetTimeout( float secs)
@@ -104,7 +105,7 @@ public class Toast : UIBtn {
 		secsLeft = secs;
 	}
 
-	public override void doSelect()
+	public void DoSelect()
 	{            
 		mgr?.RemoveToast(this);
 	}   	

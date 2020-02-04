@@ -101,7 +101,7 @@ public class BeamFeModeHelper : IFrontendModeHelper
         protected void SetupCameras(string targetBikeId)
         {
             PointGameCamAtBike(targetBikeId);
-		    _feMain.uiCamera.switchToNamedStage("SplashStage");
+		    // &&&&& _feMain.uiCamera.switchToNamedStage("SplashStage");
             _feMain.gameCamera.gameObject.SetActive(true);               
         }        
     }
@@ -135,12 +135,12 @@ public class BeamFeModeHelper : IFrontendModeHelper
         protected void SetupCameras(GameObject playerBike)
         {
             _feMain.gameCamera.transform.position = new Vector3(100, 100, 100);               
-            _feMain.uiCamera.switchToNamedStage("PlayStage");   
-            _feMain.uiCamera.CurrentStage().transform.Find("Scoreboard").SendMessage("SetLocalPlayerBike", playerBike); 
+            _feMain.uiController.switchToNamedStage("PlayStage");   
+            _feMain.uiController.CurrentStage().transform.Find("Scoreboard").SendMessage("SetLocalPlayerBike", playerBike); 
             foreach (GameObject b in _feMain.frontend.GetBikeList())
             {
                 if (b != playerBike)
-                    _feMain.uiCamera.CurrentStage().transform.Find("Scoreboard").SendMessage("AddBike", b);
+                    _feMain.uiController.CurrentStage().transform.Find("Scoreboard").SendMessage("AddBike", b);
             }                         
             _feMain.gameCamera.StartBikeMode( playerBike);        
             _feMain.gameCamera.gameObject.SetActive(true);              
