@@ -32,7 +32,7 @@ public class ToastMgr : MonoBehaviour
     public void ShowToast(string msg, Toast.Color color=Toast.Color.kBlue, float displaySecs=defDisplaySecs)
     {
         GameObject toastGo = GameObject.Instantiate(toastPrefab, transform.position, Quaternion.identity) as GameObject;        
-        toastGo.transform.parent = transform;        
+        toastGo.transform.SetParent(transform);        
         Toast toast= (Toast)toastGo.transform.GetComponent<Toast>();
 		toast.Setup(this, msg, color, displaySecs);
         toasts.Add(toast);

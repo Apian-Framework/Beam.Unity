@@ -73,6 +73,7 @@ public class BeamFeModeHelper : IFrontendModeHelper
         {
             TargetIdParams p = (TargetIdParams)parms;
             SetupCameras(p.targetId);
+            // TODO: These next should be in the GameUIController
             _feMain.frontend.startBtn.SetActive(false);            
             _feMain.frontend.connectBtn.SetActive(true);            
         }
@@ -101,7 +102,7 @@ public class BeamFeModeHelper : IFrontendModeHelper
         protected void SetupCameras(string targetBikeId)
         {
             PointGameCamAtBike(targetBikeId);
-		    // &&&&& _feMain.uiCamera.switchToNamedStage("SplashStage");
+		    _feMain.uiController.switchToNamedStage("SplashStage");
             _feMain.gameCamera.gameObject.SetActive(true);               
         }        
     }

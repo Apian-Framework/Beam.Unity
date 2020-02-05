@@ -135,9 +135,9 @@ MonoBehaviour:
   orangeMaterial: {fileID: 2100000, guid: 634c3a54f6873504481e30ade9dcff24, type: 2}
   redMaterial: {fileID: 2100000, guid: d440611f164b2e74e8561e2ee68d2f7b, type: 2}
   switchSecs: 0.125
-  offScreenPos: {x: 0, y: 250, z: 0}
-  onScreenPos: {x: 0, y: 200, z: 0}
-  height: 35
+  offScreenPos: {x: 0, y: 275, z: 0}
+  onScreenPos: {x: 0, y: 245, z: 0}
+  height: 30
   bMoving: 0
   targetPos: {x: 0, y: 0, z: 0}
 --- !u!1 &3208705275019433630

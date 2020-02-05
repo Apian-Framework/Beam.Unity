@@ -104,12 +104,14 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
         {
             mainObj.inputDispatch.SetLocalPlayerBike(bikeGo);
-            mainObj.uiController.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOffScreen", null);
+            mainObj.uiController.CurrentStage().transform.Find("RestartBtn")?.SendMessage("moveOffScreen", null);
             mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("SetLocalPlayerBike", bikeGo);
             mainObj.gameCamera.StartBikeMode(bikeGo);            
         }
-        // &&&&& else
-        //    mainObj.uiCamera.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);           
+        else
+            mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);
+  
+        mainObj.uiController.ShowToast($"New Bike: {ib.name}", Toast.Color.kBlue);            
     }
 
     public void OnBikeRemovedEvt(object sender, BikeRemovedData rData)
@@ -121,7 +123,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
 		{
 		 	logger.Info("Boom! Local Player");
-		 	mainObj.uiController.CurrentStage().transform.Find("RestartCtrl")?.SendMessage("moveOnScreen", null); 
+		 	mainObj.uiController.CurrentStage().transform.Find("RestartBtn")?.SendMessage("moveOnScreen", null); 
 		}
         mainObj.uiController.ShowToast($"{ib.name} Destroyed!!!", Toast.Color.kOrange);        
 		GameObject.Instantiate(mainObj.boomPrefab, go.transform.position, Quaternion.identity);

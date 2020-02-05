@@ -7,14 +7,13 @@ public class MovableUICanvasItem : MonoBehaviour {
 	public float switchSecs = .3f;
 	public Vector2 offScreenPos;
 	public Vector2 onScreenPos;
-	
-	protected bool bMoving;
-	protected Vector2 targetPos;
-	protected Vector2 curVel = Vector2.zero;
 
+	protected bool shouldBeOnScreen = false;	
+	protected bool bMoving;
+	protected Vector2 curVel = Vector2.zero;
 	protected RectTransform rectTransform;
-	
-	public const float kZeroDist = .01f;
+	protected const float kZeroDist = .01f;
+	protected Vector2 TargetPos => shouldBeOnScreen ? onScreenPos : offScreenPos;
 	
 	// Use this for initialization
 	protected virtual void Start () 
@@ -23,47 +22,59 @@ public class MovableUICanvasItem : MonoBehaviour {
 		rectTransform = GetComponent<RectTransform>();
 		
 		if (startOnScreen)
-			rectTransform.anchoredPosition = onScreenPos;	
+			moveOnScreenNow();	
 		else
-			rectTransform.anchoredPosition = offScreenPos;				
+			moveOffScreenNow();
 	}
 	
 	// Update is called once per frame
 	protected virtual void Update () 
 	{
+		Vector2 targetPos = TargetPos;
 		if (bMoving)
-		{
-			
+		{		
 			rectTransform.anchoredPosition = Vector2.SmoothDamp(rectTransform.anchoredPosition,targetPos,ref curVel,switchSecs);
-			
-			if (Vector3.Distance(rectTransform.anchoredPosition, targetPos) < kZeroDist)
+			if (Vector2.Distance(rectTransform.anchoredPosition, targetPos) < kZeroDist)
 			{
 				bMoving = false;
+				rectTransform.anchoredPosition= targetPos; // make it exact for the "not moving" test below		
 				curVel = Vector2.zero;
-			}
-		}			
+			}	
+		} else {
+			// Positions must have changed
+			if (!rectTransform.anchoredPosition.Equals(targetPos))
+				bMoving = true;
+		}	
 	}
 	
 	public void toggle()
 	{
+		Debug.Log("Toggling");
 		bMoving = true;
-		targetPos = targetPos == onScreenPos ? offScreenPos : onScreenPos;
+		shouldBeOnScreen = !shouldBeOnScreen;
 	}
 
 	public void moveOnScreen()
 	{
+		shouldBeOnScreen = true;		
 		bMoving = true;
-		targetPos = onScreenPos;
 	}
 	
 	public void moveOffScreen()
-	{
+	{		
+		shouldBeOnScreen = false;		
 		bMoving = true;
-		targetPos = offScreenPos;
 	}
 	
+	public void moveOnScreenNow()
+	{
+		rectTransform.anchoredPosition = onScreenPos;
+		shouldBeOnScreen = true;
+		bMoving = false;
+	}	
 	public void moveOffScreenNow()
 	{
+		shouldBeOnScreen = false;
 		rectTransform.anchoredPosition = offScreenPos;
 		bMoving = false;
 	}

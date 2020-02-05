@@ -8,13 +8,13 @@ public class ScoreboardLine : MonoBehaviour
     public FrontendBike bike = null;
 
     public int prevScore = -1;
-    protected TextMeshPro whoTextMesh = null;
-    protected TextMeshPro scoreTextMesh = null;
+    protected TextMeshProUGUI whoTextMesh = null;
+    protected TextMeshProUGUI scoreTextMesh = null;
     // Start is called before the first frame update
     void Awake()
     {
-        scoreTextMesh = transform.Find("Score").GetComponent<TextMeshPro>(); 
-        whoTextMesh = transform.Find("Who").GetComponent<TextMeshPro>();       
+        scoreTextMesh = transform.Find("Score").GetComponent<TextMeshProUGUI>(); 
+        whoTextMesh = transform.Find("Who").GetComponent<TextMeshProUGUI>();       
     }
 
     // Update is called once per frame

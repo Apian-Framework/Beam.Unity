@@ -1,45 +1,50 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameUiController : MonoBehaviour
 {
 	public GameObject[] stages; // these are "sets" for the game mode UIs
 
-	protected ToastMgr _toastMgr;
+	public ToastMgr toastMgr;
+	public GameObject dbgFpsDisp;
     protected int _curStageIdx = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-		_toastMgr  = (ToastMgr)transform.Find("ToastMgr").GetComponent<ToastMgr>();        
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+		if (dbgFpsDisp != null)
+		{
+			dbgFpsDisp.GetComponent<TextMeshProUGUI>().text =  string.Format("FPS: {0:0.0}", (1.0f / Time.smoothDeltaTime));
+		}        
     }
 
 
 	public void switchToNamedStage(string stageName)
 	{
-        int targetStageIdx = -1;
+		_curStageIdx = -1;
 		for(int i = 0; i< stages.Length; i++ )
 		{
 			if(stages[i].name.Equals(stageName))
 			{
-				targetStageIdx = i;
-				break;
+            	_curStageIdx = i;
+				stages[i].SetActive(true);
+			} else {
+				stages[i].SetActive(false);
 			}
+
 		}		
 		
-		if (targetStageIdx != -1)
-		{            
-            _curStageIdx = targetStageIdx;
-			stages[targetStageIdx].SetActive(true);
-		}
-			
+		if (_curStageIdx == -1)
+			Debug.LogWarning($"No stage named: {stageName}");
+
 	}    
 
     public GameObject CurrentStage()
@@ -49,6 +54,6 @@ public class GameUiController : MonoBehaviour
 
     public void ShowToast(string msg, Toast.Color color=Toast.Color.kBlue)
 	{
-		_toastMgr.ShowToast(msg,color);
+		toastMgr.ShowToast(msg,color);
 	}    
 }

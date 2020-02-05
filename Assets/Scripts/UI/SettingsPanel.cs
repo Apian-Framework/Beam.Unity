@@ -28,7 +28,7 @@ public class SettingsPanel : MovableUICanvasItem
 
         UserSettingsMgr.Save(settings);
 
-        base.moveOnScreen();
+        moveOnScreen();
     }
 
     public void SaveAndHide()
@@ -46,7 +46,7 @@ public class SettingsPanel : MovableUICanvasItem
 
         UserSettingsMgr.Save(settings);
 
-        base.moveOffScreen();
+        moveOffScreen();
     }
 
 
