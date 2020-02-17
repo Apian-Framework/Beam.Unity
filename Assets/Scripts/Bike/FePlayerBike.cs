@@ -43,15 +43,9 @@ public class FePlayerBike : FrontendBike
         //}
     }
 
-
-    public void FrobLeftButton()
+    public void RequestTurn(TurnDir dir)
     {
-        ((PlayerControl)control).OnPlayerTurnRequest( TurnDir.kLeft);
-    }
-
-    public void FrobRightButton()
-    {
-        ((PlayerControl)control).OnPlayerTurnRequest( TurnDir.kRight);        
+        control.RequestTurn(dir, true); // allow deferred
     }
 
 }

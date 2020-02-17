@@ -23,6 +23,8 @@ public abstract class FrontendBike : MonoBehaviour
 
     public float maxLean = 40.0f;
 
+    public bool isLocal;
+
     protected GameObject ouchObj;
 
     protected static readonly float[] turnStartTheta = {
@@ -39,6 +41,7 @@ public abstract class FrontendBike : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
+        isLocal = true;
         Debug.Log(string.Format("FrontendBike.Start()"));         
         // Initialize pointing direction based on heading;
         // assumes pos and heading are set on creation
@@ -62,86 +65,6 @@ public abstract class FrontendBike : MonoBehaviour
         CreateControl();        
         control.Setup(beBike, backend);  
     }
-
-    // Update is called once per frame
-    // public virtual void OldUpdate()
-    // {
-    //     Vector3 pos = transform.position;
-    //     Vector3 angles = transform.eulerAngles;
-    //     float deltaT = GameTime.DeltaTime();
-
-    //     DecideToTurn();
-
-    //     Vector3 gridPt = NearestGridPoint(pos, Ground.gridSize);
-    //     bool prevAtGridPt = AtGridPoint(gridPt, pos, BaseBike.length, turnRadius); // see if this frame's motion changes the status
-
-    //     // 
-    //     // Do frame motion
-    //     //
-    //     if (_curTurn != TurnDir.kStraight)
-    //     {
-    //         // TODO: be consistent with degrees/radians
-    //         // Do a turn iteration
-    //         float dThetaRad = (_curTurn == TurnDir.kLeft ? -1f : 1f) * deltaT * BaseBike.speed / turnRadius;
-    //         _turnTheta += dThetaRad * Mathf.Rad2Deg;
-    //         float theta = _turnStartTheta + _turnTheta;
-    //         pos = _turnAxis + new Vector3(turnRadius * Mathf.Sin(theta * Mathf.Deg2Rad), 0, turnRadius * Mathf.Cos(theta * Mathf.Deg2Rad));
-    //         //Debug.Log(string.Format("startTheta: {0}", _turnStartTheta));             
-    //         //Debug.Log(string.Format("turnTheta: {0}", _turnTheta)); 
-
-    //         if (Mathf.Abs(_turnTheta) >= 90)
-    //         {
-    //             _curTurn = TurnDir.kStraight;
-    //             angles.z = 0;
-    //             angles.y = turnStartTheta[(int)heading] - 90f;
-    //         }
-    //         else
-    //         {
-    //             angles.z = -Mathf.Sin(_turnTheta * 2.0f * Mathf.Deg2Rad) * maxLean;
-    //             angles.y = theta + (_curTurn == TurnDir.kLeft ? -1f : 1f) * 90f;
-    //         }
-    //         transform.eulerAngles = angles;
-
-    //     }
-    //     else
-    //     {
-    //         pos += GameTime.DeltaTime() * BaseBike.speed * GameConstants.UnitOffset3ForHeading(heading);
-    //     }
-
-    //     // Deal with this frame's motion
-
-    //     bool atGridPt = AtGridPoint(gridPt, pos, BaseBike.length, turnRadius);
-
-    //     if (atGridPt)
-    //     {
-    //         if (!prevAtGridPt)
-    //         {
-    //             // Just crossed onto a grid point
-    //             // DealWithPlace(pos);
-
-    //             // // Waiting to turn?
-    //             // if (!prevAtGridPt && pendingTurn != TurnDir.kStraight && pendingTurn != TurnDir.kUnset && _curTurn == TurnDir.kStraight)
-    //             // {
-    //             //     // should be StartTurn()
-    //             //     Heading prevHead = heading;
-    //             //     _curTurn = pendingTurn;
-    //             //     bb.TempSetHeading(GameConstants.NewHeadForTurn(heading, pendingTurn));
-
-    //             //     // set up turn axis and angle
-    //             //     _turnAxis = gridPt - (GameConstants.UnitOffset3ForHeading(prevHead) - GameConstants.UnitOffset3ForHeading(heading)) * turnRadius;
-    //             //     _turnStartTheta = turnStartTheta[(int)prevHead] + (_curTurn == TurnDir.kRight ? 180f : 0f);
-    //             //     _turnTheta = 0;
-    //             //     //Debug.Log(string.Format("gridPt: {0}", gridPt));             
-    //             //     //Debug.Log(string.Format("turnAxis: {0}", _turnAxis));                
-    //             // }
-
-    //             // bb.TempSetPendingTurn(TurnDir.kUnset);  // reset when you get to a grid point        
-    //         }
-    //     }
-
-    //     transform.position = pos;
-
-    // }
 
     public virtual void Update()
     {
@@ -240,20 +163,6 @@ public abstract class FrontendBike : MonoBehaviour
         ouchObj.SetActive(false); // restart in case the anim is already running
         ouchObj.SetActive(true); 
     }
-
-    // public virtual void OnBikeAtPlace(Ground.Place place, bool justClaimed)
-    // {
-    //     if (place == null)
-    //     {
-    //         Debug.Log("** FE bike got to null place");            
-    //     } else {
-    //         if (!justClaimed) 
-    //         {
-    //             ouchObj.SetActive(false); // restart in case the anim is already running
-    //             ouchObj.SetActive(true);            
-    //         }
-    //     }
-    // }
 
 
 

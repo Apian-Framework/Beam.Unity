@@ -307,7 +307,7 @@ MonoBehaviour:
   throwOnError: 1
   levelEntries:
   - LoggerName: BaseBike
-    level: 40
+    level: 30
   - LoggerName: BeamMode
     level: 40
   - LoggerName: Frontend

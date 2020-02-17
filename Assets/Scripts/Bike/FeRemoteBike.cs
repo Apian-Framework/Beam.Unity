@@ -7,6 +7,11 @@ using BikeControl;
 
 public class FeRemoteBike : FrontendBike
 {
+    public override void Start()    
+    {
+        base.Start();
+        isLocal = false;
+    }
     protected override void CreateControl()
     {
         control = new RemoteControl();
