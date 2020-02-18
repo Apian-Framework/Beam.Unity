@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ToastMgr : MonoBehaviour
 {
+    public const int maxToasts = 4;
     public const float defDisplaySecs = 2.0f;
 
     public GameObject toastPrefab;
@@ -29,12 +30,14 @@ public class ToastMgr : MonoBehaviour
             t.SetIndex(idx--); 
     }
 
-    public void ShowToast(string msg, Toast.Color color=Toast.Color.kBlue, float displaySecs=defDisplaySecs)
+    public void ShowToast(string msg, Toast.ToastColor color=Toast.ToastColor.kBlue, float displaySecs=defDisplaySecs)
     {
-        GameObject toastGo = GameObject.Instantiate(toastPrefab, transform.position, Quaternion.identity) as GameObject;        
-        toastGo.transform.SetParent(transform);        
+        GameObject toastGo = GameObject.Instantiate(toastPrefab, transform);        
+        toastGo.transform.SetParent(transform.parent);        
         Toast toast= (Toast)toastGo.transform.GetComponent<Toast>();
 		toast.Setup(this, msg, color, displaySecs);
+        if (toasts.Count >= maxToasts)
+            RemoveToast(toasts[maxToasts-1]);
         toasts.Add(toast);
         toastGo.SetActive(true);    
         FixupPositions();            

@@ -49,7 +49,7 @@ public class PlayStage : MonoBehaviour
 
 	public void OnViewRightBtn() => _main.inputDispatch.LookAround(-lookRadians, lookDecayRate);   
 
-	public void OnViewUpBtn() => _main.inputDispatch.ToggleCamHeight();	
+	public void OnViewUpBtn() => _main.inputDispatch.SwitchCameraView();	
 
 	public void OnRestartBtn() => _main.backend.RaiseRespawnPlayer();
 }

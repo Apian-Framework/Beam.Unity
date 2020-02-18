@@ -111,7 +111,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         else
             mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("AddBike", bikeGo);
   
-        mainObj.uiController.ShowToast($"New Bike: {ib.name}", Toast.Color.kBlue);            
+        mainObj.uiController.ShowToast($"New Bike: {ib.name}", Toast.ToastColor.kBlue);            
     }
 
     public void OnBikeRemovedEvt(object sender, BikeRemovedData rData)
@@ -125,7 +125,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 		 	logger.Info("Boom! Local Player");
 		 	mainObj.uiController.CurrentStage().transform.Find("RestartBtn")?.SendMessage("moveOnScreen", null); 
 		}
-        mainObj.uiController.ShowToast($"{ib.name} Destroyed!!!", Toast.Color.kOrange);        
+        mainObj.uiController.ShowToast($"{ib.name} Destroyed!!!", Toast.ToastColor.kOrange);        
 		GameObject.Instantiate(mainObj.boomPrefab, go.transform.position, Quaternion.identity);
 		UnityEngine.Object.Destroy(go);        
     }  

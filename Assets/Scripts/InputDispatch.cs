@@ -19,11 +19,28 @@ public class InputDispatch
 
     public void LocalPlayerBikeLeft() => localPlayerBike.RequestTurn(TurnDir.kLeft); 
     public void LocalPlayerBikeRight() => localPlayerBike.RequestTurn(TurnDir.kRight);     
-    public void ToggleCamHeight() => feMain.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kToggleHighLow, null );
+    public void SwitchCameraView() 
+    {
+        if (localPlayerBike == null)
+            return;
+
+        switch (feMain.gameCamera.getMode())
+        {
+        case GameCamera.CamModeID.kBikeView:  
+            feMain.gameCamera.StartOverheadMode(localPlayerBike.gameObject);
+            break;
+        case GameCamera.CamModeID.kOverheadView:
+            feMain.gameCamera.StartEnemyView(localPlayerBike.gameObject);      
+            break;
+        default:
+        case GameCamera.CamModeID.kEnemyView:            
+            feMain.gameCamera.StartBikeMode(localPlayerBike.gameObject);
+            break;
+        }
+    }
     public void LookAround(float angleRad, float decayRate)
     {
-	    feMain.gameCamera.SendCmd((int)GameCamera.ModeBikeView.Commands.kLookAround, 
-		 	(object)new GameCamera.ModeBikeView.LookParams(angleRad, decayRate) );    
+	    feMain.gameCamera.LookAround(angleRad, decayRate);    
     }
     
 }

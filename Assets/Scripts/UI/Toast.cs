@@ -7,16 +7,16 @@ using UnityEngine.Events;
 public class Toast : MonoBehaviour
  {
 	
-    public enum Color 
+    public enum ToastColor 
     { 
-        kBlue, //
-        kOrange, //
-        kRed
+        kBlue = 0, //
+        kOrange = 1, //
+        kRed = 2
     };
 
-	public Material blueMaterial;
-	public Material orangeMaterial;	
-	public Material redMaterial;
+	public Color blueColor;
+	public Color orangeColor;
+	public Color redColor;
 
 	public float switchSecs = .125f;
 	public Vector3 offScreenPos;
@@ -68,7 +68,7 @@ public class Toast : MonoBehaviour
 		bMoving = false;
 	}
 	
-	public void Setup(ToastMgr _mgr, string msg, Toast.Color color, float displaySecs)
+	public void Setup(ToastMgr _mgr, string msg, Toast.ToastColor color, float displaySecs)
 	{
 		mgr = _mgr;
 		SetColor(color);
@@ -83,18 +83,17 @@ public class Toast : MonoBehaviour
 		targetPos = onScreenPos + new Vector3(0, -idx*height, 0);
 	}
 
-	public void SetColor(Toast.Color color)
+	public void SetColor(Toast.ToastColor color)
 	{
-		Material mat = blueMaterial;
+		Color rgb =  blueColor;
 		// Yuk
-		if (color == Toast.Color.kOrange)
-			mat = orangeMaterial;
-		if (color == Toast.Color.kRed)
-			mat = redMaterial;
+		if (color == Toast.ToastColor.kOrange)
+			rgb = orangeColor;
+		if (color == Toast.ToastColor.kRed)
+			rgb = redColor;
 
-    	gameObject.transform.GetComponent<Image>().material = mat;
+    	gameObject.transform.GetComponent<Image>().color = rgb;
 	}
-
 	public void SetText(string msg)
 	{
 		gameObject.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = msg;

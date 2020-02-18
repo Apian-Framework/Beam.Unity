@@ -60,16 +60,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 634c3a54f6873504481e30ade9dcff24, type: 2}
+  m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
-  m_FillCenter: 0
+  m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
   m_FillClockwise: 1
@@ -131,9 +131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb3d05b0695f1a44c8c490e29fbea3bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blueMaterial: {fileID: 2100000, guid: 5962f63428cbd7b429a87ebec75972a8, type: 2}
-  orangeMaterial: {fileID: 2100000, guid: 634c3a54f6873504481e30ade9dcff24, type: 2}
-  redMaterial: {fileID: 2100000, guid: d440611f164b2e74e8561e2ee68d2f7b, type: 2}
+  blueColor: {r: 0.4719206, g: 0.60324955, b: 0.990566, a: 0.5019608}
+  orangeColor: {r: 1, g: 0.69692, b: 0.4009434, a: 0.81960785}
+  redColor: {r: 0.990566, g: 0, b: 0, a: 0.5254902}
   switchSecs: 0.125
   offScreenPos: {x: 0, y: 275, z: 0}
   onScreenPos: {x: 0, y: 245, z: 0}

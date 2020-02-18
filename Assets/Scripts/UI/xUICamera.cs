@@ -202,7 +202,7 @@ public class xUICamera : MonoBehaviour {
         return stages[targetStageIdx];    
     }
 	
-    public void ShowToast(string msg, Toast.Color color=Toast.Color.kBlue)
+    public void ShowToast(string msg, Toast.ToastColor color=Toast.ToastColor.kBlue)
 	{
 		_toastMgr.ShowToast(msg,color);
 	}

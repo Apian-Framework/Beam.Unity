@@ -19,12 +19,12 @@ public class ViewUpBtn : UIBtn  {
 	{
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.Space))
-			_main.inputDispatch.ToggleCamHeight();
+			_main.inputDispatch.SwitchCameraView();
 	}
 
 	public override void doSelect()
 	{
-		_main.inputDispatch.ToggleCamHeight();
+		_main.inputDispatch.SwitchCameraView();
 	}
 }
 
