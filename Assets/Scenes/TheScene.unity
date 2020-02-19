@@ -318,6 +318,8 @@ MonoBehaviour:
     level: 40
   - LoggerName: P2pNet
     level: 40
+  - LoggerName: UserSettings
+    level: 30
 --- !u!4 &7721492
 Transform:
   m_ObjectHideFlags: 0
@@ -4108,6 +4110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _curModeID: 0
+  feMain: {fileID: 0}
 --- !u!1 &964301178
 GameObject:
   m_ObjectHideFlags: 0
