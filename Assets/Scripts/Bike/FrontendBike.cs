@@ -41,8 +41,7 @@ public abstract class FrontendBike : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
-        isLocal = true;
-        Debug.Log(string.Format("FrontendBike.Start()"));         
+        isLocal = true;     
         // Initialize pointing direction based on heading;
         // assumes pos and heading are set on creation
         Vector3 angles = transform.eulerAngles;
