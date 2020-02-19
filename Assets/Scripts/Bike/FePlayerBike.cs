@@ -15,32 +15,42 @@ public class FePlayerBike : FrontendBike
     {
         base.Update();
 
-         //FeGround g = BeamMain.GetInstance().feGround;
-        // if (_curTurn == TurnDir.kStraight) {
-            // Vector3 pos = transform.position;
-            // Vector3 otherPos = ClosestBike(this.gameObject).transform.position;
+        // float dbgLineY = .1f;
+        // BeamGameData gd = BeamMain.GetInstance().backend.gameData;
+        // if (_curTurn == TurnDir.kStraight || (_curTurn == TurnDir.kUnset)) {
 
-            //  TurnDir turnToZero = TurnTowardsPos( otherPos, pos, heading );
+        //     BaseBike bBike = bb as BaseBike;
+        //     // //
+        //     // // Draw direction to turn to get to closest bike
+        //     // //
 
-            //  Heading newHead = GameConstants.newHeadForTurn[(int)heading][(int)turnToZero];
-            //  Debug.DrawLine( pos, pos + GameConstants.UnitOffsetForHeading(newHead]*Ground.gridSize, Color.white ); 
+        //     // Vector2 pos2 = bb.position;
+        //     // Vector2 otherPos2 = gd.ClosestBike(this.bb).position;
 
+        //     // TurnDir turnToZero = BikeUtils.TurnTowardsPos( otherPos2, pos2, heading );
 
-        //     //Vector3 offset = new Vector3(0,.1f,0);
+        //     // Heading newHead = GameConstants.NewHeadForTurn(heading,turnToZero);
+        //     // Debug.DrawLine( utils.Vec3(pos2, dbgLineY), utils.Vec3(pos2 + (GameConstants.UnitOffset2ForHeading(newHead)*Ground.gridSize), dbgLineY), Color.white ); 
 
-        //     Vector3 nextPos = UpcomingGridPoint(pos, heading);
-        //     //Debug.Log(string.Format("pos: {0}, next: {1}", pos, nextPos));
-        //     Debug.DrawLine(pos, nextPos, Color.green );
+        //     //
+        //     // Draw some other crap
+        //     //
 
-        //     List<Ground.Place> places = PossiblePlacesForPointAndHeading(g, nextPos, heading);
-        //     List<dirAndScore> dirCrashCnts = places.Select((p,idx) =>  new dirAndScore{turnDir = (Heading)idx, score = ( p == null ? 1 : 0)}).ToList();        
-        //     foreach (dirAndScore dcc in dirCrashCnts)
-        //     {
-        //         Heading newHead = GameConstants.newHeadForTurn[(int)heading][(int)dcc.turnDir];
-        //         Color c = dcc.score < 1 ? Color.red : Color.gray;
-        //         Debug.DrawLine( nextPos, nextPos + GameConstants.UnitOffsetForHeading(newHead]*Ground.gridSize, c );                
-        //     }
-        //}
+        //     //  Vector2 pos2 = bb.position;
+        //     //  Vector2 nextPos2 =  bBike.UpcomingGridPoint();
+        //     //  Debug.DrawLine(utils.Vec3(pos2), utils.Vec3(nextPos2), Color.green );
+
+        //     // List<Vector2> othersPos = gd.CloseBikePositions(bb, 2); // up to 2 closest
+
+        //     // BikeUtils.MoveNode moveTree = BikeUtils.BuildMoveTree(gd.Ground, nextPos2, heading, 4, othersPos);
+        //     // List<DirAndScore> dirScores = BikeUtils.TurnScores(moveTree);
+        //     // foreach (DirAndScore dcc in dirScores)
+        //     // {
+        //     //     Heading newHead = GameConstants.NewHeadForTurn(heading,dcc.turnDir);
+        //     //     Color c = dcc.score < 5 ? Color.red : Color.green;
+        //     //     Debug.DrawLine( utils.Vec3(nextPos2), utils.Vec3(nextPos2 + GameConstants.UnitOffset2ForHeading(newHead)*Ground.gridSize), c );                
+        //     // }
+        // }
     }
 
     public void RequestTurn(TurnDir dir)
