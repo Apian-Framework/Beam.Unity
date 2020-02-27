@@ -55,7 +55,8 @@ public class BeamMain : MonoBehaviour
         gameNet = new BeamGameNet();  
 
         backend = new BeamGameInstance((IBeamFrontend)frontend, gameNet);
-        gameNet.Init(backend);
+        BeamApian apian = new BeamApianTrusty(gameNet, backend);
+        gameNet.Init(apian);
         backend.Start(BeamModeFactory.kSplash);
         
     }
