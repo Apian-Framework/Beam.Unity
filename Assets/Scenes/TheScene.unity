@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.23137131, g: 0.2338629, b: 0.27176738, a: 1}
+  m_IndirectSpecularColor: {r: 0.23188472, g: 0.23576865, b: 0.27134424, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -309,18 +309,22 @@ MonoBehaviour:
   - LoggerName: BaseBike
     level: 30
   - LoggerName: BeamMode
-    level: 40
+    level: 30
   - LoggerName: Frontend
-    level: 40
+    level: 30
   - LoggerName: GameInstance
-    level: 20
+    level: 30
   - LoggerName: GameNet
-    level: 40
+    level: 30
   - LoggerName: P2pNet
-    level: 40
+    level: 30
   - LoggerName: UserSettings
     level: 30
   - LoggerName: Apian
+    level: 40
+  - LoggerName: ApianGroup
+    level: 20
+  - LoggerName: ApianClock
     level: 30
 --- !u!4 &7721492
 Transform:

@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniLog;
 
 public class GameCamera : MonoBehaviour {
 
@@ -21,6 +22,8 @@ public class GameCamera : MonoBehaviour {
 	
 	protected Camera _thisCamera;
     public BeamMain feMain;
+
+    public UniLogger logger;
  
     //
     // Basic util to move from one place to another
@@ -37,6 +40,7 @@ public class GameCamera : MonoBehaviour {
 
 	void Start ()  // Monobehavior start
     {
+        logger = UniLogger.GetLogger("GameCamera");
         feMain = BeamMain.GetInstance();
 		_thisCamera = (Camera)GetComponent("Camera");
         ModeNormal mode = (ModeNormal)SetMode(CamModeID.kNormal);
@@ -75,7 +79,7 @@ public class GameCamera : MonoBehaviour {
             if (Vector3.Distance(thisT.position, targetPos) < closeEnough)
             {          
                 _bMoving = false;
-                //Debug.Log("Not moving!");                         
+                logger.Debug($"MoveTowards() - Not moving");                         
             }           
         }
          
@@ -114,7 +118,7 @@ public class GameCamera : MonoBehaviour {
         }    
         
         if (!(_bMoving || _bRotating || _bZooming))
-            Debug.Log("Got there!");
+            logger.Debug("MoveTowards() - Got there");
         
         return !(_bMoving || _bRotating || _bZooming); // true if "we are there"
     }       
