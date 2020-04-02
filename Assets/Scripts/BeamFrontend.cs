@@ -9,7 +9,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 { 
     
 	public FeGround feGround;
-    public GameObject startBtn;
+    //public GameObject startBtn;
     public GameObject connectBtn;
     public const string kSettingsFileBaseName = "unitybeamsettings";
     protected Dictionary<string, GameObject> feBikes;
@@ -31,8 +31,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         logger = UniLogger.GetLogger("Frontend");
 
         BeamGameInstance back = mainObj.backend;
-        back.PeerJoinedEvt += OnPeerJoinedEvt;
-        back.PeerLeftEvt += OnPeerLeftEvt;            
+        back.PeerJoinedGameEvt += OnPeerJoinedGameEvt;
+        back.PeerLeftGameEvt += OnPeerLeftGameEvt;            
         back.PeersClearedEvt += OnPeersClearedEvt;   
         back.NewBikeEvt += OnNewBikeEvt;   
         back.BikeRemovedEvt += OnBikeRemovedEvt;   
@@ -79,14 +79,15 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     // Players
     
-    public void OnPeerJoinedEvt(object sender, BeamPeer p)
+    public void OnPeerJoinedGameEvt(object sender, PeerJoinedGameArgs args)
     {
+        BeamPeer p = args.peer;
         logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
     }
 
-    public void OnPeerLeftEvt(object sender, string p2pId) 
-    {
-        logger.Info("Peer Left: {p2pId}");            
+    public void OnPeerLeftGameEvt(object sender, PeerLeftGameArgs args) 
+    {    
+        logger.Info("Peer Left: {args.p2pId}");            
     }
 
     public void OnPeersClearedEvt(object sender, EventArgs e)
@@ -116,7 +117,10 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnBikeRemovedEvt(object sender, BikeRemovedData rData)
     {
-        GameObject go = feBikes[rData.bikeId];
+        GameObject go = GetBikeObj(rData.bikeId);
+        if (go == null)
+            return;
+            
         IBike ib = mainObj.backend.gameData.GetBaseBike(rData.bikeId);
         feBikes.Remove(rData.bikeId);
         mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
@@ -164,8 +168,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnReadyToPlay(object sender, EventArgs e)
     {
         logger.Info($"OnReadyToPlay()");    
-        startBtn.SetActive(true);        
-        //mainObj.backend.OnSwitchModeReq(BeamModeFactory.kPlay, null);        
+        //startBtn.SetActive(true);        
+        mainObj.backend.OnSwitchModeReq(BeamModeFactory.kPlay, null);        
     }    
 
 }

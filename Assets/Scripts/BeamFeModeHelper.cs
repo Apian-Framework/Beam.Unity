@@ -57,7 +57,7 @@ public class BeamFeModeHelper : IFrontendModeHelper
         public ConnectModeFuncs(BeamMain bm) : base(bm) {}
         public override void OnStart(object parms=null) 
         {
-            _feMain.frontend.startBtn.SetActive(false);            
+            //_feMain.frontend.startBtn.SetActive(false);            
             _feMain.frontend.connectBtn.SetActive(false);
         }      
         public override void OnEnd(object parms=null) {}       
@@ -74,7 +74,7 @@ public class BeamFeModeHelper : IFrontendModeHelper
             TargetIdParams p = (TargetIdParams)parms;
             SetupCameras(p.targetId);
             // TODO: These next should be in the GameUIController
-            _feMain.frontend.startBtn.SetActive(false);            
+            //_feMain.frontend.startBtn.SetActive(false);            
             _feMain.frontend.connectBtn.SetActive(true);            
         }
        

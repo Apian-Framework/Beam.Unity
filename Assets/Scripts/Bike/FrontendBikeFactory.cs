@@ -8,10 +8,11 @@ public class FrontendBikeFactory : MonoBehaviour
 {
     // Ordered by backend BikeFactory.CtrlType
 
-    public static readonly System.Type[] bikeClassTypes = {
-        typeof(FeRemoteBike), // remote bike.
-        typeof(FeAiBike),  // AiCtrl - AI - controlled local bike
-        typeof(FePlayerBike) // LocalPlayerCtrl - a human on this machine
+    public static readonly Dictionary<string,System.Type> bikeClassTypes = 
+        new Dictionary<string,System.Type>() {
+        {BikeFactory.RemoteCtrl, typeof(FeRemoteBike)}, // remote bike.
+        {BikeFactory.AiCtrl, typeof(FeAiBike)},  // AiCtrl - AI - controlled local bike
+        {BikeFactory.LocalPlayerCtrl, typeof(FePlayerBike)} // LocalPlayerCtrl - a human on this machine
     };
 
     public GameObject bikePrefab;   

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using UnityEngine;
 using BeamBackend;
+using Unity.Profiling;
 using UniLog;
 
 public class BeamMain : MonoBehaviour
@@ -12,6 +13,9 @@ public class BeamMain : MonoBehaviour
 	public InputDispatch inputDispatch;    
     public GameObject boomPrefab;          
 	public EthereumProxy eth = null;
+
+    static ProfilerMarker gameNetPerfMarker = new ProfilerMarker("Beam.GameNet");
+    static ProfilerMarker backendPerfMarker = new ProfilerMarker("Beam.Backend");
 
 
     // Non-monobehaviors
@@ -64,8 +68,13 @@ public class BeamMain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {      
+        //gameNetPerfMarker.Begin();
         gameNet.Loop();
+        //gameNetPerfMarker.End();    
+
+        //backendPerfMarker.Begin();    
         backend.Loop(GameTime.DeltaTime());
+        //backendPerfMarker.End();
     }
       
     public void HandleTap(bool isDown) // true is down
