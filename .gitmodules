@@ -22,3 +22,7 @@
 	path = Assets/NotUnitySpecific/UniLog
 	url = git@github.com:jimkberry/UniLog.git
 	branch = master
+[submodule "Assets/NotUnitySpecific/Apian"]
+	path = Assets/NotUnitySpecific/Apian
+	url = git@github.com:jimkberry/Apian.git
+	branch = master
