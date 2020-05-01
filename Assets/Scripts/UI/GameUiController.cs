@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 public class GameUiController : MonoBehaviour
@@ -14,7 +12,7 @@ public class GameUiController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -23,7 +21,7 @@ public class GameUiController : MonoBehaviour
 		if (dbgFpsDisp != null)
 		{
 			dbgFpsDisp.GetComponent<TextMeshProUGUI>().text =  string.Format("FPS: {0:0.0}", (1.0f / Time.smoothDeltaTime));
-		}        
+		}
     }
 
 
@@ -40,20 +38,20 @@ public class GameUiController : MonoBehaviour
 				stages[i].SetActive(false);
 			}
 
-		}		
-		
+		}
+
 		if (_curStageIdx == -1)
 			Debug.LogWarning($"No stage named: {stageName}");
 
-	}    
+	}
 
     public GameObject CurrentStage()
     {
-        return stages[_curStageIdx];    
-    }    
+        return stages[_curStageIdx];
+    }
 
     public void ShowToast(string msg, Toast.ToastColor color=Toast.ToastColor.kBlue)
 	{
 		toastMgr.ShowToast(msg,color);
-	}    
+	}
 }

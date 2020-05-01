@@ -7,13 +7,13 @@ using UnityEngine.EventSystems;
 public class PlayStage : MonoBehaviour
 {
 	public float lookRadians = 1f; // positive is left
-	public float lookDecayRate = 1f;	
-	protected BeamMain _main = null;	
+	public float lookDecayRate = 1f;
+	protected BeamMain _main = null;
 
 	// Use this for initialization
-	protected void Start () 
-	{		
-		_main = BeamMain.GetInstance();		
+	protected void Start ()
+	{
+		_main = BeamMain.GetInstance();
 	}
 
 	protected void Update()
@@ -32,12 +32,12 @@ public class PlayStage : MonoBehaviour
 			OnTurnLeftBtn();
 
 		if (Input.GetKeyDown(KeyCode.RightArrow ))
-			OnTurnRightBtn();			
+			OnTurnRightBtn();
 
 		if (Input.GetKeyDown(KeyCode.S ))
 			transform.Find("Scoreboard")?.SendMessage("toggle", null);
 
-	}	
+	}
 
 	// UI Button Handlers
 
@@ -45,11 +45,11 @@ public class PlayStage : MonoBehaviour
 
 	public void OnTurnRightBtn() => _main.inputDispatch.LocalPlayerBikeRight();
 
-	public void OnViewLeftBtn() =>_main.inputDispatch.LookAround(lookRadians, lookDecayRate); 
+	public void OnViewLeftBtn() =>_main.inputDispatch.LookAround(lookRadians, lookDecayRate);
 
-	public void OnViewRightBtn() => _main.inputDispatch.LookAround(-lookRadians, lookDecayRate);   
+	public void OnViewRightBtn() => _main.inputDispatch.LookAround(-lookRadians, lookDecayRate);
 
-	public void OnViewUpBtn() => _main.inputDispatch.SwitchCameraView();	
+	public void OnViewUpBtn() => _main.inputDispatch.SwitchCameraView();
 
-	public void OnRestartBtn() => _main.backend.RaiseRespawnPlayer();
+	public void OnRestartBtn() => _main.core.mainGameInst.RaiseRespawnPlayer();
 }

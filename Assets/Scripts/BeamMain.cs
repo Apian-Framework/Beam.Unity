@@ -9,20 +9,19 @@ public class BeamMain : MonoBehaviour
 {
     public BeamFrontend frontend;
 	public GameCamera gameCamera;
-	public GameUiController uiController;	
-	public InputDispatch inputDispatch;    
-    public GameObject boomPrefab;          
+	public GameUiController uiController;
+	public InputDispatch inputDispatch;
+    public GameObject boomPrefab;
 	public EthereumProxy eth = null;
 
     static ProfilerMarker gameNetPerfMarker = new ProfilerMarker("Beam.GameNet");
     static ProfilerMarker backendPerfMarker = new ProfilerMarker("Beam.Backend");
 
-
     // Non-monobehaviors
-    public BeamGameNet gameNet;    
-    public BeamGameInstance backend;
+    public BeamGameNet gameNet;
+    public BeamCore core;
 
-    // Singletone management(*yeah, kinda lame)
+    // Singleton management(*yeah, kinda lame)
     private static BeamMain instance = null;
     public static BeamMain GetInstance()
     {
@@ -32,55 +31,51 @@ public class BeamMain : MonoBehaviour
             if (!instance)
                 UnityEngine.Debug.LogError("There needs to be one active BeamMain script on a GameObject in your scene.");
         }
- 
+
         return instance;
-    }    
+    }
 
     void Awake() {
-        DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)      
-    }	
+        DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
+    }
     // Start is called before the first frame update
     void Start()
-    {      
+    {
 		Application.targetFrameRate = 60;
 
-		// Semi-presistent Main-owned objects 
+		// Semi-presistent Main-owned objects
         // TODO: Should be in Awake()?
-        frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");	       
-		uiController = (GameUiController)utils.findObjectComponent("GameUiController", "GameUiController");		
-		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");		
-		
+        frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");
+		uiController = (GameUiController)utils.findObjectComponent("GameUiController", "GameUiController");
+		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");
+        gameNet = new BeamGameNet();
+        core = new BeamCore(gameNet, frontend);
+        core.Start(BeamModeFactory.kSplash);
+
         inputDispatch = new InputDispatch(this);
 
         // TODO: get rid of this Eth stuff (goes in GameNet)
         eth = new EthereumProxy();
-		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using        
+		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using
 
-        gameNet = new BeamGameNet();  
-
-        backend = new BeamGameInstance((IBeamFrontend)frontend, gameNet);
-        BeamApian apian = new BeamApianTrusty(gameNet, backend);
-        gameNet.Init(apian);
-        backend.Start(BeamModeFactory.kSplash);
-        
     }
 
     // Update is called once per frame
     void Update()
-    {      
+    {
         //gameNetPerfMarker.Begin();
         gameNet.Loop();
-        //gameNetPerfMarker.End();    
+        //gameNetPerfMarker.End();
 
-        //backendPerfMarker.Begin();    
-        backend.Loop(GameTime.DeltaTime());
+        //backendPerfMarker.Begin();
+        core.Loop(GameTime.DeltaTime());
         //backendPerfMarker.End();
     }
-      
+
     public void HandleTap(bool isDown) // true is down
     {
-        //throw(new Exception("Not Implmented"));    
-        UnityEngine.Debug.Log("** BeamMain.HandleTap() fallthru not implmented");            
+        //throw(new Exception("Not Implmented"));
+        UnityEngine.Debug.Log("** BeamMain.HandleTap() fallthru not implmented");
     }
 
 }

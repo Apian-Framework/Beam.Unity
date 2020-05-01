@@ -8,14 +8,14 @@ public class FrontendBikeFactory : MonoBehaviour
 {
     // Ordered by backend BikeFactory.CtrlType
 
-    public static readonly Dictionary<string,System.Type> bikeClassTypes = 
+    public static readonly Dictionary<string,System.Type> bikeClassTypes =
         new Dictionary<string,System.Type>() {
         {BikeFactory.RemoteCtrl, typeof(FeRemoteBike)}, // remote bike.
         {BikeFactory.AiCtrl, typeof(FeAiBike)},  // AiCtrl - AI - controlled local bike
         {BikeFactory.LocalPlayerCtrl, typeof(FePlayerBike)} // LocalPlayerCtrl - a human on this machine
     };
 
-    public GameObject bikePrefab;   
+    public GameObject bikePrefab;
 
     // Singleton management
     private static FrontendBikeFactory instance = null;
@@ -29,12 +29,12 @@ public class FrontendBikeFactory : MonoBehaviour
         }
 
         return instance;
-    }    
+    }
 
     //
     // API
-    // 
-	
+    //
+
 
     //
     // Utility
@@ -48,9 +48,9 @@ public class FrontendBikeFactory : MonoBehaviour
 		newBike.AddComponent(bikeClassTypes[ib.ctrlType]);
         newBike.transform.parent = feGround.transform;
         FrontendBike bk = (FrontendBike)newBike.transform.GetComponent("FrontendBike");
-		bk.Setup(ib, BeamMain.GetInstance().backend);		
+		bk.Setup(ib, BeamMain.GetInstance().core.mainGameInst);
         return newBike;
-    }    
+    }
 
 
 
