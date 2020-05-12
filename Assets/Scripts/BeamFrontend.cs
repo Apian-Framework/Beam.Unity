@@ -41,7 +41,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
         //backend.MemberJoinedGroupEvt += OnPeerJoinedGameEvt;
         //backend.PeerLeftGameEvt += OnPeerLeftGameEvt;
-        backend.MembersClearedEvt += OnPeersClearedEvt;
+        backend.MembersClearedEvt += OnMembersClearedEvt;
         backend.NewBikeEvt += OnNewBikeEvt;
         backend.BikeRemovedEvt += OnBikeRemovedEvt;
         backend.BikesClearedEvt +=OnBikesClearedEvt;
@@ -98,9 +98,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     //     logger.Info("Peer Left: {args.p2pId}");
     }
 
-    public void OnPeersClearedEvt(object sender, EventArgs e)
+    public void OnMembersClearedEvt(object sender, EventArgs e)
     {
-        logger.Info("OnPeersClearedEvt() currently does nothing");
+        logger.Info("OnMembersClearedEvt() currently does nothing");
     }
 
     // Bikes
