@@ -41,7 +41,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
         //backend.MemberJoinedGroupEvt += OnPeerJoinedGameEvt;
         //backend.PeerLeftGameEvt += OnPeerLeftGameEvt;
-        backend.MembersClearedEvt += OnMembersClearedEvt;
+        backend.PlayersClearedEvt += OnPlayersClearedEvt;
         backend.NewBikeEvt += OnNewBikeEvt;
         backend.BikeRemovedEvt += OnBikeRemovedEvt;
         backend.BikesClearedEvt +=OnBikesClearedEvt;
@@ -89,18 +89,18 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnPeerJoinedGameEvt(object sender, PeerJoinedGameArgs args)
     {
-    //     BeamPeer p = args.peer;
-    //     logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
+    //      BeamPeer p = args.peer;
+    //      logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
     }
 
     public void OnPeerLeftGameEvt(object sender, PeerLeftGameArgs args)
     {
-    //     logger.Info("Peer Left: {args.p2pId}");
+         logger.Info("Peer Left: {args.p2pId}");
     }
 
-    public void OnMembersClearedEvt(object sender, EventArgs e)
+    public void OnPlayersClearedEvt(object sender, EventArgs e)
     {
-        logger.Info("OnMembersClearedEvt() currently does nothing");
+        logger.Info("OnPlayersClearedEvt() currently does nothing");
     }
 
     // Bikes
@@ -153,7 +153,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnPlaceHitEvt(object sender, PlaceHitArgs args)
     {
-        GetBikeObj(args.ib.bikeId)?.GetComponent<FrontendBike>().OnPlaceHit(args.p);
+        GetBikeObj(args.ib.bikeId)?.GetComponent<FrontendBike>()?.OnPlaceHit(args.p);
     }
     public void OnPlaceClaimedEvt(object sender, Ground.Place p) {}
 

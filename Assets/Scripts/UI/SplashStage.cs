@@ -21,7 +21,7 @@ public class SplashStage : MonoBehaviour
 
 	public void OnConnectBtn()
 	{
-		_main.core.OnSwitchModeReq(BeamModeFactory.kConnect, null);
+		_main.core.OnSwitchModeReq(BeamModeFactory.kPlay, null);
 	}
 
 	public void OnStartBtn()

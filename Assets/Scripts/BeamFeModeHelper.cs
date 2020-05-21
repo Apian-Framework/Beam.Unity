@@ -109,7 +109,6 @@ public class BeamFeModeHelper : IFrontendModeHelper
 
     class PlayModeFuncs : ModeFuncs
     {
-        GameObject playerBikeGO = null;
 
         public PlayModeFuncs(BeamMain bm) : base(bm)
         {
@@ -123,9 +122,7 @@ public class BeamFeModeHelper : IFrontendModeHelper
 
         public override void OnStart(object parms=null)
         {
-            TargetIdParams p = (TargetIdParams)parms;
-            playerBikeGO = _feMain.frontend.GetBikeObj(p.targetId);
-            SetupCameras(playerBikeGO);
+            SetupCameras();
         }
 
         public override void OnEnd(object parms=null)
@@ -133,20 +130,14 @@ public class BeamFeModeHelper : IFrontendModeHelper
 
         }
 
-        protected void SetupCameras(GameObject playerBike)
+        protected void SetupCameras()
         {
             _feMain.gameCamera.transform.position = new Vector3(100, 100, 100);
             _feMain.uiController.switchToNamedStage("PlayStage");
-            _feMain.uiController.CurrentStage().transform.Find("Scoreboard").SendMessage("SetLocalPlayerBike", playerBike);
-            foreach (GameObject b in _feMain.frontend.GetBikeList())
-            {
-                if (b != playerBike)
-                    _feMain.uiController.CurrentStage().transform.Find("Scoreboard").SendMessage("AddBike", b);
-            }
-            _feMain.gameCamera.StartBikeMode( playerBike);
-            _feMain.gameCamera.gameObject.SetActive(true);
         }
     }
+
+
 
 class PracticeModeFuncs : PlayModeFuncs
     {
