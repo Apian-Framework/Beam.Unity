@@ -50,9 +50,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
         backend.ReadyToPlayEvt += OnReadyToPlay;
 
-        backend.GetGround().PlaceFreedEvt += OnPlaceFreedEvt;
-        backend.GetGround().PlacesClearedEvt += OnPlacesClearedEvt;
-        backend.GetGround().SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
+        backend.GameData.PlaceFreedEvt += OnPlaceFreedEvt;
+        backend.GameData.PlacesClearedEvt += OnPlacesClearedEvt;
+        backend.GameData.SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
     }
 
 	public  int BikeCount() => feBikes.Count;
@@ -155,15 +155,15 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         GetBikeObj(args.ib.bikeId)?.GetComponent<FrontendBike>()?.OnPlaceHit(args.p);
     }
-    public void OnPlaceClaimedEvt(object sender, Ground.Place p) {}
+    public void OnPlaceClaimedEvt(object sender, BeamPlace p) {}
 
     // Ground
-    public void OnSetupPlaceMarkerEvt(object sender, Ground.Place p)
+    public void OnSetupPlaceMarkerEvt(object sender, BeamPlace p)
     {
         feGround.SetupMarkerForPlace(p);
     }
-    //public void OnFreePlace(Ground.Place p, int modeId)
-    public void OnPlaceFreedEvt(object sender, Ground.Place p)
+    //public void OnFreePlace(BeamPlace p, int modeId)
+    public void OnPlaceFreedEvt(object sender, BeamPlace p)
     {
         feGround.FreePlaceMarker(p);
     }

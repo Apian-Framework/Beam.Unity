@@ -157,7 +157,7 @@ public abstract class FrontendBike : MonoBehaviour
         transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
     }
 
-    public virtual void OnPlaceHit(Ground.Place place)
+    public virtual void OnPlaceHit(BeamPlace place)
     {
         ouchObj.SetActive(false); // restart in case the anim is already running
         ouchObj.SetActive(true);
