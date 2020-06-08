@@ -28,7 +28,7 @@ public class FeGround : MonoBehaviour
 
     public GameObject SetupMarkerForPlace(BeamPlace p)
     {
-        int posHash = p.posHash();
+        int posHash = p.PosHash;
         GameObject marker = null;
         try {
             marker = activeMarkers[posHash];
@@ -46,7 +46,7 @@ public class FeGround : MonoBehaviour
 
     public void FreePlaceMarker(BeamPlace p)
     {
-        int posHash = p.posHash();
+        int posHash = p.PosHash;
         GameObject marker = null;
         try {
             marker = activeMarkers[posHash];

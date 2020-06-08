@@ -38,10 +38,14 @@ public abstract class FrontendBike : MonoBehaviour
 
     protected abstract void CreateControl();
 
+    public virtual void Awake()
+    {
+        isLocal = true; // default
+    }
+
     // Start is called before the first frame update
     public virtual void Start()
     {
-        isLocal = true;
         // Initialize pointing direction based on heading;
         // assumes pos and heading are set on creation
         Vector3 angles = transform.eulerAngles;

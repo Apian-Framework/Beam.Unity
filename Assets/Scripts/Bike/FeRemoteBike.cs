@@ -7,9 +7,9 @@ using BikeControl;
 
 public class FeRemoteBike : FrontendBike
 {
-    public override void Start()    
+    public override void Awake()
     {
-        base.Start();
+        base.Awake(); // when object is created
         isLocal = false;
     }
     protected override void CreateControl()
