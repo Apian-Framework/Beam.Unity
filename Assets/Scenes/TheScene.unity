@@ -311,7 +311,7 @@ MonoBehaviour:
   - LoggerName: BaseBike
     level: 30
   - LoggerName: BeamMode
-    level: 20
+    level: 30
   - LoggerName: Frontend
     level: 30
   - LoggerName: GameInstance
@@ -325,7 +325,7 @@ MonoBehaviour:
   - LoggerName: Apian
     level: 40
   - LoggerName: ApianGroup
-    level: 20
+    level: 30
   - LoggerName: ApianClock
     level: 30
 --- !u!4 &7721492

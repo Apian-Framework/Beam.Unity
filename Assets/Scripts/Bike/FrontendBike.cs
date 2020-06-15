@@ -41,6 +41,7 @@ public abstract class FrontendBike : MonoBehaviour
     public virtual void Awake()
     {
         isLocal = true; // default
+        ouchObj = transform.Find("Ouch").gameObject;
     }
 
     // Start is called before the first frame update
@@ -52,8 +53,6 @@ public abstract class FrontendBike : MonoBehaviour
         angles.z = 0;
         angles.y = turnStartTheta[(int)heading] - 90f;
         transform.eulerAngles = angles;
-
-        ouchObj = transform.Find("Ouch").gameObject;
         ouchObj.SetActive(false);
     }
 
@@ -163,8 +162,8 @@ public abstract class FrontendBike : MonoBehaviour
 
     public virtual void OnPlaceHit(BeamPlace place)
     {
-        ouchObj.SetActive(false); // restart in case the anim is already running
-        ouchObj.SetActive(true);
+        ouchObj?.SetActive(false); // restart in case the anim is already running
+        ouchObj?.SetActive(true);
     }
 
 
