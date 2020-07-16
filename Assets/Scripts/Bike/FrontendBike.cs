@@ -8,7 +8,7 @@ using BikeControl;
 public abstract class FrontendBike : MonoBehaviour
 {
     public IBike bb = null;
-    protected IBeamGameInstance be = null;
+    protected IBeamAppCore appCore = null;
 
     protected IBikeControl control = null;
 
@@ -58,14 +58,14 @@ public abstract class FrontendBike : MonoBehaviour
 
     // Important: Setup() is not called until after Awake() and Start() have been called on the
     // GameObject and components. Both of those are called when the GO is instantiated
-    public virtual void Setup(IBike beBike, IBeamGameInstance backend)
+    public virtual void Setup(IBike beBike, IBeamAppCore core)
     {
-        be = backend;
+        appCore = core;
         bb = beBike;
         transform.position = utils.Vec3(bb.position); // Is probably already set to this
         SetColor(utils.hexToColor(bb.team.Color));
         CreateControl();
-        control.Setup(beBike, backend);
+        control.Setup(beBike, core);
     }
 
     public virtual void Update()

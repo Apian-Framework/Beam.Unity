@@ -18,12 +18,12 @@ public class PracticeBtn : UIBtn  {
 	{
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.Return))
-			_main.core.OnSwitchModeReq(BeamModeFactory.kPractice, null);
+			_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPractice, null);
 	}
 
 	public override void doSelect()
 	{
-		_main.core.OnSwitchModeReq(BeamModeFactory.kPractice, null);
+		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPractice, null);
 	}
 }
 

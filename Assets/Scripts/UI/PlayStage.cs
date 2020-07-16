@@ -51,5 +51,5 @@ public class PlayStage : MonoBehaviour
 
 	public void OnViewUpBtn() => _main.inputDispatch.SwitchCameraView();
 
-	public void OnRestartBtn() => _main.core.mainGameInst.RaiseRespawnPlayer();
+	public void OnRestartBtn() => _main.beamApp.mainGameInst.RaiseRespawnPlayer();
 }

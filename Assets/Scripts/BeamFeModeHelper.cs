@@ -35,7 +35,7 @@ public class BeamFeModeHelper : IFrontendModeHelper
         };
     }
 
-    private int _CurModeId() => _beamMain.core.modeMgr.CurrentModeId();
+    private int _CurModeId() => _beamMain.beamApp.modeMgr.CurrentModeId();
 
     public void OnStartMode(int modeId, object parms=null)
     {

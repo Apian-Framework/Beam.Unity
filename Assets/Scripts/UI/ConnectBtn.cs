@@ -16,7 +16,7 @@ public class ConnectBtn : UIBtn  {
 
 	protected void _DoConnect()
 	{
-		_main.core.OnSwitchModeReq(BeamModeFactory.kConnect, null);
+		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kConnect, null);
 	}
 
 	protected override void Update()

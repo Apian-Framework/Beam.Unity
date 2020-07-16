@@ -13,7 +13,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public const string kSettingsFileBaseName = "unitybeamsettings";
     protected Dictionary<string, GameObject> feBikes;
     protected BeamMain mainObj;
-    public IBeamGameInstance backend;
+    public IBeamAppCore appCore;
 
     protected BeamUserSettings userSettings;
     protected BeamFeModeHelper _feModeHelper;
@@ -33,26 +33,26 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     }
 
 
-    public void SetGameInstance(IBeamGameInstance back)
+    public void SetAppCore(IBeamAppCore core)
     {
-        backend = back;
-        if (back == null)
+        appCore = core;
+        if (core == null)
             return;
 
         //backend.MemberJoinedGroupEvt += OnPeerJoinedGameEvt;
         //backend.PeerLeftGameEvt += OnPeerLeftGameEvt;
-        backend.PlayersClearedEvt += OnPlayersClearedEvt;
-        backend.NewBikeEvt += OnNewBikeEvt;
-        backend.BikeRemovedEvt += OnBikeRemovedEvt;
-        backend.BikesClearedEvt +=OnBikesClearedEvt;
-        backend.PlaceClaimedEvt += OnPlaceClaimedEvt;
-        backend.PlaceHitEvt += OnPlaceHitEvt;
+        appCore.PlayersClearedEvt += OnPlayersClearedEvt;
+        appCore.NewBikeEvt += OnNewBikeEvt;
+        appCore.BikeRemovedEvt += OnBikeRemovedEvt;
+        appCore.BikesClearedEvt +=OnBikesClearedEvt;
+        appCore.PlaceClaimedEvt += OnPlaceClaimedEvt;
+        appCore.PlaceHitEvt += OnPlaceHitEvt;
 
-        backend.ReadyToPlayEvt += OnReadyToPlay;
+        appCore.ReadyToPlayEvt += OnReadyToPlay;
 
-        backend.GameData.PlaceFreedEvt += OnPlaceFreedEvt;
-        backend.GameData.PlacesClearedEvt += OnPlacesClearedEvt;
-        backend.GameData.SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
+        appCore.GameData.PlaceFreedEvt += OnPlaceFreedEvt;
+        appCore.GameData.PlacesClearedEvt += OnPlacesClearedEvt;
+        appCore.GameData.SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
     }
 
 	public  int BikeCount() => feBikes.Count;
@@ -129,7 +129,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (go == null)
             return;
 
-        IBike ib = backend.GameData.GetBaseBike(rData.bikeId);
+        IBike ib = appCore.GameData.GetBaseBike(rData.bikeId);
         feBikes.Remove(rData.bikeId);
         mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)

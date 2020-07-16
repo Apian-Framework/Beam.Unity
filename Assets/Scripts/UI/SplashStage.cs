@@ -16,17 +16,17 @@ public class SplashStage : MonoBehaviour
 	public void OnPracticeBtn()
 	{
 		Debug.Log("OnPracticeButton()");
-		_main.core.OnSwitchModeReq(BeamModeFactory.kPractice, null);
+		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPractice, null);
 	}
 
 	public void OnConnectBtn()
 	{
-		_main.core.OnSwitchModeReq(BeamModeFactory.kPlay, null);
+		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPlay, null);
 	}
 
 	public void OnStartBtn()
 	{
-		_main.core.OnSwitchModeReq(BeamModeFactory.kPlay, null);
+		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPlay, null);
 	}
 
 }

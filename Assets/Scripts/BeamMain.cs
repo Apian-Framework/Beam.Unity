@@ -19,7 +19,7 @@ public class BeamMain : MonoBehaviour
 
     // Non-monobehaviors
     public BeamGameNet gameNet;
-    public BeamCore core;
+    public BeamApplication beamApp;
 
     // Singleton management(*yeah, kinda lame)
     private static BeamMain instance = null;
@@ -49,8 +49,8 @@ public class BeamMain : MonoBehaviour
 		uiController = (GameUiController)utils.findObjectComponent("GameUiController", "GameUiController");
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");
         gameNet = new BeamGameNet();
-        core = new BeamCore(gameNet, frontend);
-        core.Start(BeamModeFactory.kSplash);
+        beamApp = new BeamApplication(gameNet, frontend);
+        beamApp.Start(BeamModeFactory.kSplash);
 
         inputDispatch = new InputDispatch(this);
 
@@ -68,7 +68,7 @@ public class BeamMain : MonoBehaviour
         //gameNetPerfMarker.End();
 
         //backendPerfMarker.Begin();
-        core.Loop(GameTime.DeltaTime());
+        beamApp.Loop(GameTime.DeltaTime());
         //backendPerfMarker.End();
     }
 

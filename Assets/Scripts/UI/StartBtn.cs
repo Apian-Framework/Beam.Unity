@@ -18,12 +18,12 @@ public class StartBtn : UIBtn  {
 	{
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.Return))
-			_main.core.OnSwitchModeReq(BeamModeFactory.kPlay, null);
+			_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPlay, null);
 	}
 
 	public override void doSelect()
 	{
-		_main.core.OnSwitchModeReq(BeamModeFactory.kPlay, null);
+		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPlay, null);
 	}
 }
 
