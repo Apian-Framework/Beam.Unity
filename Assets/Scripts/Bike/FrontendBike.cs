@@ -14,10 +14,10 @@ public abstract class FrontendBike : MonoBehaviour
 
     // Stuff that really lives in backend.
     // TODO: maybe get rid of this? Or maybe it's ok
-    public Heading heading { get => bb.heading; }
+    public Heading heading { get => bb.baseHeading; }
 
     // Temp (probably) stuff for refactoring to add BaseBike
-    public TurnDir pendingTurn { get => bb.pendingTurn; }
+    public TurnDir pendingTurn { get => bb.basePendingTurn; }
 
     public float turnRadius = 1.5f;
 
@@ -35,6 +35,9 @@ public abstract class FrontendBike : MonoBehaviour
     protected Vector2 _curTurnPt; // only has meaning when curTuen is set
     protected Vector2 _curTurnCenter; // only has meaning when curTuen is set
     protected float _curTurnStartTheta;
+
+    protected Vector2 curPos2d;
+    private long _prevGameTime = 0;
 
     protected abstract void CreateControl();
 
@@ -62,16 +65,24 @@ public abstract class FrontendBike : MonoBehaviour
     {
         appCore = core;
         bb = beBike;
-        transform.position = utils.Vec3(bb.position); // Is probably already set to this
+        transform.position = utils.Vec3(bb.basePosition); // Is probably already set to this
         SetColor(utils.hexToColor(bb.team.Color));
         CreateControl();
         control.Setup(beBike, core);
+        _prevGameTime = core.CurrentRunningGameTime;
     }
 
     public virtual void Update()
     {
-        control.Loop(Time.deltaTime); // TODO: is this the right place to get the frameTime?
+        long curGameTime = appCore.CurrentRunningGameTime;
+        int frameMs = (int)(curGameTime - _prevGameTime);
+        _prevGameTime = curGameTime;
 
+        if (frameMs == 0)
+            return;
+
+        curPos2d = bb.DynamicState(curGameTime).position;
+        control.Loop(curGameTime, frameMs); // TODO: is this the right place to get the frameTime?
         _curTurn = CurrentTurn();
 
         if (_curTurn == TurnDir.kStraight)
@@ -89,8 +100,8 @@ public abstract class FrontendBike : MonoBehaviour
         if (_curTurn != TurnDir.kStraight) // once set must be turned off by code
             return _curTurn;
 
-        Vector2 nextGridPt =  BikeUtils.UpcomingGridPoint(bb.position, bb.heading);
-        float nextDist = Vector2.Distance(bb.position, nextGridPt);
+        Vector2 nextGridPt =  BikeUtils.UpcomingGridPoint(curPos2d, bb.baseHeading);
+        float nextDist = Vector2.Distance(curPos2d, nextGridPt);
 
         if (  nextDist <= turnRadius
             && pendingTurn != TurnDir.kStraight
@@ -108,7 +119,7 @@ public abstract class FrontendBike : MonoBehaviour
 
     protected void DoStraight()
     {
-        Vector3 pos = utils.Vec3(bb.position);
+        Vector3 pos = utils.Vec3(curPos2d);
         Vector3 angles = transform.eulerAngles;
         angles.z = 0;
         angles.y = turnStartTheta[(int)heading] - 90f;
@@ -124,7 +135,7 @@ public abstract class FrontendBike : MonoBehaviour
         // What is the baseBike's fractional distance from the turn start to the turn end (total D => 2 * turnRadius)
 
         // Magnitude is the distance, if negative then we are heading towads it, positive is away
-        float dotVal =  Vector2.Dot(GameConstants.UnitOffset2ForHeading(heading),  bb.position - _curTurnPt);
+        float dotVal =  Vector2.Dot(GameConstants.UnitOffset2ForHeading(heading),  curPos2d - _curTurnPt);
 
         // So, fractional  0 -> 1 distance along the turn is (dotVal + turnRadius) / (2* turnRadius)
         float frac = (dotVal + turnRadius) / (turnRadius * 2);

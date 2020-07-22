@@ -1,11 +1,11 @@
 [submodule "Assets/NotUnitySpecific/BeamBackend"]
 	path = Assets/NotUnitySpecific/BeamBackend
 	url = git@github.com:jimkberry/BeamBackend.git
-	branch = master
+	branch = un-timeslice-core
 [submodule "Assets/NotUnitySpecific/BeamBikeControl"]
 	path = Assets/NotUnitySpecific/BeamBikeControl
 	url = git@github.com:jimkberry/BeamBikeControl.git
-	branch = master
+	branch = un-timeslice-core
 [submodule "Assets/NotUnitySpecific/GameModeMgr"]
 	path = Assets/NotUnitySpecific/GameModeMgr
 	url = git@github.com:jimkberry/GameModeMgr.git

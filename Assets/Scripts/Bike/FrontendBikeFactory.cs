@@ -44,7 +44,7 @@ public class FrontendBikeFactory : MonoBehaviour
 
     static public GameObject CreateBike(IBike ib, FeGround feGround)
     {
-        GameObject newBike = GameObject.Instantiate(FrontendBikeFactory.GetInstance().bikePrefab, utils.Vec3(ib.position), Quaternion.identity) as GameObject;
+        GameObject newBike = GameObject.Instantiate(FrontendBikeFactory.GetInstance().bikePrefab, utils.Vec3(ib.basePosition), Quaternion.identity) as GameObject;
 		newBike.AddComponent(bikeClassTypes[ib.ctrlType]);
         newBike.transform.parent = feGround.transform;
         FrontendBike bk = (FrontendBike)newBike.transform.GetComponent("FrontendBike");

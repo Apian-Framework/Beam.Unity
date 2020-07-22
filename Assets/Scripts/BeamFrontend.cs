@@ -39,20 +39,17 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (core == null)
             return;
 
-        //backend.MemberJoinedGroupEvt += OnPeerJoinedGameEvt;
-        //backend.PeerLeftGameEvt += OnPeerLeftGameEvt;
+        OnNewCoreState(null, appCore.CoreData);
+
+        appCore.NewCoreStateEvt += OnNewCoreState;
         appCore.PlayersClearedEvt += OnPlayersClearedEvt;
         appCore.NewBikeEvt += OnNewBikeEvt;
         appCore.BikeRemovedEvt += OnBikeRemovedEvt;
         appCore.BikesClearedEvt +=OnBikesClearedEvt;
         appCore.PlaceClaimedEvt += OnPlaceClaimedEvt;
         appCore.PlaceHitEvt += OnPlaceHitEvt;
-
         appCore.ReadyToPlayEvt += OnReadyToPlay;
 
-        appCore.GameData.PlaceFreedEvt += OnPlaceFreedEvt;
-        appCore.GameData.PlacesClearedEvt += OnPlacesClearedEvt;
-        appCore.GameData.SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
     }
 
 	public  int BikeCount() => feBikes.Count;
@@ -84,6 +81,14 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnStartMode(int modeId, object param) =>  _feModeHelper.OnStartMode(modeId, param);
     public void OnEndMode(int modeId, object param) => _feModeHelper.OnEndMode(modeId, param);
+
+    public void OnNewCoreState(object sender, BeamCoreState newCoreState)
+    {
+        newCoreState.PlaceFreedEvt += OnPlaceFreedEvt;
+        newCoreState.PlacesClearedEvt += OnPlacesClearedEvt;
+        newCoreState.SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
+    }
+
 
     // Players
 
@@ -129,7 +134,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (go == null)
             return;
 
-        IBike ib = appCore.GameData.GetBaseBike(rData.bikeId);
+        IBike ib = appCore.CoreData.GetBaseBike(rData.bikeId);
         feBikes.Remove(rData.bikeId);
         mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
