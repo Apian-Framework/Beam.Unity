@@ -10,10 +10,18 @@ public class PlayStage : MonoBehaviour
 	public float lookDecayRate = 1f;
 	protected BeamMain _main = null;
 
+	protected PlayMenu _playMenu = null;
+
 	// Use this for initialization
-	protected void Start ()
+	protected void Start()
 	{
 		_main = BeamMain.GetInstance();
+		_playMenu = (PlayMenu)utils.findObjectComponent("PlayMenu", "PlayMenu");
+	}
+
+	protected void OnEnable()
+	{
+		_playMenu?.moveOffScreenNow();
 	}
 
 	protected void Update()
@@ -39,6 +47,8 @@ public class PlayStage : MonoBehaviour
 
 	}
 
+
+
 	// UI Button Handlers
 
 	public void OnTurnLeftBtn() => _main.inputDispatch.LocalPlayerBikeLeft();
@@ -52,4 +62,7 @@ public class PlayStage : MonoBehaviour
 	public void OnViewUpBtn() => _main.inputDispatch.SwitchCameraView();
 
 	public void OnRestartBtn() => _main.beamApp.mainGameInst.RaiseRespawnPlayer();
+
+	public void OnExitBtn() =>	_main.beamApp.OnSwitchModeReq(BeamModeFactory.kSplash, null);
+
 }
