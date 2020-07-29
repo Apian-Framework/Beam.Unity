@@ -12,7 +12,7 @@ public class BeamMain : MonoBehaviour
 	public GameUiController uiController;
 	public InputDispatch inputDispatch;
     public GameObject boomPrefab;
-	public EthereumProxy eth = null;
+	// public EthereumProxy eth = null;
 
     static ProfilerMarker gameNetPerfMarker = new ProfilerMarker("Beam.GameNet");
     static ProfilerMarker backendPerfMarker = new ProfilerMarker("Beam.Backend");
@@ -55,8 +55,8 @@ public class BeamMain : MonoBehaviour
         inputDispatch = new InputDispatch(this);
 
         // TODO: get rid of this Eth stuff (goes in GameNet)
-        eth = new EthereumProxy();
-		eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using
+        //eth = new EthereumProxy();
+		//eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using
 
     }
 

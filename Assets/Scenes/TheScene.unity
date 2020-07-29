@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.23188472, g: 0.23576865, b: 0.27134424, a: 1}
+  m_IndirectSpecularColor: {r: 0.23137131, g: 0.2338629, b: 0.27176738, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -309,25 +309,25 @@ MonoBehaviour:
   throwOnError: 1
   levelEntries:
   - LoggerName: BaseBike
-    level: 30
+    level: 40
   - LoggerName: BeamMode
-    level: 30
+    level: 40
   - LoggerName: Frontend
     level: 30
   - LoggerName: GameInstance
-    level: 30
+    level: 40
   - LoggerName: GameNet
-    level: 30
+    level: 40
   - LoggerName: P2pNet
-    level: 30
+    level: 40
   - LoggerName: UserSettings
-    level: 30
+    level: 40
   - LoggerName: Apian
     level: 40
   - LoggerName: ApianGroup
-    level: 30
+    level: 40
   - LoggerName: ApianClock
-    level: 30
+    level: 40
 --- !u!4 &7721492
 Transform:
   m_ObjectHideFlags: 0
@@ -632,7 +632,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 430, y: -200}
+  m_AnchoredPosition: {x: 400, y: -200}
   m_SizeDelta: {x: 200, y: 120}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &104065898
@@ -649,8 +649,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startOnScreen: 0
   switchSecs: 0.3
-  offScreenPos: {x: 333, y: -225}
-  onScreenPos: {x: 333, y: -140}
+  offScreenPos: {x: 400, y: -225}
+  onScreenPos: {x: 400, y: -140}
 --- !u!114 &104065899
 MonoBehaviour:
   m_ObjectHideFlags: 0
