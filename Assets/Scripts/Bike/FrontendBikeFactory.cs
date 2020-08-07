@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using BeamBackend;
+using BeamGameCode;
 
 public class FrontendBikeFactory : MonoBehaviour
 {

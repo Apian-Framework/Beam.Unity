@@ -18,10 +18,6 @@
 	path = Assets/NotUnitySpecific/GameNet
 	url = git@github.com:jimkberry/GameNet.git
 	branch = master
-[submodule "Assets/NotUnitySpecific/UniLog"]
-	path = Assets/NotUnitySpecific/UniLog
-	url = git@github.com:jimkberry/UniLog.git
-	branch = master
 [submodule "Assets/NotUnitySpecific/Apian"]
 	path = Assets/NotUnitySpecific/Apian
 	url = git@github.com:jimkberry/Apian.git

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using BeamBackend;
+using BeamGameCode;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 
 public class SettingsPanel : MovableUICanvasItem
-{  
+{
     public GameObject screenNameField;
     public GameObject p2pConnectionField;
     public GameObject ethNodeField;
@@ -23,7 +23,7 @@ public class SettingsPanel : MovableUICanvasItem
         p2pConnectionField.GetComponent<TMP_InputField>().text = settings.p2pConnectionString;
         ethNodeField.GetComponent<TMP_InputField>().text = settings.ethNodeUrl;
         ethAcctField.GetComponent<TMP_InputField>().text = settings.ethAcct;
-        gameIdField.GetComponent<TMP_InputField>().text = 
+        gameIdField.GetComponent<TMP_InputField>().text =
             settings.tempSettings.ContainsKey("gameId") ? settings.tempSettings["gameId"] : "";
 
         UserSettingsMgr.Save(settings);

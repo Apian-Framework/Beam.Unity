@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using BeamBackend;
+using BeamGameCode;
 
 public class ConnectBtn : UIBtn  {
 

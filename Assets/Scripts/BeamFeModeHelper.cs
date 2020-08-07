@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using BeamBackend;
+using BeamGameCode;
 
 public class BeamFeModeHelper : IFrontendModeHelper
 {
