@@ -1,9 +1,9 @@
 {
   "dependencies": {
-    "com.apian-framework.apian": "file:D:/ConsenSys/Apian/code/Apian.Net/src/Apian",
-    "com.apian-framework.beamgamecode": "file:D:/ConsenSys/Apian/code/BeamGameCode/src/BeamGameCode",
-    "com.apian-framework.p2pnet.base": "file:D:/ConsenSys/Apian/code/P2pNet/src/P2pNet.Base",
-    "com.apian-framework.p2pnet.redis": "file:D:/ConsenSys/Apian/code/P2pNet/src/P2pNet.Redis",
+    "com.apian-framework.apian": "file:../../Apian.Net/src/Apian",
+    "com.apian-framework.beamgamecode": "file:../../BeamGameCode/src/BeamGameCode",
+    "com.apian-framework.p2pnet.base": "file:../../P2pNet/src/P2pNet.Base",
+    "com.apian-framework.p2pnet.redis": "file:../../P2pNet/src/P2pNet.Redis",
     "com.apian-framework.unilog": "https://github.com/Apian-Framework/UniLog.git?path=src/UniLog",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
