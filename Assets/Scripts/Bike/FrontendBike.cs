@@ -26,6 +26,7 @@ public abstract class FrontendBike : MonoBehaviour
     public bool isLocal;
 
     protected GameObject ouchObj;
+    protected AudioSource engineSound;
 
     protected static readonly float[] turnStartTheta = {
         90f, 180f, 270f, 0f
@@ -45,6 +46,7 @@ public abstract class FrontendBike : MonoBehaviour
     {
         isLocal = true; // default
         ouchObj = transform.Find("Ouch").gameObject;
+        engineSound = transform.Find("EngineSound").gameObject.GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
@@ -57,6 +59,9 @@ public abstract class FrontendBike : MonoBehaviour
         angles.y = turnStartTheta[(int)heading] - 90f;
         transform.eulerAngles = angles;
         ouchObj.SetActive(false);
+        engineSound.mute = false;
+        engineSound.volume = 1.0f;
+        engineSound.pitch = UnityEngine.Random.Range(.9f, 1.01f); // Make 'em chorus a little
     }
 
     // Important: Setup() is not called until after Awake() and Start() have been called on the
@@ -177,6 +182,15 @@ public abstract class FrontendBike : MonoBehaviour
         ouchObj?.SetActive(true);
     }
 
+    public void EnableSound(bool doIt)
+    {
+        //engineSound.mute = !doIt;
+    }
+
+    public void EngineVolume(float vol)
+    {
+        engineSound.volume = vol;
+    }
 
 
     // Tools for AIs

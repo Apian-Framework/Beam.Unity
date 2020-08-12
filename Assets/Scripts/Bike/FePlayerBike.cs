@@ -7,6 +7,12 @@ using BikeControl;
 
 public class FePlayerBike : FrontendBike
 {
+    public override void Start()
+    {
+        base.Start();
+        engineSound.volume = .35f;
+    }
+
     protected override void CreateControl()
     {
         control = new PlayerControl();
