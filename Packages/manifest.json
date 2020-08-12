@@ -7,12 +7,11 @@
     "com.apian-framework.unilog": "https://github.com/Apian-Framework/UniLog.git?path=src/UniLog",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
-    "com.unity.ads": "3.4.5",
     "com.unity.analytics": "3.3.5",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.4",
-    "com.unity.ide.vscode": "1.2.0",
+    "com.unity.ide.vscode": "1.2.1",
     "com.unity.mobile.android-logcat": "1.1.1",
     "com.unity.purchasing": "2.0.6",
     "com.unity.render-pipelines.lightweight": "7.3.1",
@@ -51,11 +50,5 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  },
-  "lock": {
-    "com.apian-framework.unilog": {
-      "revision": "HEAD",
-      "hash": "98d6a4d9d431e1c166d0e0f5ed44aa5d89ae4cd0"
-    }
   }
 }
