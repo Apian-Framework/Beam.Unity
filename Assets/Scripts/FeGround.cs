@@ -10,7 +10,11 @@ public class FeGround : MonoBehaviour
     protected Dictionary<int, GameObject> activeMarkers;
     protected Stack<GameObject> idleMarkers;
 
+    protected Dictionary<int, GameObject> activeConnectors;
+    protected Stack<GameObject> idleConnectors;
+
     public GameObject markerPrefab;
+    public GameObject connectorPrefab;
 
     void Awake()
     {
@@ -55,4 +59,10 @@ public class FeGround : MonoBehaviour
             activeMarkers.Remove(posHash);
         }  catch(KeyNotFoundException) { }
     }
+
+    public void SetupConnector(BeamPlace p1, BeamPlace p2)
+    {
+
+    }
+
 }

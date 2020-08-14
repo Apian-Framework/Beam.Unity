@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.23275673, g: 0.23656997, b: 0.27204576, a: 1}
+  m_IndirectSpecularColor: {r: 0.23212802, g: 0.23469946, b: 0.27236146, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1215,6 +1215,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   markerPrefab: {fileID: 4599750368388464608, guid: 74880bc2c50a27c4abfb298835b71f9b,
+    type: 3}
+  connectorPrefab: {fileID: 4599750368388464608, guid: 49a0c4a53fa0aa543b0120df22fb2d4c,
     type: 3}
 --- !u!1 &166027801
 GameObject:

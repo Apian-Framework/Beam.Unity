@@ -40,6 +40,8 @@ public abstract class FrontendBike : MonoBehaviour
     protected Vector2 curPos2d;
     private long _prevGameTime = 0;
 
+    protected BeamPlace prevPlaceVisited;
+
     protected abstract void CreateControl();
 
     public virtual void Awake()
@@ -176,10 +178,21 @@ public abstract class FrontendBike : MonoBehaviour
         transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
     }
 
+    public virtual void OnPlaceClaimed(BeamPlace place)
+    {
+        if (prevPlaceVisited?.bike.bikeId == bb.bikeId)
+        {
+            // Make a connector!
+        }
+
+        prevPlaceVisited = place;
+    }
+
     public virtual void OnPlaceHit(BeamPlace place)
     {
         ouchObj?.SetActive(false); // restart in case the anim is already running
         ouchObj?.SetActive(true);
+        prevPlaceVisited = place;
     }
 
     public void EnableSound(bool doIt)

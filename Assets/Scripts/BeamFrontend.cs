@@ -160,7 +160,10 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         GetBikeObj(args.ib.bikeId)?.GetComponent<FrontendBike>()?.OnPlaceHit(args.p);
     }
-    public void OnPlaceClaimedEvt(object sender, BeamPlace p) {}
+    public void OnPlaceClaimedEvt(object sender, BeamPlace p)
+    {
+        GetBikeObj(p.bike.bikeId)?.GetComponent<FrontendBike>()?.OnPlaceClaimed(p);
+    }
 
     // Ground
     public void OnSetupPlaceMarkerEvt(object sender, BeamPlace p)
