@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BeamGameCode;
 
 public class Connector : MonoBehaviour
 {
@@ -22,6 +23,18 @@ public class Connector : MonoBehaviour
         //     _scale =  Mathf.Clamp(_scale + Time.deltaTime*2,0,kMaxScale);
         //     transform.localScale = new Vector3(_scale,_scale,_scale);
         // }
+    }
+
+    public void SetupForPlaces(BeamPlace p1, BeamPlace p2)
+    {
+        transform.position = (utils.Vec3(p1.GetPos()) + utils.Vec3(p2.GetPos())) * .5f;
+
+        Vector3 angles = transform.eulerAngles;
+        angles.z = 0;
+        angles.y = p1.xIdx == p2.xIdx ? 0 : 90;
+        transform.eulerAngles = angles;
+
+		SetColor(utils.hexToColor(p1.bike.team.Color));
     }
 
     public void SetColor(Color newC)

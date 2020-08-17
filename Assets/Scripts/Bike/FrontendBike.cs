@@ -11,6 +11,7 @@ public abstract class FrontendBike : MonoBehaviour
     protected IBeamAppCore appCore = null;
 
     protected IBikeControl control = null;
+    protected FeGround feGround;
 
     // Stuff that really lives in backend.
     // TODO: maybe get rid of this? Or maybe it's ok
@@ -68,10 +69,11 @@ public abstract class FrontendBike : MonoBehaviour
 
     // Important: Setup() is not called until after Awake() and Start() have been called on the
     // GameObject and components. Both of those are called when the GO is instantiated
-    public virtual void Setup(IBike beBike, IBeamAppCore core)
+    public virtual void Setup(IBike beBike, FeGround fGround, IBeamAppCore core)
     {
         appCore = core;
         bb = beBike;
+        feGround = fGround;
         transform.position = utils.Vec3(bb.basePosition); // Is probably already set to this
         SetColor(utils.hexToColor(bb.team.Color));
         CreateControl();
@@ -175,14 +177,27 @@ public abstract class FrontendBike : MonoBehaviour
     public void SetColor(Color newC)
     {
         transform.Find("Model/BikeMesh").GetComponent<Renderer>().material.color = newC;
-        transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
+        //transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
+
+
+        Color smokeC = ( newC + Color.white) / 2.0f; // halfway to white (reduce saturation + brighten)
+        ParticleSystem ps = transform.Find("Smoke").GetComponent<ParticleSystem>();
+        ParticleSystem.ColorOverLifetimeModule  colorModule = ps.colorOverLifetime;
+        Gradient grad  = new Gradient();
+        grad.SetKeys(
+             new GradientColorKey[] { new GradientColorKey(smokeC, 1.0f) },
+             new GradientAlphaKey[] { new GradientAlphaKey(0.7f, 0.0f), new GradientAlphaKey(.5f, .5f),  new GradientAlphaKey(0, 1.0f) }
+        );
+        colorModule.color = grad;
+
     }
 
     public virtual void OnPlaceClaimed(BeamPlace place)
     {
-        if (prevPlaceVisited?.bike.bikeId == bb.bikeId)
+        if ( prevPlaceVisited?.bike?.bikeId == bb.bikeId) // might be null, might not have a bike
         {
-            // Make a connector!
+            // BUG: This won;t work on mass restore. Places would need a per-bike seq #
+            feGround.SetupConnector(prevPlaceVisited, place);
         }
 
         prevPlaceVisited = place;
