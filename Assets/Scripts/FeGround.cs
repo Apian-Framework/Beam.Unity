@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UniLog;
 using BeamGameCode;
 
 public class FeGround : MonoBehaviour
@@ -16,8 +17,11 @@ public class FeGround : MonoBehaviour
     public GameObject markerPrefab;
     public GameObject connectorPrefab;
 
+    public UniLogger logger;
+
     void Awake()
     {
+        logger = UniLogger.GetLogger("FeGround");
         activeMarkers = new Dictionary<int, GameObject>();
         idleMarkers = new Stack<GameObject>();
         activeConnectors = new Dictionary<(int,int), GameObject>();
@@ -56,9 +60,7 @@ public class FeGround : MonoBehaviour
         int posHash = p.PosHash;
         try {
             GameObject marker = activeMarkers[posHash];
-
             FreeConnectorsForPlace(p);
-
             marker.SetActive(false);
             idleMarkers.Push(marker);
             activeMarkers.Remove(posHash);
@@ -108,12 +110,14 @@ public class FeGround : MonoBehaviour
         // instead of checking first
         int posHash1 = p1.PosHash;
         int posHash2 = p2.PosHash;
+        logger.Info($"Connector count: Active: {activeConnectors.Count}  Idle: {idleConnectors.Count}");
         GameObject connGO = null;
         if (   (activeConnectors.TryGetValue((posHash1,posHash2), out connGO) == false)
             && (activeConnectors.TryGetValue((posHash2,posHash1), out connGO) == false) )
         {
             // Not in active list. Reuse an idle one or create a new instance
             connGO = idleConnectors.Count > 0 ? idleConnectors.Pop() : GameObject.Instantiate(connectorPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+            logger.Info($"Connector count: Active: {activeConnectors.Count}  Idle: {idleConnectors.Count}");
             connGO.transform.parent = transform; // make a child of the ground obj
             Connector conn = (Connector)connGO.transform.GetComponent("Connector");
             conn.SetupForPlaces( p1, p2);
