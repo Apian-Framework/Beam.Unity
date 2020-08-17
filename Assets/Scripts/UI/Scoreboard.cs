@@ -19,13 +19,24 @@ public class Scoreboard : MovableUICanvasItem
     {
         base.Start();
         LocalPlayerLine = GameObject.Find("LocalPlayerLine");
+        Reset();
+    }
+
+    public void Reset()
+    {
+        moveOffScreenNow();
+        if (OtherPlayerLines != null)
+        {
+            foreach( GameObject go in OtherPlayerLines)
+                Object.Destroy(go);
+        }
         OtherPlayerLines = new List<GameObject>();
     }
 
     // Update is called once per frame
     protected override void Update()
     {
-        base.Update();   
+        base.Update();
         if (_isDirty)
             DoSort();
     }
@@ -35,7 +46,7 @@ public class Scoreboard : MovableUICanvasItem
         // descending
         OtherPlayerLines.Sort((a, b) => b.GetComponent<ScoreboardLine>().prevScore.CompareTo(a.GetComponent<ScoreboardLine>().prevScore));
 
-        float y = otherYBase;       
+        float y = otherYBase;
         foreach (GameObject otherLine in OtherPlayerLines)
         {
             RectTransform rt = otherLine.GetComponent<RectTransform>();
@@ -44,7 +55,7 @@ public class Scoreboard : MovableUICanvasItem
             rt.anchoredPosition = pos;
             y += lineDy;
         }
-        onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy;  
+        onScreenPos.y = offScreenPos.y - OtherPlayerLines.Count * lineDy;
         _isDirty = false;
     }
 
@@ -53,27 +64,28 @@ public class Scoreboard : MovableUICanvasItem
         _isDirty = true;
     }
 
-    public void SetLocalPlayerBike(GameObject localPlayerBike)
+
+    public void SetLocalPlayerBike(GameObject localPlayerBike)  // This is called using "sendMessage" from BeamFrontend
     {
         LocalPlayerLine.SendMessage("SetBike", localPlayerBike.transform.GetComponent("FrontendBike"));
     }
 
-    public void AddBike(GameObject bike)
+    public void AddBike(GameObject bike) // This is called using "sendMessage" from BeamFrontend
     {
         GameObject newLine = GameObject.Instantiate(LocalPlayerLine, transform);
         newLine.transform.SetParent(transform); // set it as a child of this
-        newLine.SendMessage("SetBike", bike.transform.GetComponent("FrontendBike"));   
-        OtherPlayerLines.Add(newLine);   
+        newLine.SendMessage("SetBike", bike.transform.GetComponent("FrontendBike"));
+        OtherPlayerLines.Add(newLine);
         _isDirty = true; // needs sorting
     }
 
-    public void RemoveBike(GameObject bikeObj)
+    public void RemoveBike(GameObject bikeObj)  // This is called using "sendMessage" from BeamFrontend
     {
         FrontendBike remBike = bikeObj.GetComponent<FrontendBike>();
         GameObject line = OtherPlayerLines.Find(l => (l.GetComponent<ScoreboardLine>()).bike == remBike);
         if (line != null) {
             OtherPlayerLines.Remove(line);
-            _isDirty = true; // needs sorting     
+            _isDirty = true; // needs sorting
             Object.Destroy(line);
         }
     }
