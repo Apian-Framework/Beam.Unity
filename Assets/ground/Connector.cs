@@ -8,6 +8,13 @@ public class Connector : MonoBehaviour
     // Start is called before the first frame update
     protected float _scale = 0;
     public readonly float Scale = 1.0f;
+   protected static AutoMat<Color> autoMat;
+
+    void Awake()
+    {
+        if (autoMat == null)
+            autoMat = new AutoMat<Color>();
+    }
 
     void Start()
     {
@@ -39,9 +46,10 @@ public class Connector : MonoBehaviour
 
     public void SetColor(Color newC)
     {
-        //transform.Find("Quad1").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
-        Component[] renderers = transform.GetComponentsInChildren<Renderer>();
+        Renderer[] renderers = transform.GetComponentsInChildren<Renderer>();
+        Material newMat = renderers[0].material;
+        newMat.SetColor("_EmissionColor", newC);
         foreach(Renderer renderer in renderers)
-            renderer.material.SetColor("_EmissionColor", newC);
+            renderer.sharedMaterial = autoMat.GetMaterial(newC, newMat);
     }
 }

@@ -5,13 +5,35 @@ using UnityEngine;
 using BeamGameCode;
 using BikeControl;
 
+public class AutoMat<T>
+{
+    protected Dictionary<T,Material> MaterialDict;
+
+    public AutoMat()
+    {
+        MaterialDict = new Dictionary<T,Material>();
+    }
+
+    public Material GetMaterial(T key, Material template)
+    {
+        if (!MaterialDict.ContainsKey(key))
+        {
+            MaterialDict[key] = template;
+        } else {
+            template = MaterialDict[key];
+        }
+        return template;
+    }
+}
+
 public abstract class FrontendBike : MonoBehaviour
 {
     public IBike bb = null;
     protected IBeamAppCore appCore = null;
-
     protected IBikeControl control = null;
     protected FeGround feGround;
+
+    protected static AutoMat<Color> autoMat;
 
     // Stuff that really lives in backend.
     // TODO: maybe get rid of this? Or maybe it's ok
@@ -47,6 +69,9 @@ public abstract class FrontendBike : MonoBehaviour
 
     public virtual void Awake()
     {
+        if (autoMat == null)
+            autoMat = new AutoMat<Color>();
+
         isLocal = true; // default
         ouchObj = transform.Find("Ouch").gameObject;
         engineSound = transform.Find("EngineSound").gameObject.GetComponent<AudioSource>();
@@ -176,9 +201,12 @@ public abstract class FrontendBike : MonoBehaviour
 
     public void SetColor(Color newC)
     {
-        transform.Find("Model/BikeMesh").GetComponent<Renderer>().material.color = newC;
-        //transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
+        Renderer r = transform.Find("Model/BikeMesh").GetComponent<Renderer>();
+        Material newMat = r.material;
+        newMat.color = newC;
+        r.sharedMaterial = autoMat.GetMaterial(newC, newMat);
 
+        //transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
 
         Color smokeC = ( newC + Color.white) / 2.0f; // halfway to white (reduce saturation + brighten)
         ParticleSystem ps = transform.Find("Smoke").GetComponent<ParticleSystem>();

@@ -8,6 +8,14 @@ public class GroundMarker : MonoBehaviour
     protected float _scale = 0;
     public readonly float kMaxScale = .5f;
 
+    protected static AutoMat<Color> autoMat;
+
+    void Awake()
+    {
+        if (autoMat == null)
+            autoMat = new AutoMat<Color>();
+    }
+
     void Start()
     {
         transform.localScale = new Vector3(0,0,0);
@@ -26,10 +34,13 @@ public class GroundMarker : MonoBehaviour
 
     public void SetColor(Color newC)
     {
-        Component[] renderers = transform.GetComponentsInChildren<Renderer>();
+        Renderer[] renderers = transform.GetComponentsInChildren<Renderer>();
+
+        Material newMat = renderers[0].material;
+        newMat.SetColor("_EmissionColor", newC);
         foreach(Renderer renderer in renderers)
         {
-            renderer.material.SetColor("_EmissionColor", newC);
+            renderer.sharedMaterial = autoMat.GetMaterial(newC, newMat);
         }
     }
 }
