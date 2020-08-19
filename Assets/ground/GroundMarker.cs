@@ -5,6 +5,7 @@ using UnityEngine;
 public class GroundMarker : MonoBehaviour
 {
     // Start is called before the first frame update
+    public Material defaultMaterial;
     protected float _scale = 0;
     public readonly float kMaxScale = .5f;
 
@@ -36,7 +37,7 @@ public class GroundMarker : MonoBehaviour
     {
         Renderer[] renderers = transform.GetComponentsInChildren<Renderer>();
 
-        Material newMat = renderers[0].material;
+        Material newMat = new Material(defaultMaterial);
         newMat.SetColor("_EmissionColor", newC);
         foreach(Renderer renderer in renderers)
         {
