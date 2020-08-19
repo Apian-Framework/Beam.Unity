@@ -13,9 +13,9 @@ public class FeGround : MonoBehaviour
 
     protected Dictionary<(int,int), GameObject> activeConnectors; // tuple is (posHash1, posHash2)
     protected Stack<GameObject> idleConnectors;
-
     public GameObject markerPrefab;
     public GameObject connectorPrefab;
+    public GameObject connectorBoom;
 
     public UniLogger logger;
 
@@ -110,6 +110,10 @@ public class FeGround : MonoBehaviour
         // instead of checking first
         int posHash1 = p1.PosHash;
         int posHash2 = p2.PosHash;
+
+        if (posHash1 == posHash2)
+            logger.Error($"FeGround.SetupConnector() - places are the same! ({p1.xIdx}, {p1.zIdx})");
+
         logger.Info($"Connector count: Active: {activeConnectors.Count}  Idle: {idleConnectors.Count}");
         GameObject connGO = null;
         if (   (activeConnectors.TryGetValue((posHash1,posHash2), out connGO) == false)
@@ -132,9 +136,12 @@ public class FeGround : MonoBehaviour
     {
         try {
             GameObject connGO = activeConnectors[(fromHash, toHash)];
+            Connector conn = (Connector)connGO.transform.GetComponent("Connector");
+            conn.fromTo = "(free)"; // debuggish helper
             connGO.SetActive(false);
-            idleConnectors.Push(connGO);
+            GameObject.Instantiate(connectorBoom, connGO.transform.position, connGO.transform.rotation);
             activeConnectors.Remove((fromHash, toHash));
+            idleConnectors.Push(connGO);
         }  catch(KeyNotFoundException) { }
     }
 
