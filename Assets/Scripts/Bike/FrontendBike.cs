@@ -202,7 +202,7 @@ public abstract class FrontendBike : MonoBehaviour
     public void SetColor(Color newC)
     {
         Renderer r = transform.Find("Model/BikeMesh").GetComponent<Renderer>();
-        Material newMat = r.material;
+        Material newMat = new Material(r.material); // create a new one
         newMat.color = newC;
         r.sharedMaterial = autoMat.GetMaterial(newC, newMat);
 
@@ -222,13 +222,18 @@ public abstract class FrontendBike : MonoBehaviour
 
     public virtual void OnPlaceClaimed(BeamPlace place)
     {
-        if ( prevPlaceVisited?.bike?.bikeId == bb.bikeId) // might be null, might not have a bike
+        if (place == prevPlaceVisited)
         {
-            // BUG: This won;t work on mass restore. Places would need a per-bike seq #
-            feGround.SetupConnector(prevPlaceVisited, place);
+            // TODO: this is the same place we just hit/claimed. Figure out what's up (time backup?)
+            // Or at least log a message
+        } else {
+            if ( prevPlaceVisited?.bike?.bikeId == bb.bikeId) // might be null, might not have a bike
+            {
+                // BUG: This won;t work on mass restore. Places would need a per-bike seq #
+                feGround.SetupConnector(prevPlaceVisited, place);
+            }
+            prevPlaceVisited = place;
         }
-
-        prevPlaceVisited = place;
     }
 
     public virtual void OnPlaceHit(BeamPlace place)
