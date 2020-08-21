@@ -5,33 +5,40 @@
       "depth": 0,
       "source": "local",
       "dependencies": {
-        "com.apian-framework.p2pnet.base": "1.0.2"
+        "com.apian-framework.p2pnet.base": "1.0.2",
+        "com.apian-framework.unilog": "1.0.2"
       }
     },
     "com.apian-framework.beamgamecode": {
       "version": "file:../../BeamGameCode/src/BeamGameCode",
       "depth": 0,
       "source": "local",
-      "dependencies": {}
+      "dependencies": {
+        "com.apian-framework.apian": "1.0.4",
+        "com.apian-framework.p2pnet.redis": "1.0.0"
+      }
     },
     "com.apian-framework.p2pnet.base": {
       "version": "file:../../P2pNet/src/P2pNet.Base",
       "depth": 0,
       "source": "local",
-      "dependencies": {}
+      "dependencies": {
+        "com.apian-framework.unilog": "1.0.4"
+      }
     },
     "com.apian-framework.p2pnet.redis": {
       "version": "file:../../P2pNet/src/P2pNet.Redis",
       "depth": 0,
       "source": "local",
-      "dependencies": {}
+      "dependencies": {
+        "com.apian-framework.p2pnet.base": "1.0.2"
+      }
     },
     "com.apian-framework.unilog": {
-      "version": "https://github.com/Apian-Framework/UniLog.git?path=src/UniLog",
+      "version": "file:../../UniLog/src/UniLog",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "98d6a4d9d431e1c166d0e0f5ed44aa5d89ae4cd0"
+      "source": "local",
+      "dependencies": {}
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
