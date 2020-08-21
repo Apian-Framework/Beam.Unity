@@ -4,7 +4,7 @@
     "com.apian-framework.beamgamecode": "file:../../BeamGameCode/src/BeamGameCode",
     "com.apian-framework.p2pnet.base": "file:../../P2pNet/src/P2pNet.Base",
     "com.apian-framework.p2pnet.redis": "file:../../P2pNet/src/P2pNet.Redis",
-    "com.apian-framework.unilog": "https://github.com/Apian-Framework/UniLog.git?path=src/UniLog",
+    "com.apian-framework.unilog": "file:../../UniLog/src/UniLog",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.analytics": "3.3.5",
