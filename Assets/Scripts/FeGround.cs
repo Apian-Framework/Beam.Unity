@@ -139,7 +139,8 @@ public class FeGround : MonoBehaviour
             Connector conn = (Connector)connGO.transform.GetComponent("Connector");
             conn.fromTo = "(free)"; // debuggish helper
             connGO.SetActive(false);
-            GameObject.Instantiate(connectorBoom, connGO.transform.position, connGO.transform.rotation);
+            GameObject boom = GameObject.Instantiate(connectorBoom, connGO.transform.position, connGO.transform.rotation);
+            boom.transform.parent = transform; // make a child of the ground obj
             activeConnectors.Remove((fromHash, toHash));
             idleConnectors.Push(connGO);
         }  catch(KeyNotFoundException) { }
