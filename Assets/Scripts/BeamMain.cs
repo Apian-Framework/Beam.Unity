@@ -1,12 +1,35 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using UnityEngine;
 using BeamGameCode;
 using Unity.Profiling;
 using UniLog;
 
+public class DriverSettings
+{
+    protected const string kMasterVolume = "mastervolume";
+
+    public float masterVolume = .75f;
+
+    public void Load( Dictionary<string,string> settingsDict)
+    {
+        masterVolume = settingsDict.ContainsKey(kMasterVolume) ? float.Parse(settingsDict[kMasterVolume]) : masterVolume;
+    }
+
+    public Dictionary<string, string> ToDict()
+    {
+        return new Dictionary<string,string>()
+        {
+            {kMasterVolume, $"{masterVolume}" }
+        };
+    }
+
+}
+
 public class BeamMain : MonoBehaviour
 {
+    public DriverSettings driverSettings;
     public BeamFrontend frontend;
 	public GameCamera gameCamera;
 	public GameUiController uiController;
@@ -36,28 +59,27 @@ public class BeamMain : MonoBehaviour
     }
 
     void Awake() {
-        DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
 		Application.targetFrameRate = 60;
+        DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
 
-		// Semi-presistent Main-owned objects
-        // TODO: Should be in Awake()?
+        driverSettings = new DriverSettings();
         frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");
 		uiController = (GameUiController)utils.findObjectComponent("GameUiController", "GameUiController");
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");
         gameNet = new BeamGameNet();
         beamApp = new BeamApplication(gameNet, frontend);
-        beamApp.Start(BeamModeFactory.kSplash);
 
         inputDispatch = new InputDispatch(this);
+
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        beamApp.Start(BeamModeFactory.kSplash);
 
         // TODO: get rid of this Eth stuff (goes in GameNet)
         //eth = new EthereumProxy();
 		//eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using
-
     }
 
     // Update is called once per frame
@@ -76,6 +98,32 @@ public class BeamMain : MonoBehaviour
     {
         //throw(new Exception("Not Implmented"));
         UnityEngine.Debug.Log("** BeamMain.HandleTap() fallthru not implmented");
+    }
+
+    // Settings-related stuff
+    public void ApplyUserSettings()
+    {
+        // Called when the frontend starts up
+        driverSettings.Load(frontend.GetUserSettings().driverSettings);
+        SetMasterVolume(driverSettings.masterVolume); // first time
+
+    }
+
+    public void PersistSettings()
+    {
+        // TODO: is this dopey? Should BeamMain should be the keeper of the user settings?
+        frontend.GetUserSettings().driverSettings = driverSettings.ToDict();
+        UserSettingsMgr.Save(frontend.GetUserSettings());
+    }
+
+    public void SetMasterVolume(float v)
+    {
+        AudioListener.volume = v;
+        if (driverSettings.masterVolume != v)
+        {
+            driverSettings.masterVolume = v;
+            PersistSettings();
+        }
     }
 
 }

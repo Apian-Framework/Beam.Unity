@@ -23,10 +23,10 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     void Start()
     {
         userSettings = UserSettingsMgr.Load(kSettingsFileBaseName);
-        //userSettings = BeamUserSettings.CreateDefault();
         userSettings.localPlayerCtrlType = BikeFactory.LocalPlayerCtrl; // Kinda hackly
 
         mainObj = BeamMain.GetInstance();
+        mainObj.ApplyUserSettings();
         _feModeHelper = new BeamFeModeHelper(mainObj);
         feBikes = new Dictionary<string, GameObject>();
         logger = UniLogger.GetLogger("Frontend");
