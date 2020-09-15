@@ -15,7 +15,6 @@ public class SplashStage : MonoBehaviour
 
 	public void OnPracticeBtn()
 	{
-		Debug.Log("OnPracticeButton()");
 		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPractice, null);
 	}
 

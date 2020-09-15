@@ -17,10 +17,4 @@ public class PlayMenu : MovableUICanvasItem
     {
         base.Update();
     }
-
-
-
-
-
-
 }

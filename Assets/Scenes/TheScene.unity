@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.23275673, g: 0.23656997, b: 0.27204576, a: 1}
+  m_IndirectSpecularColor: {r: 0.23212802, g: 0.23469946, b: 0.27236146, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -310,6 +310,8 @@ MonoBehaviour:
   levelEntries:
   - LoggerName: BaseBike
     level: 40
+  - LoggerName: UI
+    level: 30
 --- !u!4 &7721492
 Transform:
   m_ObjectHideFlags: 0
@@ -6570,12 +6572,12 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.7
+  m_Value: 0.58
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1435195309}
-        m_MethodName: OnValueChanged
+      - m_Target: {fileID: 45526651}
+        m_MethodName: SetMasterVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6597,6 +6599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96a7e23fae3bc1b4aad6216b427b48f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slider: {fileID: 1435195308}
 --- !u!1 &1435653529
 GameObject:
   m_ObjectHideFlags: 0
