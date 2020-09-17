@@ -81,6 +81,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnStartMode(int modeId, object param) =>  _feModeHelper.OnStartMode(modeId, param);
     public void OnEndMode(int modeId, object param) => _feModeHelper.OnEndMode(modeId, param);
+    public void DispatchModeCmd(int modeId, int cmdId, object param) => _feModeHelper.DispatchCmd(modeId, cmdId, param);
 
     public void OnNewCoreState(object sender, BeamCoreState newCoreState)
     {

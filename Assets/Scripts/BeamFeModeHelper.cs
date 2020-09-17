@@ -62,17 +62,17 @@ public class BeamFeModeHelper : IFrontendModeHelper
         }
         public override void OnEnd(object parms=null) {}
     }
+
     class SplashModeFuncs : ModeFuncs
     {
         public SplashModeFuncs(BeamMain bm) : base(bm)
         {
-
+             _cmdDispatch[ModeSplash.kCmdTargetCamera] = new Action<object>(o => TargetCamera(o as TargetIdParams));
         }
 
         public override void OnStart(object parms=null)
         {
-            TargetIdParams p = (TargetIdParams)parms;
-            SetupCameras(p.targetId);
+            SetupCamera();
             // TODO: These next should be in the GameUIController
             //_feMain.frontend.startBtn.SetActive(false);
             _feMain.frontend.connectBtn.SetActive(true);
@@ -83,27 +83,47 @@ public class BeamFeModeHelper : IFrontendModeHelper
 
         }
 
-        protected GameObject GetRandomBikeObj()
+        protected void TargetCamera(TargetIdParams parm)
         {
-            int index = UnityEngine.Random.Range(0, _feMain.frontend.BikeCount());
-            return _feMain.frontend.GetBikeObjByIndex(index);
+            GameObject tBike = _feMain.frontend.GetBikeObj(parm.targetId);
+            _feMain.gameCamera.MoveCameraToTarget(tBike, 5f, 2f, .5f,  0); // Sets "close enough" value to zero - so it never gets there
+
+            _feMain.gameCamera.StartBikeMode(tBike);
+
+            // These just don;t look got ATM
+            // int choice = (int)UnityEngine.Random.Range(0, 3 - .0001f);
+            // switch (choice)
+            // {
+            //     case 0:
+            //         _feMain.gameCamera.StartBikeMode(tBike);
+            //         break;
+            //     case 1:
+            //         _feMain.gameCamera.StartOverheadMode(tBike);
+            //         break;
+            //     case 2:
+            //         _feMain.gameCamera.StartOrbit(tBike, 20, new Vector3(1, 0, .5f) );
+            //         break;
+            // }
+
         }
+
+        // protected GameObject GetRandomBikeObj()
+        // {
+        //     int index = UnityEngine.Random.Range(0, _feMain.frontend.BikeCount());
+        //     return _feMain.frontend.GetBikeObjByIndex(index);
+        // }
 
         protected void PointGameCamAtBike(string targetBikeId)
         {
-            GameObject tBike = _feMain.frontend.GetBikeObj(targetBikeId);
 
-            _feMain.gameCamera.transform.position = new Vector3(100, 100, 100);
-            _feMain.gameCamera.MoveCameraToTarget(tBike, 5f, 2f, .5f,  0); // Sets "close enough" value to zero - so it never gets there
             //_feMain.gameCamera.StartBikeMode(tBike);
             //_feMain.gameCamera.StartOrbit(tBike, 15f, new Vector3(0,3f,0));
         }
 
-        protected void SetupCameras(string targetBikeId)
+        protected void SetupCamera()
         {
-            PointGameCamAtBike(targetBikeId);
+            _feMain.gameCamera.transform.position = new Vector3(100, 100, 100);
 		    _feMain.uiController.switchToNamedStage("SplashStage");
-            _feMain.gameCamera.gameObject.SetActive(true);
         }
     }
 
@@ -112,13 +132,8 @@ public class BeamFeModeHelper : IFrontendModeHelper
 
         public PlayModeFuncs(BeamMain bm) : base(bm)
         {
- //           _cmdDispatch[ModeSplash.kCmdTargetCamera] = new Action<object>(o => TargetCamera(o));
+
         }
-
-        // protected void TargetCamera(ModeSplash.TargetIdParams parm)
-        // {
-
-        // }
 
         public override void OnStart(object parms=null)
         {

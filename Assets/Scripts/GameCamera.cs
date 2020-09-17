@@ -379,14 +379,21 @@ public class GameCamera : MonoBehaviour {
 
         public override void update()
         {
-            _curAngle += GameTime.DeltaTime() * _degPerSec * Mathf.Deg2Rad;
+            if (_targetObj == null) // target went away (gameobject refs get autonulled on destroy)
+            {
+                _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
+            }
+            else
+            {
+                _curAngle += GameTime.DeltaTime() * _degPerSec * Mathf.Deg2Rad;
 
-            Vector3 pos = new Vector3(_radius * Mathf.Cos(_curAngle), _height, _radius * Mathf.Sin(_curAngle));
-            pos +=  _offset;
-            pos += _targetObj.transform.position;
+                Vector3 pos = new Vector3(_radius * Mathf.Cos(_curAngle), _height, _radius * Mathf.Sin(_curAngle));
+                pos +=  _offset;
+                pos += _targetObj.transform.position;
 
-            _theGameCam.transform.position = pos;
-            _theGameCam.transform.LookAt(_targetObj.transform.position + _offset);
+                _theGameCam.transform.position = pos;
+                _theGameCam.transform.LookAt(_targetObj.transform.position + _offset);
+            }
         }
     }
 
