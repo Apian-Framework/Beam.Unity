@@ -7,6 +7,8 @@ using UniLog;
 
 public class BeamFrontend : MonoBehaviour, IBeamFrontend
 {
+    public const float kErrorToastSecs = 5.0f;
+    public const float kWarningToastSecs = 5.0f;
 
 	public FeGround feGround;
     public GameObject connectBtn;
@@ -78,6 +80,30 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     //
 
     public BeamUserSettings GetUserSettings() => userSettings;
+
+    public void DisplayMessage(MessageSeverity lvl, string msgText)
+    {
+        Toast.ToastColor color =  Toast.ToastColor.kBlue;
+        string lvlStr = "Info";
+        float secs = ToastMgr.defDisplaySecs;
+
+        switch (lvl)
+        {
+            case MessageSeverity.Warning:
+                color = Toast.ToastColor.kOrange;
+                lvlStr =  "Warning";
+                secs = kWarningToastSecs;
+                break;
+           case MessageSeverity.Error:
+                color = Toast.ToastColor.kRed;
+                lvlStr =  "Error";
+                secs = kErrorToastSecs;
+                break;
+        }
+
+
+        mainObj.uiController.ShowToast($"{lvlStr}: {msgText}", color, secs);
+    }
 
     public void OnStartMode(int modeId, object param) =>  _feModeHelper.OnStartMode(modeId, param);
     public void OnEndMode(int modeId, object param) => _feModeHelper.OnEndMode(modeId, param);

@@ -23,9 +23,4 @@ public class SplashStage : MonoBehaviour
 		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPlay, null);
 	}
 
-	public void OnStartBtn()
-	{
-		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPlay, null);
-	}
-
 }

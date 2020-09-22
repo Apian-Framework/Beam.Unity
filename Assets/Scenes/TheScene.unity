@@ -8238,8 +8238,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 247158594}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnStartBtn
+        m_TargetAssemblyTypeName: SplashStage, Assembly-CSharp
+        m_MethodName: OnConnectBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
