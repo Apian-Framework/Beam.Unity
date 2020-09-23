@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using BeamGameCode;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PlayStage : MonoBehaviour
 {
@@ -30,27 +30,29 @@ public class PlayStage : MonoBehaviour
 	protected void Update()
 	{
 		// TODO: This should use the new input eventhandler system,
-		if (Input.GetKeyDown(KeyCode.Z ))
+
+		// First crack at new Input System
+		if (Keyboard.current.zKey.wasPressedThisFrame)
 			OnViewLeftBtn();
 
-		if (Input.GetKeyDown(KeyCode.X ))
+		if (Keyboard.current.xKey.wasPressedThisFrame)
 			OnViewRightBtn();
 
-		if (Input.GetKeyDown(KeyCode.Space ))
+		if (Keyboard.current.spaceKey.wasPressedThisFrame)
 			OnViewUpBtn();
 
-		if (Input.GetKeyDown(KeyCode.LeftArrow ))
-			OnTurnLeftBtn();
-
-		if (Input.GetKeyDown(KeyCode.RightArrow ))
-			OnTurnRightBtn();
-
-		if (Input.GetKeyDown(KeyCode.S ))
+		if (Keyboard.current.sKey.wasPressedThisFrame)
 			transform.Find("Scoreboard")?.SendMessage("toggle", null);
 
+		if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
+			OnTurnLeftBtn();
+
+		if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
+			OnTurnRightBtn();
+
+
+
 	}
-
-
 
 	// UI Button Handlers
 
