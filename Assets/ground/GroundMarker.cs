@@ -37,11 +37,16 @@ public class GroundMarker : MonoBehaviour
     {
         Renderer[] renderers = transform.GetComponentsInChildren<Renderer>();
 
-        Material newMat = new Material(defaultMaterial);
-        newMat.SetColor("_EmissionColor", newC);
+        Material mat = autoMat.GetMaterial(newC);
+        if (mat == null)
+        {
+            mat = new Material(defaultMaterial);
+            mat.SetColor("_EmissionColor", newC);
+            autoMat.AddMaterial(newC, mat);
+        }
         foreach(Renderer renderer in renderers)
         {
-            renderer.sharedMaterial = autoMat.GetMaterial(newC, newMat);
+            renderer.sharedMaterial = autoMat.GetMaterial(newC);
         }
     }
 }

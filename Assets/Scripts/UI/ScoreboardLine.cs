@@ -13,8 +13,8 @@ public class ScoreboardLine : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        scoreTextMesh = transform.Find("Score").GetComponent<TextMeshProUGUI>(); 
-        whoTextMesh = transform.Find("Who").GetComponent<TextMeshProUGUI>();       
+        scoreTextMesh = transform.Find("Score").GetComponent<TextMeshProUGUI>();
+        whoTextMesh = transform.Find("Who").GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -32,6 +32,6 @@ public class ScoreboardLine : MonoBehaviour
     {
         bike = b;
         whoTextMesh.text = (bike.isLocal ? "" : "*") + bike.bb.name;
-        whoTextMesh.color = utils.hexToColor(b.bb.team.Color);
+        whoTextMesh.color = utils.ColorFromName(b.bb.team.Color);
     }
 }

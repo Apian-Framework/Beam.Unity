@@ -14,15 +14,21 @@ public class AutoMat<T>
         MaterialDict = new Dictionary<T,Material>();
     }
 
-    public Material GetMaterial(T key, Material template)
+    // expected usage:
+    //
+
+    public Material GetMaterial(T key)
     {
-        if (!MaterialDict.ContainsKey(key))
-        {
-            MaterialDict[key] = template;
-        } else {
-            template = MaterialDict[key];
-        }
-        return template;
+        return MaterialDict.ContainsKey(key) ? MaterialDict[key] : null;
+    }
+
+    public Material AddMaterial(T key, Material mat)
+    {
+        if (MaterialDict.ContainsKey(key))
+            return null;
+
+        MaterialDict[key] = mat;
+        return mat;
     }
 }
 
@@ -100,7 +106,7 @@ public abstract class FrontendBike : MonoBehaviour
         bb = beBike;
         feGround = fGround;
         transform.position = utils.Vec3(bb.basePosition); // Is probably already set to this
-        SetColor(utils.hexToColor(bb.team.Color));
+        SetColor(utils.ColorFromName(bb.team.Color));
         CreateControl();
         control.Setup(beBike, core);
         _prevGameTime = core.CurrentRunningGameTime;
@@ -202,11 +208,14 @@ public abstract class FrontendBike : MonoBehaviour
     public void SetColor(Color newC)
     {
         Renderer r = transform.Find("Model/BikeMesh").GetComponent<Renderer>();
-        Material newMat = new Material(r.material); // create a new one
-        newMat.color = newC;
-        r.sharedMaterial = autoMat.GetMaterial(newC, newMat);
-
-        //transform.Find("Trail").GetComponent<Renderer>().material.SetColor("_EmissionColor", newC);
+        Material mat = autoMat.GetMaterial(newC);
+        if (mat == null)
+        {
+            mat = new Material(r.material);
+            mat.color = newC;
+            autoMat.AddMaterial(newC, mat);
+        }
+        r.sharedMaterial = autoMat.GetMaterial(newC);
 
         Color smokeC = ( newC + Color.white) / 2.0f; // halfway to white (reduce saturation + brighten)
         ParticleSystem ps = transform.Find("Smoke").GetComponent<ParticleSystem>();

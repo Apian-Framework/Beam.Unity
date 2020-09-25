@@ -161,6 +161,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (go == null)
             return;
 
+        logger.Verbose($"OnBikeRemovedEvt() BikeId: {rData.bikeId}");
         IBike ib = appCore.CoreData.GetBaseBike(rData.bikeId);
         feBikes.Remove(rData.bikeId);
         mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
@@ -200,6 +201,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     //public void OnFreePlace(BeamPlace p, int modeId)
     public void OnPlaceFreedEvt(object sender, BeamPlace p)
     {
+        logger.Debug($"OnPlaceFreedEvt() Placehash: {p.PosHash}");
         feGround.FreePlaceMarker(p);
     }
     //public void OnClearPlaces(int modeId)

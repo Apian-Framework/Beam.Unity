@@ -44,15 +44,22 @@ public class Connector : MonoBehaviour
         angles.y = p1.xIdx == p2.xIdx ? 0 : 90;
         transform.eulerAngles = angles;
 
-		SetColor(utils.hexToColor(p1.bike.team.Color));
+		SetColor(utils.ColorFromName(p1.bike.team.Color));
     }
 
     public void SetColor(Color newC)
     {
-        Material newMat = new Material(defaultMaterial);
-        newMat.SetColor("_EmissionColor", newC);
+        Material mat = autoMat.GetMaterial(newC);
+        if (mat == null)
+        {
+            mat = new Material(defaultMaterial);
+            mat.SetColor("_EmissionColor", newC);
+            autoMat.AddMaterial(newC, mat);
+        }
         Renderer[] renderers = transform.GetComponentsInChildren<Renderer>();
         foreach(Renderer renderer in renderers)
-            renderer.sharedMaterial = autoMat.GetMaterial(newC, newMat);
+        {
+            renderer.sharedMaterial = autoMat.GetMaterial(newC);
+        }
     }
 }
