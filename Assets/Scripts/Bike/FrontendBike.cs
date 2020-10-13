@@ -211,7 +211,8 @@ public abstract class FrontendBike : MonoBehaviour
         Material mat = autoMat.GetMaterial(newC);
         if (mat == null)
         {
-            mat = new Material(r.material);
+            mat = r.material;
+            //mat = new Material(r.material);
             mat.color = newC;
             autoMat.AddMaterial(newC, mat);
         }
