@@ -39,6 +39,8 @@ public abstract class FrontendBike : MonoBehaviour
     protected IBikeControl control = null;
     protected FeGround feGround;
 
+    protected FeBikeLabel bikeLabel;
+
     protected static AutoMat<Color> autoMat;
 
     // Stuff that really lives in backend.
@@ -50,9 +52,10 @@ public abstract class FrontendBike : MonoBehaviour
 
     public float turnRadius = 1.5f;
 
-    public float maxLean = 40.0f;
-
+    public float maxLean = 80.0f; // 40 is real
     public bool isLocal;
+
+    public Vector2 curPos2d;
 
     protected GameObject ouchObj;
     protected AudioSource engineSound;
@@ -65,8 +68,6 @@ public abstract class FrontendBike : MonoBehaviour
     protected Vector2 _curTurnPt; // only has meaning when curTuen is set
     protected Vector2 _curTurnCenter; // only has meaning when curTuen is set
     protected float _curTurnStartTheta;
-
-    protected Vector2 curPos2d;
     private long _prevGameTime = 0;
 
     protected BeamPlace prevPlaceVisited;
@@ -110,6 +111,10 @@ public abstract class FrontendBike : MonoBehaviour
         CreateControl();
         control.Setup(beBike, core);
         _prevGameTime = core.CurrentRunningGameTime;
+
+        bikeLabel = transform.Find("BikeLabel").GetComponent<FeBikeLabel>();
+        bikeLabel.Setup(this);
+        ShowLabel(false);
     }
 
     public virtual void Update()
@@ -129,6 +134,8 @@ public abstract class FrontendBike : MonoBehaviour
             DoStraight();
         else
             DoTurn();
+
+        bikeLabel.UpdatePos();
 
     }
 
@@ -263,6 +270,10 @@ public abstract class FrontendBike : MonoBehaviour
         engineSound.volume = vol;
     }
 
+    public void ShowLabel(bool doIt)
+    {
+        bikeLabel.gameObject.SetActive(doIt);
+    }
 
     // Tools for AIs
 

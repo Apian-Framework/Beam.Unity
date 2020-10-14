@@ -442,9 +442,9 @@ public class GameCamera : MonoBehaviour {
         protected void SetEnemyBike(GameObject eBike)
         {
             if (enemyBike != null)
-                enemyBike?.GetComponent<FrontendBike>()?.EnableSound(false);
+                enemyBike?.GetComponent<FrontendBike>()?.ShowLabel(false);
             enemyBike = eBike;
-            enemyBike?.GetComponent<FrontendBike>()?.EnableSound(true);
+            enemyBike?.GetComponent<FrontendBike>()?.ShowLabel(true);
         }
        public virtual void init(GameCamera cam, GameObject bike)
         {
@@ -453,6 +453,12 @@ public class GameCamera : MonoBehaviour {
             SetEnemyBike( GetClosestEnemy());
             _theGameCam.LookAroundEvt += OnLookAround;
             _theGameCam.StartMotion();
+        }
+
+        public override void end()
+        {
+            if (enemyBike != null)
+                enemyBike?.GetComponent<FrontendBike>()?.ShowLabel(false);
         }
 
         protected GameObject GetClosestEnemy()
