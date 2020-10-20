@@ -52,7 +52,7 @@ public abstract class FrontendBike : MonoBehaviour
 
     public float turnRadius = 1.5f;
 
-    public float maxLean = 80.0f; // 40 is real
+    public float maxLean = 40.0f;
     public bool isLocal;
 
     public Vector2 curPos2d;
