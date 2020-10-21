@@ -12,7 +12,7 @@ public class SettingsPanel : MovableUICanvasItem
     public GameObject p2pConnectionField;
     public GameObject ethNodeField;
     public GameObject ethAcctField;
-     public GameObject gameIdField;
+     public GameObject gameSpecField;
 
     public void LoadAndShow()
     {
@@ -23,8 +23,8 @@ public class SettingsPanel : MovableUICanvasItem
         p2pConnectionField.GetComponent<TMP_InputField>().text = settings.p2pConnectionString;
         ethNodeField.GetComponent<TMP_InputField>().text = settings.ethNodeUrl;
         ethAcctField.GetComponent<TMP_InputField>().text = settings.ethAcct;
-        gameIdField.GetComponent<TMP_InputField>().text =
-            settings.tempSettings.ContainsKey("gameId") ? settings.tempSettings["gameId"] : "";
+        gameSpecField.GetComponent<TMP_InputField>().text =
+            settings.tempSettings.ContainsKey("gameSpec") ? settings.tempSettings["gameSpec"] : "";
 
         UserSettingsMgr.Save(settings);
 
@@ -40,15 +40,13 @@ public class SettingsPanel : MovableUICanvasItem
         settings.p2pConnectionString = p2pConnectionField.GetComponent<TMP_InputField>().text;
         settings.ethNodeUrl = ethNodeField.GetComponent<TMP_InputField>().text;
         settings.ethAcct = ethAcctField.GetComponent<TMP_InputField>().text;
-        string gameId = gameIdField.GetComponent<TMP_InputField>().text;
-        if (gameId != "")
-            settings.tempSettings["gameId"] = gameId;
+        string gameSpec = gameSpecField.GetComponent<TMP_InputField>().text;
+        if (gameSpec != "")
+            settings.tempSettings["gameSpec"] = gameSpec;
 
         UserSettingsMgr.Save(settings);
 
         moveOffScreen();
     }
-
-
 
 }

@@ -44,6 +44,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         OnNewCoreState(null, appCore.CoreData);
 
         appCore.NewCoreStateEvt += OnNewCoreState;
+        appCore.PlayerJoinedEvt += OnPlayerJoinedEvt;
         appCore.PlayersClearedEvt += OnPlayersClearedEvt;
         appCore.NewBikeEvt += OnNewBikeEvt;
         appCore.BikeRemovedEvt += OnBikeRemovedEvt;
@@ -129,6 +130,18 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
          logger.Info("Peer Left: {args.p2pId}");
     }
+
+    public void OnPlayerJoinedEvt(object sender, PlayerJoinedArgs args)
+    {
+        // Player joined means a group has been joined AND is synced (ready to go)
+        if ( args.player.PeerId == appCore.LocalPeerId )
+        {
+            if (mainObj.beamApp.modeMgr.CurrentModeId() == BeamModeFactory.kPlay)
+                mainObj.uiController.ShowToast($"GameSpec: {args.groupChannel}", Toast.ToastColor.kBlue, 10.0f);
+        }
+    }
+
+
 
     public void OnPlayersClearedEvt(object sender, EventArgs e)
     {

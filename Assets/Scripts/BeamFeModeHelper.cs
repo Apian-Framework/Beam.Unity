@@ -150,6 +150,8 @@ public class BeamFeModeHelper : IFrontendModeHelper
             _feMain.gameCamera.transform.position = new Vector3(100, 100, 100);
             _feMain.uiController.switchToNamedStage("PlayStage");
         }
+
+
     }
 
 

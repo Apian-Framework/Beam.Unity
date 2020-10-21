@@ -8,21 +8,52 @@ using UniLog;
 
 public class DriverSettings
 {
+    // "DriverSettings" might be better called "FrontendSettings"?
     protected const string kMasterVolume = "mastervolume";
+    protected const string kApianGameBase = "apiangamebase";
 
     public float masterVolume = .75f;
+    public string apianGameBase = "beam"; // default
 
     public void Load( Dictionary<string,string> settingsDict)
     {
         masterVolume = settingsDict.ContainsKey(kMasterVolume) ? float.Parse(settingsDict[kMasterVolume]) : masterVolume;
+        apianGameBase = settingsDict.ContainsKey(kApianGameBase) ? settingsDict[kApianGameBase] : apianGameBase;
+
+        // On load create a randomish game/group spec and store it in tempsettings
+        BeamMain.GetInstance().frontend.GetUserSettings().tempSettings["gameSpec"] = CreateNewGameSpec(apianGameBase);
     }
 
     public Dictionary<string, string> ToDict()
     {
         return new Dictionary<string,string>()
         {
-            {kMasterVolume, $"{masterVolume}" }
+            {kMasterVolume, $"{masterVolume}" },
+            {kApianGameBase, $"{apianGameBase}" }
         };
+    }
+
+    protected static List<string> shortAdjs = new List<string>()
+        { "angry", "bad", "big", "busy", "cheap", "clear", "close", "cold", "cool", "dark",
+        "dry", "early", "easy", "empty", "fake", "false", "far", "fast", "fine", "first", "flat", "free", "full", "good",
+        "great", "happy", "hard", "heavy", "high", "hot", "huge", "large", "last", "late", "light", "long", "low", "mean",
+        "near", "new", "next", "nice", "noisy", "old", "open", "poor", "quick", "ready", "real", "rich", "right", "sad", "safe",
+        "same", "short", "slow", "small", "soft", "sure", "tall", "tiny", "tired", "true", "warm", "weak", "wet", "wrong",
+        "young" };
+    protected static List<string> shortNouns = new List<string>()
+        {"word", "pen", "class", "sound", "water", "side", "place", "year",
+        "day", "week", "month", "name", "line", "air", "land", "home", "hand", "house", "world", "page", "plant",
+        "food", "sun", "state", "eye", "city", "tree", "farm", "story", "sea", "night", "day", "life",
+         "paper", "music", "river", "car", "foot", "feet", "book", "room", "idea", "fish", "horse",
+        "witch", "color", "face", "wood", "list", "bird", "body", "dog", "song", "door", "wind", "ship", "area", "rock",
+        "order", "fire", "piece", "top", "king", "space"};
+
+    public static string CreateNewGameSpec(string apianGameBase)
+    {
+        string adj = shortAdjs[UnityEngine.Random.Range(0, shortAdjs.Count)];
+        string noun = shortNouns[UnityEngine.Random.Range(0, shortNouns.Count)];
+        string gameNumStr = UnityEngine.Random.Range(0, 1000).ToString("D4");
+        return $"{apianGameBase}{gameNumStr}/{adj}{noun}+";  // by default use "create if not exists"
     }
 
 }

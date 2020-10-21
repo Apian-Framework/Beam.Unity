@@ -5077,7 +5077,7 @@ GameObject:
   - component: {fileID: 1136886220}
   - component: {fileID: 1136886219}
   m_Layer: 5
-  m_Name: gameid
+  m_Name: gamespec
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5122,7 +5122,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Game ID:'
+  m_text: 'Game Spec:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6094,7 +6094,7 @@ MonoBehaviour:
   p2pConnectionField: {fileID: 964301178}
   ethNodeField: {fileID: 172348999}
   ethAcctField: {fileID: 1171399494}
-  gameIdField: {fileID: 2057874617}
+  gameSpecField: {fileID: 2057874617}
 --- !u!114 &1363262865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8455,7 +8455,7 @@ GameObject:
   - component: {fileID: 2057874619}
   - component: {fileID: 2057874618}
   m_Layer: 5
-  m_Name: gameid_fld
+  m_Name: gamespec_fld
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
