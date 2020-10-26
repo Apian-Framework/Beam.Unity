@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ToastMgr : MonoBehaviour
@@ -14,39 +15,50 @@ public class ToastMgr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     protected void FixupPositions()
     {
-        int idx = toasts.Count - 1;;
+        int idx = toasts.Count - 1;
         foreach (Toast t in toasts)
-            t.SetIndex(idx--); 
+            t.SetIndex(idx--);
     }
 
-    public void ShowToast(string msg, Toast.ToastColor color=Toast.ToastColor.kBlue, float displaySecs=defDisplaySecs)
+    private void _RemoveTaggedToast(string tag)
     {
-        GameObject toastGo = GameObject.Instantiate(toastPrefab, transform);        
-        toastGo.transform.SetParent(transform.parent);        
+        if (tag != null)
+        {
+            Toast dt = toasts.Where(t => t.toastTag == tag).FirstOrDefault();
+            if (dt != null)
+             RemoveToast(dt);
+        }
+    }
+
+    public void ShowToast(string msg, Toast.ToastColor color=Toast.ToastColor.kBlue, float displaySecs=defDisplaySecs, string tag = null)
+    {
+         _RemoveTaggedToast(tag);
+        GameObject toastGo = GameObject.Instantiate(toastPrefab, transform);
+        toastGo.transform.SetParent(transform.parent);
         Toast toast= (Toast)toastGo.transform.GetComponent<Toast>();
-		toast.Setup(this, msg, color, displaySecs);
+		toast.Setup(this, msg, color, displaySecs, tag);
         if (toasts.Count >= maxToasts)
             RemoveToast(toasts[maxToasts-1]);
         toasts.Add(toast);
-        toastGo.SetActive(true);    
-        FixupPositions();            
-    }    
-    
+        toastGo.SetActive(true);
+        FixupPositions();
+    }
+
     public void RemoveToast(Toast theToast)
     {
         toasts.Remove(theToast);
-        GameObject.Destroy(theToast.gameObject); 
-        FixupPositions();       
+        GameObject.Destroy(theToast.gameObject);
+        FixupPositions();
     }
 }

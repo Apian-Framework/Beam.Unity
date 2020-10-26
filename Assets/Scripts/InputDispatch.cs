@@ -19,22 +19,28 @@ public class InputDispatch
 
     public void LocalPlayerBikeLeft() => localPlayerBike.RequestTurn(TurnDir.kLeft);
     public void LocalPlayerBikeRight() => localPlayerBike.RequestTurn(TurnDir.kRight);
-    public void SwitchCameraView()
+    public void SwitchCameraView(GameObject focusObj = null)
     {
-        if (localPlayerBike == null)
+        focusObj = focusObj ?? localPlayerBike?.gameObject;
+        if (focusObj == null)
             return;
+
+        float toastSecs = 3;
 
         switch (feMain.gameCamera.getMode())
         {
         case GameCamera.CamModeID.kBikeView:
-            feMain.gameCamera.StartOverheadMode(localPlayerBike.gameObject);
+            feMain.gameCamera.StartOverheadMode(focusObj);
+            feMain.uiController.ShowToast($"Overhead View", Toast.ToastColor.kGreen, toastSecs, "camtoast");
             break;
         case GameCamera.CamModeID.kOverheadView:
-            feMain.gameCamera.StartEnemyView(localPlayerBike.gameObject);
+            feMain.gameCamera.StartEnemyView(focusObj);
+            feMain.uiController.ShowToast($"Target View", Toast.ToastColor.kGreen, toastSecs, "camtoast");
             break;
         default:
         case GameCamera.CamModeID.kEnemyView:
-            feMain.gameCamera.StartBikeMode(localPlayerBike.gameObject);
+            feMain.gameCamera.StartBikeMode(focusObj);
+            feMain.uiController.ShowToast($"Follow View", Toast.ToastColor.kGreen, toastSecs, "camtoast");
             break;
         }
     }

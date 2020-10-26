@@ -50,8 +50,8 @@ public class GameUiController : MonoBehaviour
         return stages[_curStageIdx];
     }
 
-    public void ShowToast(string msg, Toast.ToastColor color=Toast.ToastColor.kBlue, float secs=ToastMgr.defDisplaySecs)
+    public void ShowToast(string msg, Toast.ToastColor color=Toast.ToastColor.kBlue, float secs=ToastMgr.defDisplaySecs, string toastTag=null)
 	{
-		toastMgr.ShowToast(msg,color,secs);
+		toastMgr.ShowToast(msg,color,secs,toastTag);
 	}
 }

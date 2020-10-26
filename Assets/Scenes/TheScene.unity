@@ -295,7 +295,7 @@ MonoBehaviour:
   - LoggerName: GameInstance
     level: 40
   - LoggerName: Frontend
-    level: 10
+    level: 20
 --- !u!4 &7721492
 Transform:
   m_ObjectHideFlags: 0

@@ -532,9 +532,6 @@ public class GameCamera : MonoBehaviour {
         protected float _lookAngle;
         protected float _lookDecayRate;
 
-        protected bool _inPlace; // initially false until cam is behind player
-
-
         public virtual void init(GameCamera cam, GameObject bike)
         {
             base.init(cam);

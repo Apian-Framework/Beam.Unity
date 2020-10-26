@@ -6,14 +6,16 @@ using UnityEngine.Events;
 
 public class Toast : MonoBehaviour
  {
-	
-    public enum ToastColor 
-    { 
-        kBlue = 0, //
-        kOrange = 1, //
-        kRed = 2
+
+    public enum ToastColor
+    {
+        kGreen = 0, //
+        kBlue = 1, //
+        kOrange = 2, //
+        kRed = 3
     };
 
+	public Color greenColor;
 	public Color blueColor;
 	public Color orangeColor;
 	public Color redColor;
@@ -22,26 +24,27 @@ public class Toast : MonoBehaviour
 	public Vector3 offScreenPos;
 	public Vector3 onScreenPos;
 	public float height;
-	
+	public string toastTag; // toasts will overwrite other toasts with the the same tag
+
 	public bool bMoving;
 	public Vector3 targetPos;
 	protected Vector3 curVel = Vector3.zero;
 
 	protected ToastMgr mgr;
 	protected float secsLeft;
-	
+
 	public const float kZeroDist = .01f;
-	
+
 	// Use this for initialization
-	protected  void Start () 
+	protected  void Start ()
 	{
 		// Note that this pretty much ignores all the UIBtn
-   		transform.localPosition = offScreenPos;				
-		bMoving = true;		   
+   		transform.localPosition = offScreenPos;
+		bMoving = true;
 	}
-	
+
 	// Update is called once per frame
-	protected void Update () 
+	protected void Update ()
 	{
 		float frameMs = GameTime.DeltaTime();
 		if (bMoving)
@@ -52,25 +55,26 @@ public class Toast : MonoBehaviour
 				bMoving = false;
 				curVel = Vector3.zero;
 			}
-		}	
+		}
 
 		secsLeft -= frameMs;
 		if (secsLeft <= 0)
 		{
 			mgr?.RemoveToast(this);
-		}		
+		}
 	}
-		
-	
+
+
 	public void moveOffScreenNow()
 	{
 		transform.localPosition = offScreenPos;
 		bMoving = false;
 	}
-	
-	public void Setup(ToastMgr _mgr, string msg, Toast.ToastColor color, float displaySecs)
+
+	public void Setup(ToastMgr _mgr, string msg, Toast.ToastColor color, float displaySecs, string tag)
 	{
 		mgr = _mgr;
+		toastTag = tag;
 		SetColor(color);
 		SetText(msg);
 		SetTimeout(displaySecs);
@@ -85,14 +89,25 @@ public class Toast : MonoBehaviour
 
 	public void SetColor(Toast.ToastColor color)
 	{
-		Color rgb =  blueColor;
-		// Yuk
-		if (color == Toast.ToastColor.kOrange)
+		Color rgb;
+		switch(color)
+		{
+		case Toast.ToastColor.kOrange:
 			rgb = orangeColor;
-		if (color == Toast.ToastColor.kRed)
+			break;
+		case Toast.ToastColor.kRed:
 			rgb = redColor;
+			break;
+		case Toast.ToastColor.kGreen:
+			rgb = greenColor;
+			break;
+		case Toast.ToastColor.kBlue:
+		default:
+			rgb = blueColor;
+			break;
+		}
 
-    	gameObject.transform.GetComponent<Image>().color = rgb;
+    	gameObject.transform.GetComponent<Image>().color = rgb; // vertex colors - so material doesn't change
 	}
 	public void SetText(string msg)
 	{
@@ -105,7 +120,7 @@ public class Toast : MonoBehaviour
 	}
 
 	public void DoSelect()
-	{            
+	{
 		mgr?.RemoveToast(this);
-	}   	
+	}
 }
