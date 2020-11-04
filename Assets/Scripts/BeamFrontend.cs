@@ -14,8 +14,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public GameObject connectBtn;
     public const string kSettingsFileBaseName = "unitybeamsettings";
     protected Dictionary<string, GameObject> feBikes;
-    protected BeamMain mainObj;
-    public IBeamAppCore appCore;
+    protected BeamMain mainObj; // main Unity GameObject
+    public IBeamApplication beamAppl {get; private set;}
+    public IBeamAppCore appCore {get; private set;}
 
     protected BeamUserSettings userSettings;
     protected BeamFeModeHelper _feModeHelper;
@@ -34,6 +35,10 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         logger = UniLogger.GetLogger("Frontend");
     }
 
+    public void SetBeamApplication(IBeamApplication appl)
+    {
+        beamAppl = appl;
+    }
 
     public void SetAppCore(IBeamAppCore core)
     {

@@ -66,7 +66,7 @@ public class PlayStage : MonoBehaviour
 
 	public void OnViewUpBtn() => _main.inputDispatch.SwitchCameraView();
 
-	public void OnRestartBtn() => _main.beamApp.mainGameInst.RaiseRespawnPlayer();
+	public void OnRestartBtn() => _main.beamApp.mainAppCore.RaiseRespawnPlayer();
 
 	public void OnExitBtn() =>	_main.beamApp.OnSwitchModeReq(BeamModeFactory.kSplash, null);
 

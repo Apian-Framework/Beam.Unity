@@ -17,12 +17,12 @@ public class RestartBtn : UIBtn  {
 		base.Update();
 		//  Call RaiseRespawnPlayer() which will signal ModeLPlay to do so.
 		if (Input.GetKeyDown(KeyCode.Return))
-			_main.beamApp.mainGameInst.RaiseRespawnPlayer();
+			_main.beamApp.mainAppCore.RaiseRespawnPlayer();
 	}
 
 	public override void doSelect()
 	{
-		_main.beamApp.mainGameInst.RaiseRespawnPlayer();
+		_main.beamApp.mainAppCore.RaiseRespawnPlayer();
 	}
 }
 

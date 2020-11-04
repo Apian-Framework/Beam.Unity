@@ -101,15 +101,15 @@ public abstract class FrontendBike : MonoBehaviour
 
     // Important: Setup() is not called until after Awake() and Start() have been called on the
     // GameObject and components. Both of those are called when the GO is instantiated
-    public virtual void Setup(IBike beBike, FeGround fGround, IBeamAppCore core)
+    public virtual void Setup(IBike coreBike, FeGround fGround, IBeamApplication appl, IBeamAppCore core)
     {
         appCore = core;
-        bb = beBike;
+        bb = coreBike;
         feGround = fGround;
         transform.position = utils.Vec3(bb.basePosition); // Is probably already set to this
         SetColor(utils.ColorFromName(bb.team.Color));
         CreateControl();
-        control.Setup(beBike, core);
+        control.Setup(appl, core, coreBike);
         _prevGameTime = core.CurrentRunningGameTime;
 
         bikeLabel = transform.Find("BikeLabel").GetComponent<FeBikeLabel>();

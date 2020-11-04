@@ -49,7 +49,8 @@ public class FrontendBikeFactory : MonoBehaviour
         newBike.transform.parent = feGround.transform;
         FrontendBike bk = (FrontendBike)newBike.transform.GetComponent("FrontendBike");
 
-		bk.Setup(ib, feGround, BeamMain.GetInstance().beamApp.mainGameInst);
+        IBeamFrontend fe = BeamMain.GetInstance().frontend;
+		bk.Setup(ib, feGround, fe.beamAppl, fe.appCore);
         return newBike;
     }
 
