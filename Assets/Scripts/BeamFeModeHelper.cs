@@ -28,7 +28,6 @@ public class BeamFeModeHelper : IFrontendModeHelper
         _beamMain = beamMain;
         _modeFuncs = new Dictionary<int, ModeFuncs>()
         {
-            { BeamModeFactory.kConnect, new ConnectModeFuncs(beamMain)},
             { BeamModeFactory.kSplash, new SplashModeFuncs(beamMain)},
             { BeamModeFactory.kPlay, new PlayModeFuncs(beamMain)},
             { BeamModeFactory.kPractice, new PracticeModeFuncs(beamMain)},
@@ -52,17 +51,6 @@ public class BeamFeModeHelper : IFrontendModeHelper
     }
 
     // Implementations
-    class ConnectModeFuncs : ModeFuncs
-    {
-        public ConnectModeFuncs(BeamMain bm) : base(bm) {}
-        public override void OnStart(object parms=null)
-        {
-            //_feMain.frontend.startBtn.SetActive(false);
-            _feMain.frontend.connectBtn.SetActive(false);
-        }
-        public override void OnEnd(object parms=null) {}
-    }
-
     class SplashModeFuncs : ModeFuncs
     {
         public SplashModeFuncs(BeamMain bm) : base(bm)
