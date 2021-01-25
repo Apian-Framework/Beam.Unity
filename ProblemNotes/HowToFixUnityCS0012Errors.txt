@@ -1,0 +1,24 @@
+
+The Problem:
+------------
+
+In the Unity console:
+
+E:\ConsenSys\Apian\code\P2pNet\src\P2pNet.Redis\P2pRedis.cs(22,17): error CS0012: The type 'UniLogger' is defined in an assembly that is not referenced. You must add a reference to assembly 'UniLog, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null'.
+
+Means that P2pRedis.cs is referencing "UniLogger" but, even though there is a "using" statement for it in the source code, there is no "assembly reference" to it in the sources own assembly. 
+
+Yeah. Weeee - what does THAT mean? And what to do about it?
+
+If you are me, and are working on a Unity project that uses source code that is outside the Unity project folder, it means that both of the offending "assemblies" (see ** below) are in packages with souce outside the project folder, and one of them (UniLog, in this case) is being referenced by code in another one (P2pNet.Redis) but the "asmdef" file for the referrer (P2pNet.Redis.asmdef) does not list "UniLog" in it's "references" section.
+
+To fix, either:
+a) Edit P2pNet.Redis.asmdef and add "Unilog" to the references section (duh)
+  or
+b) From within the "Project" view in the Unity Editor, find Packages/P2pNet.Redis and click on the P2pNet.Redis asmdef file (looks like a puzzle piece) and add UniLog under "Assembly Definition References"
+
+NOTE: you will see the same (or a really similar) error if an externally-sourced package is not properly referenced. For instance, if "StackExchange.Redis.dll" is not listed in the "precompiledReferences" section of the asmdef file ("Assembly References" in the Unity Editor Inspector.)
+
+---
+
+** "assembly" is a .NET thing, and I'm honestly not *exactly* certain what it really, fully, means - but in my case it kinda/sorta means "package".
