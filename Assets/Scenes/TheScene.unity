@@ -555,7 +555,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontend: {fileID: 1905340079}
   gameCamera: {fileID: 963194229}
-  uiController: {fileID: 0}
+  uiController: {fileID: 1743171307}
   boomPrefab: {fileID: 155807285494746714, guid: 4dbc3b9d661d7b6449067baad194d553,
     type: 3}
 --- !u!4 &45526652
@@ -4453,7 +4453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _curModeID: 0
-  feMain: {fileID: 0}
+  feMain: {fileID: 45526651}
 --- !u!1 &964301178
 GameObject:
   m_ObjectHideFlags: 0
