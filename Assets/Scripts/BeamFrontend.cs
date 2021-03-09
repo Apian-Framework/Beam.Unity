@@ -125,13 +125,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     // Players
 
-    public void OnPeerJoinedGameEvt(object sender, PeerJoinedGameArgs args)
+    public void OnPeerJoinedGameEvt(object sender, PeerJoinedArgs args)
     {
     //      BeamPeer p = args.peer;
     //      logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
     }
 
-    public void OnPeerLeftGameEvt(object sender, PeerLeftGameArgs args)
+    public void OnPeerLeftGameEvt(object sender, PeerLeftArgs args)
     {
          logger.Info("Peer Left: {args.p2pId}");
     }
