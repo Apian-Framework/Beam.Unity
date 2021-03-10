@@ -30,6 +30,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
         mainObj = BeamMain.GetInstance();
         mainObj.ApplyUserSettings();
+        mainObj.PersistSettings(); // make sure the default settings get saved
         _feModeHelper = new BeamFeModeHelper(mainObj);
         feBikes = new Dictionary<string, GameObject>();
         logger = UniLogger.GetLogger("Frontend");
