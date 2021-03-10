@@ -52,7 +52,7 @@ public class FeBikeLabel : MonoBehaviour
         _feBike = bike;
 
         TextMesh tm = (TextMesh)transform.Find("LabelText").GetComponent<TextMesh>();
-        tm.text = bike.bb.name;
+        tm.text = (bike.isLocal ? "" : "*") + bike.bb.name;
         SetColor( utils.ColorFromName(bike.bb.team.Color));
 
         _cameraGO = BeamMain.GetInstance().gameCamera.gameObject;
