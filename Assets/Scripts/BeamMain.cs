@@ -6,9 +6,8 @@ using BeamGameCode;
 using Unity.Profiling;
 using UniLog;
 
-public class DriverSettings
+public class PlatformSettings
 {
-    // "DriverSettings" might be better called "FrontendSettings"?
     protected const string kMasterVolume = "mastervolume";
     protected const string kApianGameBase = "apiangamebase";
 
@@ -60,7 +59,7 @@ public class DriverSettings
 
 public class BeamMain : MonoBehaviour
 {
-    public DriverSettings driverSettings;
+    public PlatformSettings platformSettings;
     public BeamFrontend frontend;
 	public GameCamera gameCamera;
 	public GameUiController uiController;
@@ -93,7 +92,7 @@ public class BeamMain : MonoBehaviour
 		Application.targetFrameRate = 60;
         DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
 
-        driverSettings = new DriverSettings();
+        platformSettings = new PlatformSettings();
         frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");
 		uiController = (GameUiController)utils.findObjectComponent("GameUiController", "GameUiController");
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");
@@ -135,24 +134,24 @@ public class BeamMain : MonoBehaviour
     public void ApplyUserSettings()
     {
         // Called when the frontend starts up
-        driverSettings.Load(frontend.GetUserSettings().driverSettings);
-        SetMasterVolume(driverSettings.masterVolume); // first time
+        platformSettings.Load(frontend.GetUserSettings().platformSettings);
+        SetMasterVolume(platformSettings.masterVolume); // first time
 
     }
 
     public void PersistSettings()
     {
         // TODO: is this dopey? Should BeamMain should be the keeper of the user settings?
-        frontend.GetUserSettings().driverSettings = driverSettings.ToDict();
+        frontend.GetUserSettings().platformSettings = platformSettings.ToDict();
         UserSettingsMgr.Save(frontend.GetUserSettings());
     }
 
     public void SetMasterVolume(float v)
     {
         AudioListener.volume = v;
-        if (driverSettings.masterVolume != v)
+        if (platformSettings.masterVolume != v)
         {
-            driverSettings.masterVolume = v;
+            platformSettings.masterVolume = v;
             PersistSettings();
         }
     }

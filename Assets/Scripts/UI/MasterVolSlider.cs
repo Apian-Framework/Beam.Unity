@@ -14,7 +14,7 @@ public class MasterVolSlider : MonoBehaviour
     {
         logger = UniLogger.GetLogger("UI");
 
-        slider.value = BeamMain.GetInstance().driverSettings.masterVolume;
+        slider.value = BeamMain.GetInstance().platformSettings.masterVolume;
         logger.Verbose($"MasterVolSlider.Start: Val: {slider.value}");
     }
 
