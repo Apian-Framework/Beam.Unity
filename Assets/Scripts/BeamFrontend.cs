@@ -158,8 +158,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnNewBikeEvt(object sender, IBike ib)
     {
-        logger.Info($"OnNewBikeEvt(). Id: {ib.bikeId}, LocalPlayer: {ib.ctrlType == BikeFactory.LocalPlayerCtrl}");
-        GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround);
+        bool isLocal = ib.peerId == appCore.LocalPeerId;
+        logger.Info($"OnNewBikeEvt(). Id: {ib.bikeId}, LocalPlayer: {isLocal && ib.ctrlType == BikeFactory.LocalPlayerCtrl}");
+        GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround, isLocal);
         feBikes[ib.bikeId] = bikeGo;
         if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
         {

@@ -42,10 +42,11 @@ public class FrontendBikeFactory : MonoBehaviour
 
 	// Bike Factory stuff
 
-    static public GameObject CreateBike(IBike ib, FeGround feGround)
+    static public GameObject CreateBike(IBike ib, FeGround feGround, bool isLocal)
     {
+        string feCtrlType = isLocal ? ib.ctrlType :  BikeFactory.RemoteCtrl;
         GameObject newBike = GameObject.Instantiate(FrontendBikeFactory.GetInstance().bikePrefab, utils.Vec3(ib.basePosition), Quaternion.identity) as GameObject;
-		newBike.AddComponent(bikeClassTypes[ib.ctrlType]);
+		newBike.AddComponent(bikeClassTypes[feCtrlType]);
         newBike.transform.parent = feGround.transform;
         FrontendBike bk = (FrontendBike)newBike.transform.GetComponent("FrontendBike");
 
