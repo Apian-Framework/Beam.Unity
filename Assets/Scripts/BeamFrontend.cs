@@ -123,11 +123,20 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         newCoreState.SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
     }
 
-    public void SelectGame( IList<string> existingGamenames )
+    public void SelectGame( IList<string> existingGameNames )
     {
-
+        mainObj.uiController.CurrentStage().transform.Find("SelGamePanel")?.SendMessage("LoadAndShow", existingGameNames);
     }
 
+    public void OnGameSelected(string gameName, GameSelectedArgs.ReturnCode result )
+    {
+        // TODO: should UI element (SelGamePanel) be calling beamApp directly? (I don't think so)
+
+        if (result == GameSelectedArgs.ReturnCode.kCancel)
+            mainObj.beamApp.OnSwitchModeReq(BeamModeFactory.kSplash, null);
+        else
+            mainObj.beamApp.OnGameSelected(gameName, result);
+    }
 
     // Players
 

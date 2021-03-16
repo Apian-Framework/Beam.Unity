@@ -8,7 +8,7 @@ public class MovableUICanvasItem : MonoBehaviour {
 	public Vector2 offScreenPos;
 	public Vector2 onScreenPos;
 
-	protected bool shouldBeOnScreen = false;
+	public bool shouldBeOnScreen = false;
 	protected bool bMoving;
 	protected Vector2 curVel = Vector2.zero;
 	protected RectTransform rectTransform;

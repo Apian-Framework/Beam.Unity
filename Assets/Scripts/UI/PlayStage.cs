@@ -12,6 +12,7 @@ public class PlayStage : MonoBehaviour
 
 	protected PlayMenu _playMenu = null;
 	protected Scoreboard _scoreboard;
+	protected SelGamePanel _selGamePanel = null;
 
 	// Use this for initialization
 	protected void Start()
@@ -19,11 +20,13 @@ public class PlayStage : MonoBehaviour
 		_main = BeamMain.GetInstance();
 		_playMenu = (PlayMenu)utils.findObjectComponent("PlayMenu", "PlayMenu");
 		_scoreboard = (Scoreboard)utils.findObjectComponent("Scoreboard", "Scoreboard");
+		_selGamePanel = (SelGamePanel)utils.findObjectComponent("SelGamePanel", "SelGamePanel");
 	}
 
 	protected void OnEnable()
 	{
 		_playMenu?.moveOffScreenNow();
+		_selGamePanel?.moveOffScreenNow();
 		_scoreboard?.Reset();
 	}
 
