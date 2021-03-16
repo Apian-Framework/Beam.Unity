@@ -34,7 +34,7 @@ public class SelGamePanel : MovableUICanvasItem
     {
         moveOffScreen();
         TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
-
+        frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
         string newGameName = drop.options[drop.value].text;
 
         frontEnd.OnGameSelected(newGameName, GameSelectedArgs.ReturnCode.kJoin );

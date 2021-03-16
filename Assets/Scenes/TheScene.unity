@@ -295,7 +295,11 @@ MonoBehaviour:
   - LoggerName: GameInstance
     level: 40
   - LoggerName: Frontend
-    level: 20
+    level: 30
+  - LoggerName: BeamMode
+    level: 30
+  - LoggerName: BeamApplication
+    level: 30
 --- !u!4 &7721492
 Transform:
   m_ObjectHideFlags: 0
@@ -428,6 +432,7 @@ MonoBehaviour:
   switchSecs: 0.3
   offScreenPos: {x: -330, y: -446}
   onScreenPos: {x: -330, y: -200}
+  shouldBeOnScreen: 0
   otherYBase: -36
   lineDy: -24
   LocalPlayerLine: {fileID: 915260306}
@@ -552,7 +557,7 @@ RectTransform:
   m_GameObject: {fileID: 29554925}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.7142858, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 614223755}
   m_RootOrder: 0
@@ -560,7 +565,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -8, y: 0}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &29554927
 MonoBehaviour:
@@ -609,10 +614,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.4
-  m_fontSizeBase: 24
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -820,6 +825,7 @@ MonoBehaviour:
   switchSecs: 0.3
   offScreenPos: {x: 400, y: -225}
   onScreenPos: {x: 400, y: -100}
+  shouldBeOnScreen: 0
 --- !u!114 &104065899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1013,6 +1019,14 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Option D
       m_Image: {fileID: 0}
+    - m_Text: Option D
+      m_Image: {fileID: 0}
+    - m_Text: Option D
+      m_Image: {fileID: 0}
+    - m_Text: Option D
+      m_Image: {fileID: 0}
+    - m_Text: Option D
+      m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1030,7 +1044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5686275, g: 0.4039216, b: 0.27058825, a: 1}
+  m_Color: {r: 0.6117647, g: 0.3921569, b: 0.21568629, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1405,22 +1419,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SaveAndHide
+      - m_Target: {fileID: 408122041}
+        m_TargetAssemblyTypeName: SelGamePanel, Assembly-CSharp
+        m_MethodName: DoJoinGame
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 859850077}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1557,7 +1559,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2542,6 +2544,7 @@ MonoBehaviour:
   switchSecs: 0.3
   offScreenPos: {x: 0, y: -360}
   onScreenPos: {x: 0, y: -180}
+  shouldBeOnScreen: 0
 --- !u!114 &281566239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3193,6 +3196,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28675970286aed14cbb30f7f6a8e7f88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startOnScreen: 0
+  switchSecs: 0.3
+  offScreenPos: {x: 0, y: 600}
+  onScreenPos: {x: 0, y: 0}
+  shouldBeOnScreen: 0
+  newGameField: {fileID: 1543336137}
+  existingGameDrop: {fileID: 105037663}
 --- !u!114 &408122042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3839,7 +3849,7 @@ GameObject:
   - component: {fileID: 614223757}
   - component: {fileID: 614223756}
   m_Layer: 5
-  m_Name: Cancel
+  m_Name: CancelBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3909,22 +3919,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SaveAndHide
+      - m_Target: {fileID: 408122041}
+        m_TargetAssemblyTypeName: SelGamePanel, Assembly-CSharp
+        m_MethodName: DoCancel
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 859850077}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4957,7 +4955,7 @@ RectTransform:
   m_GameObject: {fileID: 821485282}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.7142858, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2086544069}
   m_RootOrder: 0
@@ -5014,10 +5012,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.75
-  m_fontSizeBase: 24
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
@@ -6234,8 +6232,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -163.4, y: 221}
-  m_SizeDelta: {x: 400, y: 50}
+  m_AnchoredPosition: {x: -25, y: 221}
+  m_SizeDelta: {x: 660, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1072535463
 MonoBehaviour:
@@ -6257,7 +6255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Slect a Game
+  m_text: Select or Create a Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6391,7 +6389,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: Enter new game name...
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7584,7 +7582,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -8148,6 +8146,7 @@ MonoBehaviour:
   switchSecs: 0.3
   offScreenPos: {x: 0, y: 600}
   onScreenPos: {x: 0, y: 0}
+  shouldBeOnScreen: 0
   screenNameField: {fileID: 1210140670}
   p2pConnectionField: {fileID: 964301178}
   ethNodeField: {fileID: 172348999}
@@ -8251,10 +8250,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.6117647, g: 0.3921569, b: 0.21568629, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.5882353, g: 0.37647063, b: 0.20784315, a: 1}
+    m_HighlightedColor: {r: 0.4056604, g: 0.24593726, b: 0.11672302, a: 1}
+    m_PressedColor: {r: 0.4039216, g: 0.24705884, b: 0.11764707, a: 1}
+    m_SelectedColor: {r: 0.4039216, g: 0.24705884, b: 0.11764707, a: 1}
     m_DisabledColor: {r: 1, g: 1, b: 1, a: 0.14117648}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -10294,7 +10293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.16470589}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10490,7 +10489,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 40, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1852412958
 MonoBehaviour:
@@ -10513,10 +10512,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 0.8018868, g: 0.5176155, b: 0.2912513, a: 1}
+    m_HighlightedColor: {r: 0.5283019, g: 0.35301918, b: 0.21181916, a: 1}
+    m_PressedColor: {r: 0.5294118, g: 0.3529412, b: 0.21176472, a: 1}
+    m_SelectedColor: {r: 0.8000001, g: 0.5176471, b: 0.2901961, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -10554,7 +10553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9716981, g: 0.7660761, b: 0.6004361, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -10969,7 +10968,7 @@ RectTransform:
   m_GameObject: {fileID: 1984570478}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.7142858, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 123466519}
   m_RootOrder: 0
@@ -10977,7 +10976,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: 0}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1984570480
 MonoBehaviour:
@@ -11026,10 +11025,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35
-  m_fontSizeBase: 24
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 35
   m_fontStyle: 1
@@ -11647,9 +11646,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SaveAndHide
+      - m_Target: {fileID: 408122041}
+        m_TargetAssemblyTypeName: SelGamePanel, Assembly-CSharp
+        m_MethodName: DoCreateGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11658,18 +11657,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 859850077}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &2086544071
 MonoBehaviour:
@@ -11799,7 +11786,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
   m_textAlignment: 65535

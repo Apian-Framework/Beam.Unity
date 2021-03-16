@@ -135,7 +135,10 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (result == GameSelectedArgs.ReturnCode.kCancel)
             mainObj.beamApp.OnSwitchModeReq(BeamModeFactory.kSplash, null);
         else
+        {
+            logger.Info($"OnGameSelected(): {gameName} : {result}");
             mainObj.beamApp.OnGameSelected(gameName, result);
+        }
     }
 
     // Players
