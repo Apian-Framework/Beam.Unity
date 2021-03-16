@@ -123,6 +123,11 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         newCoreState.SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
     }
 
+    public void SelectGame( IList<string> existingGamenames )
+    {
+
+    }
+
 
     // Players
 

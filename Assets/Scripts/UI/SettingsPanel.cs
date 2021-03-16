@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using BeamGameCode;
 using UnityEngine;
@@ -12,7 +12,8 @@ public class SettingsPanel : MovableUICanvasItem
     public GameObject p2pConnectionField;
     public GameObject ethNodeField;
     public GameObject ethAcctField;
-     public GameObject gameSpecField;
+    public GameObject netNameField;
+
 
     public void LoadAndShow()
     {
@@ -23,8 +24,7 @@ public class SettingsPanel : MovableUICanvasItem
         p2pConnectionField.GetComponent<TMP_InputField>().text = settings.p2pConnectionString;
         ethNodeField.GetComponent<TMP_InputField>().text = settings.ethNodeUrl;
         ethAcctField.GetComponent<TMP_InputField>().text = settings.ethAcct;
-        gameSpecField.GetComponent<TMP_InputField>().text =
-            settings.tempSettings.ContainsKey("gameSpec") ? settings.tempSettings["gameSpec"] : "";
+        netNameField.GetComponent<TMP_InputField>().text = settings.apianNetworkName;
 
         UserSettingsMgr.Save(settings);
 
@@ -40,9 +40,7 @@ public class SettingsPanel : MovableUICanvasItem
         settings.p2pConnectionString = p2pConnectionField.GetComponent<TMP_InputField>().text;
         settings.ethNodeUrl = ethNodeField.GetComponent<TMP_InputField>().text;
         settings.ethAcct = ethAcctField.GetComponent<TMP_InputField>().text;
-        string gameSpec = gameSpecField.GetComponent<TMP_InputField>().text;
-        if (gameSpec != "")
-            settings.tempSettings["gameSpec"] = gameSpec;
+        settings.apianNetworkName = netNameField.GetComponent<TMP_InputField>().text;
 
         UserSettingsMgr.Save(settings);
 
