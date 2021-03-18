@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using BeamGameCode;
-
+using Apian;
 
 public class SelGamePanel : MovableUICanvasItem
 {
@@ -11,10 +12,13 @@ public class SelGamePanel : MovableUICanvasItem
     public GameObject existingGameDrop;
     public const string kNoGames = "No Games Found";
 
+    protected IDictionary<string, BeamGameInfo> existingGames;
+
     protected BeamFrontend frontEnd;
 
-    public void LoadAndShow(List<string> existingGames)
+    public void LoadAndShow(IDictionary<string, BeamGameInfo> existingGameDict)
     {
+        existingGames = existingGameDict;
         frontEnd = BeamMain.GetInstance().frontend;
 
         // newGameField goes to default prompt. TODO: should there be a default/suggestion?
@@ -24,7 +28,7 @@ public class SelGamePanel : MovableUICanvasItem
         existingDrop.ClearOptions();
         if (existingGames?.Count > 0)
         {
-            existingDrop.AddOptions(existingGames);
+            existingDrop.AddOptions(existingGames.Keys.ToList<string>());
         }
 
         moveOnScreen();
@@ -35,16 +39,19 @@ public class SelGamePanel : MovableUICanvasItem
         moveOffScreen();
         TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
         frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
-        string newGameName = drop.options[drop.value].text;
+        BeamGameInfo selectedGame = existingGames[ drop.options[drop.value].text ];
 
-        frontEnd.OnGameSelected(newGameName, GameSelectedArgs.ReturnCode.kJoin );
+        frontEnd.OnGameSelected(selectedGame, GameSelectedArgs.ReturnCode.kJoin );
     }
 
     public void DoCreateGame()
     {
         moveOffScreen();
         string newGameName = newGameField.GetComponent<TMP_InputField>().text;
-        frontEnd.OnGameSelected(newGameName, GameSelectedArgs.ReturnCode.kCreate );
+        // TODO: THIS is AWFUL!!
+        BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, CreatorServerGroupManager.groupType);
+
+        frontEnd.OnGameSelected(newGameInfo, GameSelectedArgs.ReturnCode.kCreate );
     }
 
     public void DoCancel()
