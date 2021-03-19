@@ -49,7 +49,7 @@ public class SelGamePanel : MovableUICanvasItem
         moveOffScreen();
         string newGameName = newGameField.GetComponent<TMP_InputField>().text;
         // TODO: THIS is AWFUL!!
-        BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, CreatorServerGroupManager.groupType);
+        BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, LeaderSezGroupManager.groupType);
 
         frontEnd.OnGameSelected(newGameInfo, GameSelectedArgs.ReturnCode.kCreate );
     }
