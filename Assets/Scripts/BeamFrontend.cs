@@ -82,6 +82,15 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         return feBikes.Values.ElementAt(idx);
     }
 
+    public bool BikeIsLocal(IBike ib)
+    {
+        return ib.peerId == appCore.LocalPeerId;
+    }
+    public bool BikeIsLocalPlayer(IBike ib)
+    {
+        return (BikeIsLocal(ib) && ib.ctrlType == BikeFactory.LocalPlayerCtrl);
+    }
+
     //
     // IBeamFrontend API
     //
@@ -175,11 +184,11 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnNewBikeEvt(object sender, IBike ib)
     {
-        bool isLocal = ib.peerId == appCore.LocalPeerId;
-        logger.Info($"OnNewBikeEvt(). Id: {ib.bikeId}, LocalPlayer: {isLocal && ib.ctrlType == BikeFactory.LocalPlayerCtrl}");
+        bool isLocal = BikeIsLocal(ib);
+        logger.Info($"OnNewBikeEvt(). Id: {ib.bikeId}, LocalPlayer: {(BikeIsLocalPlayer(ib))}");
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround, isLocal);
         feBikes[ib.bikeId] = bikeGo;
-        if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
+        if (BikeIsLocalPlayer(ib))
         {
             mainObj.inputDispatch.SetLocalPlayerBike(bikeGo);
             mainObj.uiController.CurrentStage().transform.Find("RestartBtn")?.SendMessage("moveOffScreen", null);
@@ -202,7 +211,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         IBike ib = appCore.CoreData.GetBaseBike(rData.bikeId);
         feBikes.Remove(rData.bikeId);
         mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
-        if (ib.ctrlType == BikeFactory.LocalPlayerCtrl)
+        if (BikeIsLocalPlayer(ib))
 		{
 		 	logger.Info("Boom! Local Player");
 		 	mainObj.uiController.CurrentStage().transform.Find("RestartBtn")?.SendMessage("moveOnScreen", null);
