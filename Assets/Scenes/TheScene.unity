@@ -300,6 +300,8 @@ MonoBehaviour:
     level: 30
   - LoggerName: BeamApplication
     level: 30
+  - LoggerName: P2pNet
+    level: 20
 --- !u!4 &7721492
 Transform:
   m_ObjectHideFlags: 0

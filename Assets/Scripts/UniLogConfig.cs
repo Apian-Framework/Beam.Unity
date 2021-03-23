@@ -6,6 +6,10 @@ using UniLog;
 
 public class UniLogConfig : MonoBehaviour
 {
+
+#if UNITY_EDITOR
+    // Only use this when playing in editor
+
     [Serializable]
     public struct LevelEntry
     {
@@ -18,7 +22,7 @@ public class UniLogConfig : MonoBehaviour
 
     // Start is called before the first frame update
     void Awake()
-    {      
+    {
         UpdateValues();
     }
 
@@ -33,12 +37,14 @@ public class UniLogConfig : MonoBehaviour
         {
             if ((le.LoggerName.Length > 0))
             {
-                UniLogger.GetLogger(le.LoggerName).LogLevel = le.level; 
+                UniLogger.GetLogger(le.LoggerName).LogLevel = le.level;
                 UniLogger.GetLogger(le.LoggerName).ThrowOnError = throwOnError;
             }
         }
     }
 
 
+#endif
 
 }
+
