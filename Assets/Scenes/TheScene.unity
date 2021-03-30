@@ -292,8 +292,8 @@ MonoBehaviour:
     level: 40
   - LoggerName: UI
     level: 30
-  - LoggerName: GameInstance
-    level: 40
+  - LoggerName: GameNet
+    level: 20
   - LoggerName: Frontend
     level: 30
   - LoggerName: BeamMode
