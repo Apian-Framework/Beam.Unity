@@ -126,11 +126,32 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnEndMode(int modeId, object param) => _feModeHelper.OnEndMode(modeId, param);
     public void DispatchModeCmd(int modeId, int cmdId, object param) => _feModeHelper.DispatchCmd(modeId, cmdId, param);
 
+    protected void _SetupNewCorePlaces(BeamCoreState newCoreState)
+    {
+        // for each iBike, get a time-ordered list of the owned places
+        foreach (IBike ib in newCoreState.Bikes.Values)
+        {
+            List<BeamPlace> places = newCoreState.PlacesForBike(ib).OrderBy( p => p.expirationTimeMs).ToList(); //ascending - oldest first
+            BeamPlace prevBikePlace = null;
+            foreach (BeamPlace p in places)
+            {
+                feGround.SetupMarkerForPlace(p);
+                if (prevBikePlace != null && BeamPlace.AreAdjacent(prevBikePlace, p))
+                {
+                    feGround.SetupConnector(prevBikePlace, p);
+                }
+                prevBikePlace = p;
+            }
+        }
+
+    }
+
     public void OnNewCoreState(object sender, BeamCoreState newCoreState)
     {
+        _SetupNewCorePlaces(newCoreState);
+
         newCoreState.PlaceFreedEvt += OnPlaceFreedEvt;
         newCoreState.PlacesClearedEvt += OnPlacesClearedEvt;
-        newCoreState.SetupPlaceMarkerEvt += OnSetupPlaceMarkerEvt;
     }
 
     public void SelectGame( IDictionary<string, BeamGameInfo> existingGames )
@@ -249,15 +270,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     }
     public void OnPlaceClaimedEvt(object sender, BeamPlace p)
     {
+        feGround.SetupMarkerForPlace(p);
         GetBikeObj(p.bike.bikeId)?.GetComponent<FrontendBike>()?.OnPlaceClaimed(p);
     }
 
     // Ground
-    public void OnSetupPlaceMarkerEvt(object sender, BeamPlace p)
-    {
-        feGround.SetupMarkerForPlace(p);
-    }
-    //public void OnFreePlace(BeamPlace p, int modeId)
+
+
     public void OnPlaceFreedEvt(object sender, BeamPlace p)
     {
         logger.Debug($"OnPlaceFreedEvt() Placehash: {p.PosHash}");

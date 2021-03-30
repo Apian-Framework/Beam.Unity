@@ -293,7 +293,7 @@ MonoBehaviour:
   - LoggerName: UI
     level: 30
   - LoggerName: GameNet
-    level: 20
+    level: 30
   - LoggerName: Frontend
     level: 30
   - LoggerName: BeamMode
@@ -301,7 +301,7 @@ MonoBehaviour:
   - LoggerName: BeamApplication
     level: 30
   - LoggerName: P2pNet
-    level: 20
+    level: 30
 --- !u!4 &7721492
 Transform:
   m_ObjectHideFlags: 0

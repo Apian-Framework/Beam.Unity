@@ -246,7 +246,7 @@ public abstract class FrontendBike : MonoBehaviour
         } else {
             if ( prevPlaceVisited?.bike?.bikeId == bb.bikeId) // might be null, might not have a bike
             {
-                // BUG: This won;t work on mass restore. Places would need a per-bike seq #
+                //  This isnt how they get created on a mass state restore
                 feGround.SetupConnector(prevPlaceVisited, place);
             }
             prevPlaceVisited = place;
