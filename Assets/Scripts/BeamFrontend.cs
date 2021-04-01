@@ -46,7 +46,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (core == null)
             return;
 
-        OnNewCoreState(null, appCore.CoreData);
+        OnNewCoreState(null, appCore.CoreState);
 
         appCore.NewCoreStateEvt += OnNewCoreState;
         appCore.PlayerJoinedEvt += OnPlayerJoinedEvt;
@@ -183,7 +183,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnPeerLeftGameEvt(object sender, PeerLeftArgs args)
     {
         logger.Info("Peer Left: {SID(args.p2pId)}");
-        BeamPlayer pl = appCore.CoreData.GetPlayer(args.p2pId);
+        BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
         mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5);
     }
 
@@ -199,13 +199,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnPlayerMissingEvt(object sender, PlayerLeftArgs args)
     {
-        BeamPlayer pl = appCore.CoreData.GetPlayer(args.p2pId);
+        BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
         mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Missing!!", Toast.ToastColor.kRed,8);
     }
 
     public void OnPlayerReturnedEvt(object sender, PlayerLeftArgs args)
     {
-        BeamPlayer pl = appCore.CoreData.GetPlayer(args.p2pId);
+        BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
         mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Returned!!", Toast.ToastColor.kRed,8);
     }
 
@@ -242,7 +242,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
             return;
 
         logger.Verbose($"OnBikeRemovedEvt() BikeId: {SID(rData.bikeId)}");
-        IBike ib = appCore.CoreData.GetBaseBike(rData.bikeId);
+        IBike ib = appCore.CoreState.GetBaseBike(rData.bikeId);
         feBikes.Remove(rData.bikeId);
         mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
         if (BikeIsLocalPlayer(ib))
