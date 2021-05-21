@@ -161,41 +161,24 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     //     mainObj.uiController.CurrentStage().transform.Find("SelGamePanel")?.SendMessage("LoadAndShow", existingGames);
     // }
 
-    protected GameSelectedArgs asSelectGameResult;
 
     public async Task<GameSelectedArgs> SelectGameAsync(IDictionary<string, BeamGameInfo> existingGames)
     {
-        CancellationTokenSource cts = new CancellationTokenSource();
-        asSelectGameResult = null;
+        TaskCompletionSource<GameSelectedArgs> tcs = new TaskCompletionSource<GameSelectedArgs>();
+
+        logger.Info($"SelectGameAsync(): displaying UI");
         GameObject panelGo = mainObj.uiController.CurrentStage().transform.Find("SelGamePanel").gameObject;
         SelGamePanel panel = panelGo.GetComponent<SelGamePanel>();
-        panel.LoadAndShow(existingGames, cts);
-        logger.Info($"SelectGameAsync(): awaiting");
-        //await Task.Delay(-1, cts.Token);
-        Task.Delay(5000, cts.Token);
-        logger.Info($"SelectGameAsync(): resuming");
-        GameSelectedArgs retVal = asSelectGameResult;
-        asSelectGameResult = null;
-        logger.Info($"SelectGameAsync(): Finishing: {retVal.gameInfo.GameName} : {retVal.result}");
-        return retVal;
+        panel.LoadAndShow(existingGames, tcs);
+
+        logger.Info($"SelectGameAsync(): awaiting task");
+        return await tcs.Task;
     }
 
-    public void OnGameSelected(GameSelectedArgs selection, CancellationTokenSource cts=null )
+    public void OnGameSelected(GameSelectedArgs selection, TaskCompletionSource<GameSelectedArgs> tcs= )
     {
-        logger.Info($"OnGameSelected(): {selection.gameInfo.GameName} : {selection.result}");
-        if (cts != null)
-        {
-            asSelectGameResult = selection;
-            logger.Info($"OnGameSelected(): cancelling token");
-            cts.Cancel();
-            logger.Info($"OnGameSelected(): token cancelled");
-        }
-        else
-        {
-            // TODO: should warn. (ok, really should get rid of this option)
-            mainObj.beamApp.OnGameSelected(selection);
-        }
-
+        logger.Info($"OnGameSelected(): Setting result: {selection.gameInfo?.GameName} / {selection.result}");
+        tcs.TrySetResult(selection);
     }
 
     // Players
