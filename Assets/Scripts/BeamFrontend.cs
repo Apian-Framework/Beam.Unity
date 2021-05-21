@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Linq;
 using UnityEngine;
 using BeamGameCode;
@@ -154,22 +156,46 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         newCoreState.PlacesClearedEvt += OnPlacesClearedEvt;
     }
 
-    public void SelectGame( IDictionary<string, BeamGameInfo> existingGames )
+    // public void SelectGame( IDictionary<string, BeamGameInfo> existingGames )
+    // {
+    //     mainObj.uiController.CurrentStage().transform.Find("SelGamePanel")?.SendMessage("LoadAndShow", existingGames);
+    // }
+
+    protected GameSelectedArgs asSelectGameResult;
+
+    public async Task<GameSelectedArgs> SelectGameAsync(IDictionary<string, BeamGameInfo> existingGames)
     {
-        mainObj.uiController.CurrentStage().transform.Find("SelGamePanel")?.SendMessage("LoadAndShow", existingGames);
+        CancellationTokenSource cts = new CancellationTokenSource();
+        asSelectGameResult = null;
+        GameObject panelGo = mainObj.uiController.CurrentStage().transform.Find("SelGamePanel").gameObject;
+        SelGamePanel panel = panelGo.GetComponent<SelGamePanel>();
+        panel.LoadAndShow(existingGames, cts);
+        logger.Info($"SelectGameAsync(): awaiting");
+        //await Task.Delay(-1, cts.Token);
+        Task.Delay(5000, cts.Token);
+        logger.Info($"SelectGameAsync(): resuming");
+        GameSelectedArgs retVal = asSelectGameResult;
+        asSelectGameResult = null;
+        logger.Info($"SelectGameAsync(): Finishing: {retVal.gameInfo.GameName} : {retVal.result}");
+        return retVal;
     }
 
-    public void OnGameSelected(BeamGameInfo selGame, GameSelectedArgs.ReturnCode result )
+    public void OnGameSelected(GameSelectedArgs selection, CancellationTokenSource cts=null )
     {
-        // TODO: should UI element (SelGamePanel) be calling beamApp directly? (I don't think so)
-
-        if (result == GameSelectedArgs.ReturnCode.kCancel)
-            mainObj.beamApp.OnSwitchModeReq(BeamModeFactory.kSplash, null);
+        logger.Info($"OnGameSelected(): {selection.gameInfo.GameName} : {selection.result}");
+        if (cts != null)
+        {
+            asSelectGameResult = selection;
+            logger.Info($"OnGameSelected(): cancelling token");
+            cts.Cancel();
+            logger.Info($"OnGameSelected(): token cancelled");
+        }
         else
         {
-            logger.Info($"OnGameSelected(): {selGame.GameName} : {result}");
-            mainObj.beamApp.OnGameSelected(selGame, result);
+            // TODO: should warn. (ok, really should get rid of this option)
+            mainObj.beamApp.OnGameSelected(selection);
         }
+
     }
 
     // Players

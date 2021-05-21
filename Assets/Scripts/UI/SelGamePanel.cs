@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using System.Linq;
 using UnityEngine;
 using TMPro;
@@ -9,17 +10,18 @@ using Apian;
 public class SelGamePanel : MovableUICanvasItem
 {
     public GameObject existingGameDrop;
-
     public GameObject newGameField;
     public GameObject agreeTypeDrop;
     public const string kNoGames = "No Games Found";
 
     protected IDictionary<string, BeamGameInfo> existingGames;
+    protected CancellationTokenSource canceller;
 
     protected BeamFrontend frontEnd;
 
-    public void LoadAndShow(IDictionary<string, BeamGameInfo> existingGameDict)
+    public void LoadAndShow(IDictionary<string, BeamGameInfo> existingGameDict, CancellationTokenSource cts=null)
     {
+        canceller = cts;
         existingGames = existingGameDict;
         frontEnd = BeamMain.GetInstance().frontend;
 
@@ -51,8 +53,7 @@ public class SelGamePanel : MovableUICanvasItem
         TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
         frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
         BeamGameInfo selectedGame = existingGames[ drop.options[drop.value].text ];
-
-        frontEnd.OnGameSelected(selectedGame, GameSelectedArgs.ReturnCode.kJoin );
+        frontEnd.OnGameSelected(new GameSelectedArgs(selectedGame, GameSelectedArgs.ReturnCode.kJoin), canceller);
     }
 
     public void DoCreateGame()
@@ -63,13 +64,13 @@ public class SelGamePanel : MovableUICanvasItem
 
         BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType);
 
-        frontEnd.OnGameSelected(newGameInfo, GameSelectedArgs.ReturnCode.kCreate );
+        frontEnd.OnGameSelected(new GameSelectedArgs(newGameInfo, GameSelectedArgs.ReturnCode.kCreate), canceller );
     }
 
     public void DoCancel()
     {
         moveOffScreen();
-        frontEnd.OnGameSelected(null, GameSelectedArgs.ReturnCode.kCancel);
+        frontEnd.OnGameSelected(new GameSelectedArgs(null, GameSelectedArgs.ReturnCode.kCancel), canceller);
     }
 
 }
