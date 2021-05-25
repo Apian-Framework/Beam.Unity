@@ -175,7 +175,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         return await tcs.Task;
     }
 
-    public void OnGameSelected(GameSelectedArgs selection, TaskCompletionSource<GameSelectedArgs> tcs= )
+    public void OnGameSelected(GameSelectedArgs selection, TaskCompletionSource<GameSelectedArgs> tcs )
     {
         logger.Info($"OnGameSelected(): Setting result: {selection.gameInfo?.GameName} / {selection.result}");
         tcs.TrySetResult(selection);
