@@ -3,6 +3,14 @@ using System.Collections.Generic;
 
 public class utils
 {
+	static public GameObject SafeGameObject(MonoBehaviour mb)
+	{
+		// Turns out if you have a MonoBehavior-derived "thing" and say:
+		//   GameObject go = thing?.gameObject;
+		// you'll still get a null-object exception from Unity. You have to
+		// explicitly test for null.
+        return mb ? mb.gameObject : null;
+	}
     public static Vector3 Vec3(Vector2 v2, float y=0) => new Vector3(v2.x, y, v2.y);
 
 	static public Vector3 MeshObjSize(GameObject theObj)

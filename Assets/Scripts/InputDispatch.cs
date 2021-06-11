@@ -19,9 +19,11 @@ public class InputDispatch
 
     public void LocalPlayerBikeLeft() => localPlayerBike.RequestTurn(TurnDir.kLeft);
     public void LocalPlayerBikeRight() => localPlayerBike.RequestTurn(TurnDir.kRight);
+
     public void SwitchCameraView(GameObject focusObj = null)
     {
-        focusObj = focusObj ?? localPlayerBike?.gameObject;
+
+        focusObj = focusObj ?? utils.SafeGameObject(localPlayerBike);
         if (focusObj == null)
             return;
 
