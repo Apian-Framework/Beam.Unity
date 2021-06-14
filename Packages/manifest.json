@@ -3,6 +3,7 @@
     "com.apian-framework.apian": "file:../../Apian.Net/src/Apian",
     "com.apian-framework.beamgamecode": "file:../../BeamGameCode/src/BeamGameCode",
     "com.apian-framework.p2pnet.base": "file:../../P2pNet/src/P2pNet.Base",
+    "com.apian-framework.p2pnet.mqtt": "file:../../P2pNet/src/P2pNet.Mqtt",
     "com.apian-framework.p2pnet.redis": "file:../../P2pNet/src/P2pNet.Redis",
     "com.apian-framework.unilog": "file:../../UniLog/src/UniLog",
     "com.unity.2d.sprite": "1.0.0",

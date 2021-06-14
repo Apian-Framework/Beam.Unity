@@ -26,6 +26,14 @@
         "com.apian-framework.unilog": "1.0.4"
       }
     },
+    "com.apian-framework.p2pnet.mqtt": {
+      "version": "file:../../P2pNet/src/P2pNet.Mqtt",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.apian-framework.p2pnet.base": "1.0.2"
+      }
+    },
     "com.apian-framework.p2pnet.redis": {
       "version": "file:../../P2pNet/src/P2pNet.Redis",
       "depth": 0,
