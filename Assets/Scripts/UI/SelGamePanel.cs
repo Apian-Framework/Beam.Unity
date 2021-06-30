@@ -20,6 +20,11 @@ public class SelGamePanel : MovableUICanvasItem
 
     protected BeamFrontend frontEnd;
 
+    protected string GameDisplayName(BeamGameInfo info)
+    {
+        return $"{info.GameName} ({info.GroupInfo.GroupType})";   // GameOfFoo (LeaderSez)
+    }
+
     public void LoadAndShow(IDictionary<string, BeamGameInfo> existingGameDict, TaskCompletionSource<GameSelectedArgs> tcs=null)
     {
         completionSource = tcs;
@@ -28,7 +33,7 @@ public class SelGamePanel : MovableUICanvasItem
 
         TMP_Dropdown typeDrop = agreeTypeDrop.GetComponent<TMP_Dropdown>();
         typeDrop.ClearOptions();
-        typeDrop.AddOptions( new List<string>(){LeaderSezGroupManager.kGroupType});
+        typeDrop.AddOptions( BeamApianFactory.ApianGroupTypes);
 
         // newGameField goes to default prompt. TODO: should there be a default/suggestion?
         // newGameField.GetComponent<TMP_InputField>().text = ???;
@@ -37,7 +42,7 @@ public class SelGamePanel : MovableUICanvasItem
         existingDrop.ClearOptions();
         if (existingGames?.Count > 0)
         {
-            existingDrop.AddOptions(existingGames.Keys.ToList<string>());
+            existingDrop.AddOptions(existingGames.Values.Select((entry) => GameDisplayName(entry)).ToList());
         }
         else
         {
