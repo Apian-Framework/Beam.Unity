@@ -35,8 +35,8 @@ public class SelGamePanel : MovableUICanvasItem
         typeDrop.ClearOptions();
         typeDrop.AddOptions( BeamApianFactory.ApianGroupTypes);
 
-        // newGameField goes to default prompt. TODO: should there be a default/suggestion?
-        // newGameField.GetComponent<TMP_InputField>().text = ???;
+        Dictionary<string, string> egTypesForCaptions = new Dictionary<string, string>();
+
         TMP_Dropdown existingDrop = existingGameDrop.GetComponent<TMP_Dropdown>();
 
         existingDrop.ClearOptions();
@@ -58,7 +58,7 @@ public class SelGamePanel : MovableUICanvasItem
         moveOffScreen();
         TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
         frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
-        BeamGameInfo selectedGame = existingGames[ drop.options[drop.value].text ];
+        BeamGameInfo selectedGame = existingGames.Values.ToList()[drop.value];
         frontEnd.OnGameSelected(new GameSelectedArgs(selectedGame, GameSelectedArgs.ReturnCode.kJoin), completionSource);
     }
 
