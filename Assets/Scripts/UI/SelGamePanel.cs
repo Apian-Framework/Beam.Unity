@@ -16,7 +16,7 @@ public class SelGamePanel : MovableUICanvasItem
     public const string kNoGames = "No Games Found";
 
     protected IDictionary<string, BeamGameInfo> existingGames;
-    protected TaskCompletionSource<GameSelectedArgs> completionSource;
+    protected TaskCompletionSource<GameSelectedEventArgs> completionSource;
 
     protected BeamFrontend frontEnd;
 
@@ -25,7 +25,7 @@ public class SelGamePanel : MovableUICanvasItem
         return $"{info.GameName} ({info.GroupInfo.GroupType})";   // GameOfFoo (LeaderSez)
     }
 
-    public void LoadAndShow(IDictionary<string, BeamGameInfo> existingGameDict, TaskCompletionSource<GameSelectedArgs> tcs=null)
+    public void LoadAndShow(IDictionary<string, BeamGameInfo> existingGameDict, TaskCompletionSource<GameSelectedEventArgs> tcs=null)
     {
         completionSource = tcs;
         existingGames = existingGameDict;
@@ -59,7 +59,7 @@ public class SelGamePanel : MovableUICanvasItem
         TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
         frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
         BeamGameInfo selectedGame = existingGames.Values.ToList()[drop.value];
-        frontEnd.OnGameSelected(new GameSelectedArgs(selectedGame, GameSelectedArgs.ReturnCode.kJoin), completionSource);
+        frontEnd.OnGameSelected(new GameSelectedEventArgs(selectedGame, GameSelectedEventArgs.ReturnCode.kJoin), completionSource);
     }
 
     public void DoCreateGame()
@@ -70,13 +70,13 @@ public class SelGamePanel : MovableUICanvasItem
 
         BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType);
 
-        frontEnd.OnGameSelected(new GameSelectedArgs(newGameInfo, GameSelectedArgs.ReturnCode.kCreate), completionSource );
+        frontEnd.OnGameSelected(new GameSelectedEventArgs(newGameInfo, GameSelectedEventArgs.ReturnCode.kCreate), completionSource );
     }
 
     public void DoCancel()
     {
         moveOffScreen();
-        frontEnd.OnGameSelected(new GameSelectedArgs(null, GameSelectedArgs.ReturnCode.kCancel), completionSource);
+        frontEnd.OnGameSelected(new GameSelectedEventArgs(null, GameSelectedEventArgs.ReturnCode.kCancel), completionSource);
     }
 
 }

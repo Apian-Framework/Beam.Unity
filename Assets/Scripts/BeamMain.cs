@@ -116,7 +116,7 @@ public class BeamMain : MonoBehaviour
     void Update()
     {
         //gameNetPerfMarker.Begin();
-        gameNet.Loop();
+        gameNet.Update();
         //gameNetPerfMarker.End();
 
         //backendPerfMarker.Begin();

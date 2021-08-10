@@ -48,7 +48,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if (core == null)
             return;
 
-        OnNewCoreState(null, appCore.CoreState);
+
+        OnNewCoreState(null, new NewCoreStateEventArgs(core.CoreState)); // initialize
 
         appCore.NewCoreStateEvt += OnNewCoreState;
         appCore.PlayerJoinedEvt += OnPlayerJoinedEvt;
@@ -148,8 +149,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     }
 
-    public void OnNewCoreState(object sender, BeamCoreState newCoreState)
+    public void OnNewCoreState(object sender, NewCoreStateEventArgs e)
     {
+        BeamCoreState newCoreState = e.coreState;
         _SetupNewCorePlaces(newCoreState);
 
         newCoreState.PlaceFreedEvt += OnPlaceFreedEvt;
@@ -162,9 +164,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     // }
 
 
-    public async Task<GameSelectedArgs> SelectGameAsync(IDictionary<string, BeamGameInfo> existingGames)
+    public async Task<GameSelectedEventArgs> SelectGameAsync(IDictionary<string, BeamGameInfo> existingGames)
     {
-        TaskCompletionSource<GameSelectedArgs> tcs = new TaskCompletionSource<GameSelectedArgs>();
+        TaskCompletionSource<GameSelectedEventArgs> tcs = new TaskCompletionSource<GameSelectedEventArgs>();
 
         logger.Info($"SelectGameAsync(): displaying UI");
         GameObject panelGo = mainObj.uiController.CurrentStage().transform.Find("SelGamePanel").gameObject;
@@ -175,7 +177,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         return await tcs.Task;
     }
 
-    public void OnGameSelected(GameSelectedArgs selection, TaskCompletionSource<GameSelectedArgs> tcs )
+    public void OnGameSelected(GameSelectedEventArgs selection, TaskCompletionSource<GameSelectedEventArgs> tcs )
     {
         logger.Info($"OnGameSelected(): Setting result: {selection.gameInfo?.GameName} / {selection.result}");
         tcs.TrySetResult(selection);
@@ -183,20 +185,20 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     // Players
 
-    public void OnPeerJoinedGameEvt(object sender, PeerJoinedArgs args)
+    public void OnPeerJoinedGameEvt(object sender, PeerJoinedEventArgs args)
     {
     //      BeamPeer p = args.peer;
     //      logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
     }
 
-    public void OnPeerLeftGameEvt(object sender, PeerLeftArgs args)
+    public void OnPeerLeftGameEvt(object sender, PeerLeftEventArgs args)
     {
         logger.Info("Peer Left: {SID(args.p2pId)}");
         BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
         mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5);
     }
 
-    public void OnPlayerJoinedEvt(object sender, PlayerJoinedArgs args)
+    public void OnPlayerJoinedEvt(object sender, PlayerJoinedEventArgs args)
     {
         // Player joined means a group has been joined AND is synced (ready to go)
         if ( args.player.PeerId == appCore.LocalPeerId )
@@ -206,13 +208,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         }
     }
 
-    public void OnPlayerMissingEvt(object sender, PlayerLeftArgs args)
+    public void OnPlayerMissingEvt(object sender, PlayerLeftEventArgs args)
     {
         BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
         mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Missing!!", Toast.ToastColor.kRed,8);
     }
 
-    public void OnPlayerReturnedEvt(object sender, PlayerLeftArgs args)
+    public void OnPlayerReturnedEvt(object sender, PlayerLeftEventArgs args)
     {
         BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
         mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Returned!!", Toast.ToastColor.kRed,8);
@@ -225,8 +227,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     // Bikes
 
-    public void OnNewBikeEvt(object sender, IBike ib)
+    public void OnNewBikeEvt(object sender,  BikeEventArgs args)
     {
+        IBike ib = args?.ib;
         bool isLocal = BikeIsLocal(ib);
         logger.Info($"OnNewBikeEvt(). Id: {SID(ib.bikeId)}, LocalPlayer: {(BikeIsLocalPlayer(ib))}");
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround, isLocal);
@@ -244,15 +247,15 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         mainObj.uiController.ShowToast($"New Bike: {ib.name}", Toast.ToastColor.kBlue);
     }
 
-    public void OnBikeRemovedEvt(object sender, BikeRemovedData rData)
+    public void OnBikeRemovedEvt(object sender, BikeRemovedEventArgs args)
     {
-        GameObject go = GetBikeObj(rData.bikeId);
+        GameObject go = GetBikeObj(args.bikeId);
         if (go == null)
             return;
 
-        logger.Verbose($"OnBikeRemovedEvt() BikeId: {SID(rData.bikeId)}");
-        IBike ib = appCore.CoreState.GetBaseBike(rData.bikeId);
-        feBikes.Remove(rData.bikeId);
+        logger.Verbose($"OnBikeRemovedEvt() BikeId: {SID(args.bikeId)}");
+        IBike ib = appCore.CoreState.GetBaseBike(args.bikeId);
+        feBikes.Remove(args.bikeId);
         mainObj.uiController.CurrentStage().transform.Find("Scoreboard")?.SendMessage("RemoveBike", go);
         if (BikeIsLocalPlayer(ib))
 		{
@@ -273,12 +276,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 		feBikes.Clear();
     }
 
-    public void OnPlaceHitEvt(object sender, PlaceHitArgs args)
+    public void OnPlaceHitEvt(object sender, PlaceHitEventArgs args)
     {
         GetBikeObj(args.ib.bikeId)?.GetComponent<FrontendBike>()?.OnPlaceHit(args.p);
     }
-    public void OnPlaceClaimedEvt(object sender, BeamPlace p)
+    public void OnPlaceClaimedEvt(object sender, BeamPlaceEventArgs args)
     {
+        BeamPlace p = args?.p;
         feGround.SetupMarkerForPlace(p);
         GetBikeObj(p.bike.bikeId)?.GetComponent<FrontendBike>()?.OnPlaceClaimed(p);
     }
@@ -286,8 +290,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     // Ground
 
 
-    public void OnPlaceFreedEvt(object sender, BeamPlace p)
+    public void OnPlaceFreedEvt(object sender, BeamPlaceEventArgs args)
     {
+        BeamPlace p = args.p;
         logger.Debug($"OnPlaceFreedEvt() Placehash: {p.PosHash}");
         feGround.FreePlaceMarker(p);
     }
