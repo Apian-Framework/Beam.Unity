@@ -2,6 +2,7 @@
   "dependencies": {
     "com.apian-framework.apian": "file:../../Apian.Net/src/Apian",
     "com.apian-framework.beamgamecode": "file:../../BeamGameCode/src/BeamGameCode",
+    "com.apian-framework.modalapplication": "file:../../ApianAppUtils/src/ModalApplication",    
     "com.apian-framework.p2pnet.base": "file:../../P2pNet/src/P2pNet.Base",
     "com.apian-framework.p2pnet.mqtt": "file:../../P2pNet/src/P2pNet.Mqtt",
     "com.apian-framework.p2pnet.redis": "file:../../P2pNet/src/P2pNet.Redis",

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using UnityEngine;
+using Apian;
 using BeamGameCode;
 using UniLog;
 using static UniLog.UniLogger; // for SID
@@ -151,7 +152,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnNewCoreState(object sender, NewCoreStateEventArgs e)
     {
-        BeamCoreState newCoreState = e.coreState;
+        BeamCoreState newCoreState = e.coreState as BeamCoreState;
         _SetupNewCorePlaces(newCoreState);
 
         newCoreState.PlaceFreedEvt += OnPlaceFreedEvt;

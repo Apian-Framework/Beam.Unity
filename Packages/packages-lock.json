@@ -18,6 +18,12 @@
         "com.apian-framework.p2pnet.redis": "1.0.0"
       }
     },
+    "com.apian-framework.modalapplication": {
+      "version": "file:../../ApianAppUtils/src/ModalApplication",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.apian-framework.p2pnet.base": {
       "version": "file:../../P2pNet/src/P2pNet.Base",
       "depth": 0,
