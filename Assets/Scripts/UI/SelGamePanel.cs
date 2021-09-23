@@ -22,7 +22,7 @@ public class SelGamePanel : MovableUICanvasItem
 
     protected string GameDisplayName(BeamGameInfo info)
     {
-        return $"{info.GameName} ({info.GroupInfo.GroupType})";   // GameOfFoo (LeaderSez)
+        return $"{info.GameName} ({info.GroupType})";   // GameOfFoo (LeaderSez)
     }
 
     public void LoadAndShow(IDictionary<string, BeamGameInfo> existingGameDict, TaskCompletionSource<GameSelectedEventArgs> tcs=null)
