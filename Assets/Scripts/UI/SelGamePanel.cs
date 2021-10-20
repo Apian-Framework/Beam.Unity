@@ -15,17 +15,17 @@ public class SelGamePanel : MovableUICanvasItem
     public GameObject agreeTypeDrop;
     public const string kNoGames = "No Games Found";
 
-    protected IDictionary<string, BeamGameInfo> existingGames;
+    protected IDictionary<string, BeamGameAnnounceData> existingGames;
     protected TaskCompletionSource<GameSelectedEventArgs> completionSource;
 
     protected BeamFrontend frontEnd;
 
-    protected string GameDisplayName(BeamGameInfo info)
+    protected string GameDisplayName(BeamGameAnnounceData gad)
     {
-        return $"{info.GameName} ({info.GroupType})";   // GameOfFoo (LeaderSez)
+        return $"{gad.GameInfo.GameName} ({gad.GameInfo.GroupType})";   // GameOfFoo (LeaderSez)
     }
 
-    public void LoadAndShow(IDictionary<string, BeamGameInfo> existingGameDict, TaskCompletionSource<GameSelectedEventArgs> tcs=null)
+    public void LoadAndShow(IDictionary<string, BeamGameAnnounceData> existingGameDict, TaskCompletionSource<GameSelectedEventArgs> tcs=null)
     {
         completionSource = tcs;
         existingGames = existingGameDict;
@@ -58,7 +58,7 @@ public class SelGamePanel : MovableUICanvasItem
         moveOffScreen();
         TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
         frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
-        BeamGameInfo selectedGame = existingGames.Values.ToList()[drop.value];
+        BeamGameInfo selectedGame = existingGames.Values.ToList()[drop.value].GameInfo;
         frontEnd.OnGameSelected(new GameSelectedEventArgs(selectedGame, GameSelectedEventArgs.ReturnCode.kJoin), completionSource);
     }
 

@@ -159,13 +159,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         newCoreState.PlacesClearedEvt += OnPlacesClearedEvt;
     }
 
-    // public void SelectGame( IDictionary<string, BeamGameInfo> existingGames )
-    // {
-    //     mainObj.uiController.CurrentStage().transform.Find("SelGamePanel")?.SendMessage("LoadAndShow", existingGames);
-    // }
 
-
-    public async Task<GameSelectedEventArgs> SelectGameAsync(IDictionary<string, BeamGameInfo> existingGames)
+    public async Task<GameSelectedEventArgs> SelectGameAsync(IDictionary<string, BeamGameAnnounceData> existingGames)
     {
         TaskCompletionSource<GameSelectedEventArgs> tcs = new TaskCompletionSource<GameSelectedEventArgs>();
 
