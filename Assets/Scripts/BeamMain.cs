@@ -89,7 +89,7 @@ public class BeamMain : MonoBehaviour
     }
 
     void Awake() {
-		Application.targetFrameRate = 60;
+		Application.targetFrameRate = -1; // default is 60 - but in WebGL it means not to use a timer
         DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
 
         platformSettings = new PlatformSettings();
@@ -100,6 +100,10 @@ public class BeamMain : MonoBehaviour
         beamApp = new BeamApplication(gameNet, frontend);
 
         inputDispatch = new InputDispatch(this);
+
+#if UNTIY_WEBGL
+        UniLogger.DefaultLevel = UniLogger.Level.Info;
+#endif
 
     }
     // Start is called before the first frame update

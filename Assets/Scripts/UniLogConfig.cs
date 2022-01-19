@@ -43,7 +43,6 @@ public class UniLogConfig : MonoBehaviour
         }
     }
 
-
 #endif
 
 }

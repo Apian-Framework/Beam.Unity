@@ -36,6 +36,28 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         _feModeHelper = new BeamFeModeHelper(mainObj);
         feBikes = new Dictionary<string, GameObject>();
         logger = UniLogger.GetLogger("Frontend");
+
+#if UNITY_WEBGL
+        UniLogger.GetLogger("Apian").LogLevel = UniLogger.Level.Verbose;
+        UniLogger.GetLogger("ApianClock").LogLevel = UniLogger.Level.Verbose;
+        UniLogger.GetLogger("ApianGroup").LogLevel = UniLogger.Level.Verbose;
+        UniLogger.GetLogger("ApianGroupSynchronizer").LogLevel = UniLogger.Level.Verbose;
+        UniLogger.GetLogger("AppCore").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("BaseBike").LogLevel = UniLogger.Level.Verbose;
+        UniLogger.GetLogger("BeamApplication").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("BeamMode").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("BikeCtrl").LogLevel = UniLogger.Level.Verbose;
+        UniLogger.GetLogger("CoreState").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("Frontend").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("GameInstance").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("GameNet").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("P2pNet").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("P2pNetSync").LogLevel = UniLogger.Level.Verbose;
+        UniLogger.GetLogger("UserSettings").LogLevel = UniLogger.Level.Debug;
+// #else
+
+#endif
+
     }
 
     public void SetBeamApplication(IBeamApplication appl)
