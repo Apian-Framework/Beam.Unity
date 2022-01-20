@@ -89,7 +89,7 @@ public class BeamMain : MonoBehaviour
     }
 
     void Awake() {
-		Application.targetFrameRate = -1; // default is 60 - but in WebGL it means not to use a timer
+		Application.targetFrameRate = 60; // default is 60 - but in WebGL it means not to use a timer
         DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
 
         platformSettings = new PlatformSettings();

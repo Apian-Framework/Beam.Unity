@@ -58,11 +58,17 @@ public class BeamFeModeHelper : IFrontendModeHelper
              _cmdDispatch[ModeSplash.kCmdTargetCamera] = new Action<object>(o => TargetCamera(o as TargetIdParams));
         }
 
+        public void PreventStripping()
+        {
+            TargetCamera( new TargetIdParams(){targetId="1"} );
+        }
+
         public override void OnStart(object parms=null)
         {
             SetupCamera();
             // TODO: These next should be in the GameUIController
             //_feMain.frontend.startBtn.SetActive(false);
+            PreventStripping(); // Stupid hack to prevent stripping. Probably doesnt even work?
             _feMain.frontend.connectBtn.SetActive(true);
         }
 
@@ -74,31 +80,33 @@ public class BeamFeModeHelper : IFrontendModeHelper
         protected void TargetCamera(TargetIdParams parm)
         {
             GameObject tBikeObj = _feMain.frontend.GetBikeObj(parm.targetId);
-            _feMain.gameCamera.MoveCameraToTarget(tBikeObj, 5f, 2f, .5f,  0); // Sets "close enough" value to zero - so it never gets there
-
-            _feMain.gameCamera.StartBikeMode(tBikeObj);
-
-            int choice = UnityEngine.Random.Range(0, 3); // No orbit view until I fix it (needs to zoom to the bike before orbiting)
-            switch (choice)
+            if (tBikeObj != null)
             {
-                case 0:
-                    _feMain.gameCamera.StartBikeMode(tBikeObj);
-                    _feMain.uiController.ShowToast($"Follow View", Toast.ToastColor.kGreen);
-                    break;
-                case 1:
-                    _feMain.gameCamera.StartOverheadMode(tBikeObj);
-                    _feMain.uiController.ShowToast($"Overhead View", Toast.ToastColor.kGreen);
-                    break;
-                case 2:
-                    _feMain.gameCamera.StartEnemyView(tBikeObj);
-                    _feMain.uiController.ShowToast($"Target View", Toast.ToastColor.kGreen);
-                    break;
-                case 3:
-                    _feMain.gameCamera.StartOrbit(tBikeObj, 20, new Vector3(1, 0, .5f) );
-                    _feMain.uiController.ShowToast($"Orbit View", Toast.ToastColor.kGreen);
-                    break;
-            }
+                _feMain.gameCamera.MoveCameraToTarget(tBikeObj, 5f, 2f, .5f,  0); // Sets "close enough" value to zero - so it never gets there
 
+                _feMain.gameCamera.StartBikeMode(tBikeObj);
+
+                int choice = UnityEngine.Random.Range(0, 3); // No orbit view until I fix it (needs to zoom to the bike before orbiting)
+                switch (choice)
+                {
+                    case 0:
+                        _feMain.gameCamera.StartBikeMode(tBikeObj);
+                        _feMain.uiController.ShowToast($"Follow View", Toast.ToastColor.kGreen);
+                        break;
+                    case 1:
+                        _feMain.gameCamera.StartOverheadMode(tBikeObj);
+                        _feMain.uiController.ShowToast($"Overhead View", Toast.ToastColor.kGreen);
+                        break;
+                    case 2:
+                        _feMain.gameCamera.StartEnemyView(tBikeObj);
+                        _feMain.uiController.ShowToast($"Target View", Toast.ToastColor.kGreen);
+                        break;
+                    case 3:
+                        _feMain.gameCamera.StartOrbit(tBikeObj, 20, new Vector3(1, 0, .5f) );
+                        _feMain.uiController.ShowToast($"Orbit View", Toast.ToastColor.kGreen);
+                        break;
+                }
+            }
         }
 
         // protected GameObject GetRandomBikeObj()

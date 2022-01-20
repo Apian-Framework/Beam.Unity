@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Linq;
 using UnityEngine;
 using Apian;
 using BeamGameCode;
 using UniLog;
 using static UniLog.UniLogger; // for SID
+
+#if !SINGLE_THREADED
+using System.Threading;
+using System.Threading.Tasks;
+#endif
 
 public class BeamFrontend : MonoBehaviour, IBeamFrontend
 {
@@ -38,7 +41,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         logger = UniLogger.GetLogger("Frontend");
 
 #if UNITY_WEBGL
-        UniLogger.GetLogger("Apian").LogLevel = UniLogger.Level.Verbose;
+        UniLogger.GetLogger("Apian").LogLevel = UniLogger.Level.Debug;
         UniLogger.GetLogger("ApianClock").LogLevel = UniLogger.Level.Verbose;
         UniLogger.GetLogger("ApianGroup").LogLevel = UniLogger.Level.Verbose;
         UniLogger.GetLogger("ApianGroupSynchronizer").LogLevel = UniLogger.Level.Verbose;
@@ -182,6 +185,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     }
 
 
+#if !SINGLE_THREADED
     public async Task<GameSelectedEventArgs> SelectGameAsync(IDictionary<string, BeamGameAnnounceData> existingGames)
     {
         TaskCompletionSource<GameSelectedEventArgs> tcs = new TaskCompletionSource<GameSelectedEventArgs>();
@@ -200,6 +204,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         logger.Info($"OnGameSelected(): Setting result: {selection.gameInfo?.GameName} / {selection.result}");
         tcs.TrySetResult(selection);
     }
+#endif
 
     // Players
 
