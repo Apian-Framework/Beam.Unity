@@ -24,7 +24,10 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public IBeamApplication beamAppl {get; private set;}
     public IBeamAppCore appCore {get; private set;}
     protected BeamUserSettings userSettings;
-    protected BeamFeModeHelper _feModeHelper;
+
+    Dictionary<int, Action<BeamGameMode, object>> modeStartActions;
+    Dictionary<int, Action<BeamGameMode, object>> modeEndActions;
+
     public UniLogger logger;
 
     // Start is called before the first frame update
@@ -36,27 +39,27 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         mainObj = BeamMain.GetInstance();
         mainObj.ApplyUserSettings();
         mainObj.PersistSettings(); // make sure the default settings get saved
-        _feModeHelper = new BeamFeModeHelper(mainObj);
         feBikes = new Dictionary<string, GameObject>();
         logger = UniLogger.GetLogger("Frontend");
+        SetupModeActions();
 
 #if UNITY_WEBGL
-        UniLogger.GetLogger("Apian").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("ApianClock").LogLevel = UniLogger.Level.Verbose;
-        UniLogger.GetLogger("ApianGroup").LogLevel = UniLogger.Level.Verbose;
-        UniLogger.GetLogger("ApianGroupSynchronizer").LogLevel = UniLogger.Level.Verbose;
-        UniLogger.GetLogger("AppCore").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("BaseBike").LogLevel = UniLogger.Level.Verbose;
-        UniLogger.GetLogger("BeamApplication").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("BeamMode").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("BikeCtrl").LogLevel = UniLogger.Level.Verbose;
-        UniLogger.GetLogger("CoreState").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("Frontend").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("GameInstance").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("GameNet").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("P2pNet").LogLevel = UniLogger.Level.Debug;
-        UniLogger.GetLogger("P2pNetSync").LogLevel = UniLogger.Level.Verbose;
-        UniLogger.GetLogger("UserSettings").LogLevel = UniLogger.Level.Debug;
+        UniLogger.GetLogger("Apian").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("ApianClock").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("ApianGroup").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("ApianGroupSynchronizer").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("AppCore").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("BaseBike").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("BeamApplication").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("BeamMode").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("BikeCtrl").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("CoreState").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("Frontend").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("GameInstance").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("GameNet").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("P2pNet").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("P2pNetSync").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("UserSettings").LogLevel = UniLogger.Level.Info;
 // #else
 
 #endif
@@ -151,9 +154,96 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         mainObj.uiController.ShowToast($"{lvlStr}: {msgText}", color, secs);
     }
 
-    public void OnStartMode(int modeId, object param) =>  _feModeHelper.OnStartMode(modeId, param);
-    public void OnEndMode(int modeId, object param) => _feModeHelper.OnEndMode(modeId, param);
-    public void DispatchModeCmd(int modeId, int cmdId, object param) => _feModeHelper.DispatchCmd(modeId, cmdId, param);
+   //
+   // Backend game modes
+   //
+    protected void SetupModeActions()
+    {
+        modeStartActions = new Dictionary<int, Action<BeamGameMode, object>>()
+        {
+            { BeamModeFactory.kSplash, OnStartSplash},
+            { BeamModeFactory.kPractice, OnStartPractice},
+            { BeamModeFactory.kPlay, OnStartPlay},
+        };
+
+        modeEndActions = new Dictionary<int, Action<BeamGameMode, object>>()
+        {
+            { BeamModeFactory.kSplash, OnEndSplash},
+            { BeamModeFactory.kPractice, OnEndPractice},
+            { BeamModeFactory.kPlay, OnEndPlay},
+        };
+    }
+
+    public void OnStartMode(BeamGameMode mode, object param) => modeStartActions[mode.ModeId()](mode, param);
+    public void OnEndMode(BeamGameMode mode, object param) => modeEndActions[mode.ModeId()](mode, param);
+
+    protected void OnStartSplash(BeamGameMode mode, object param)
+    {
+        SetupSplashCamera();
+        connectBtn.SetActive(true);
+        ((ModeSplash)mode).FeTargetCameraEvt += OnTargetCamera;
+    }
+    protected void OnEndSplash(BeamGameMode mode, object param)
+    {
+        ((ModeSplash)mode).FeTargetCameraEvt -= OnTargetCamera;
+    }
+
+    protected void OnStartPractice(BeamGameMode mode, object param)
+    {
+        SetupPlayCameras();
+    }
+    protected void OnEndPractice(BeamGameMode mode, object param) {}
+
+    protected void OnStartPlay(BeamGameMode mode, object param)
+    {
+        SetupPlayCameras();
+    }
+    protected void OnEndPlay(BeamGameMode mode, object param) {}
+
+    protected void SetupSplashCamera()
+    {
+        mainObj.gameCamera.transform.position = new Vector3(100, 100, 100);
+        mainObj.uiController.switchToNamedStage("SplashStage");
+    }
+
+    protected void SetupPlayCameras()
+    {
+        mainObj.gameCamera.transform.position = new Vector3(100, 100, 100);
+        mainObj.uiController.switchToNamedStage("PlayStage");
+    }
+
+    protected void OnTargetCamera(object sender, StringEventArgs args)
+    {
+        logger.Info($"OnTargetCamera(): Setting camera to {SID(args.str)}");
+        GameObject tBikeObj = GetBikeObj(args.str);
+        if (tBikeObj != null)
+        {
+            mainObj.gameCamera.MoveCameraToTarget(tBikeObj, 5f, 2f, .5f,  0); // Sets "close enough" value to zero - so it never gets there
+
+            mainObj.gameCamera.StartBikeMode(tBikeObj);
+
+            int choice = UnityEngine.Random.Range(0, 3); // No orbit view until I fix it (needs to zoom to the bike before orbiting)
+            switch (choice)
+            {
+                case 0:
+                    mainObj.gameCamera.StartBikeMode(tBikeObj);
+                    mainObj.uiController.ShowToast($"Follow View", Toast.ToastColor.kGreen);
+                    break;
+                case 1:
+                    mainObj.gameCamera.StartOverheadMode(tBikeObj);
+                    mainObj.uiController.ShowToast($"Overhead View", Toast.ToastColor.kGreen);
+                    break;
+                case 2:
+                    mainObj.gameCamera.StartEnemyView(tBikeObj);
+                    mainObj.uiController.ShowToast($"Target View", Toast.ToastColor.kGreen);
+                    break;
+                case 3:
+                    mainObj.gameCamera.StartOrbit(tBikeObj, 20, new Vector3(1, 0, .5f) );
+                    mainObj.uiController.ShowToast($"Orbit View", Toast.ToastColor.kGreen);
+                    break;
+            }
+        }
+    }
 
     protected void _SetupNewCorePlaces(BeamCoreState newCoreState)
     {
