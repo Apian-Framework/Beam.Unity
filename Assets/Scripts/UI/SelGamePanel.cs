@@ -32,9 +32,35 @@ public class SelGamePanel : MovableUICanvasItem
     }
 
 #if !SINGLE_THREADED
-    public void LoadAndShow(IDictionary<string, BeamGameAnnounceData> existingGameDict, TaskCompletionSource<GameSelectedEventArgs> tcs=null)
+    public void LoadAndShowAsync(IDictionary<string, BeamGameAnnounceData> existingGameDict, TaskCompletionSource<GameSelectedEventArgs> tcs=null)
     {
         completionSource = tcs;
+        _DoLoadAndShow(existingGameDict);
+    }
+
+    protected void NotifySelection(BeamGameInfo selectedGame, GameSelectedEventArgs.ReturnCode retCode)
+    {
+        if (completionSource != null)
+            frontEnd.OnGameSelectedAsync(new GameSelectedEventArgs(selectedGame, retCode), completionSource);
+        else
+            frontEnd.OnGameSelected(new GameSelectedEventArgs(selectedGame, retCode));
+    }
+#else
+
+    protected void NotifySelection(BeamGameInfo selectedGame, GameSelectedEventArgs.ReturnCode retCode)
+    {
+        frontEnd.OnGameSelected(new GameSelectedEventArgs(selectedGame, retCode));
+    }
+
+#endif
+
+    public void LoadAndShow(IDictionary<string, BeamGameAnnounceData> existingGameDict)
+    {
+        _DoLoadAndShow(existingGameDict);
+    }
+
+    protected void _DoLoadAndShow(IDictionary<string, BeamGameAnnounceData> existingGameDict)
+    {
         existingGames = existingGameDict;
         frontEnd = BeamMain.GetInstance().frontend;
 
@@ -60,13 +86,13 @@ public class SelGamePanel : MovableUICanvasItem
         moveOnScreen();
     }
 
-    public void DoJoinGame() // SHould be DoJoinGameAsync()
+    public void DoJoinGame()
     {
         moveOffScreen();
         TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
         frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
         BeamGameInfo selectedGame = existingGames.Values.ToList()[drop.value].GameInfo;
-        frontEnd.OnGameSelected(new GameSelectedEventArgs(selectedGame, GameSelectedEventArgs.ReturnCode.kJoin), completionSource);
+        NotifySelection(selectedGame, GameSelectedEventArgs.ReturnCode.kJoin);
     }
 
 
@@ -77,17 +103,15 @@ public class SelGamePanel : MovableUICanvasItem
         string agreementType = agreeTypeDrop.GetComponent<TMP_Dropdown>().captionText.text;
 
         BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType);
-
-        frontEnd.OnGameSelected(new GameSelectedEventArgs(newGameInfo, GameSelectedEventArgs.ReturnCode.kCreate), completionSource );
+        NotifySelection(newGameInfo, GameSelectedEventArgs.ReturnCode.kCreate);
     }
 
     public void DoCancel()
     {
         moveOffScreen();
-        frontEnd.OnGameSelected(new GameSelectedEventArgs(null, GameSelectedEventArgs.ReturnCode.kCancel), completionSource);
+        NotifySelection(null, GameSelectedEventArgs.ReturnCode.kCancel);
     }
 
-#endif
 
 
 }

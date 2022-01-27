@@ -93,22 +93,19 @@ public class BeamMain : MonoBehaviour
         DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
 
         platformSettings = new PlatformSettings();
-        frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend");
+
+        frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend"); // loads settings
 		uiController = (GameUiController)utils.findObjectComponent("GameUiController", "GameUiController");
 		gameCamera = (GameCamera)utils.findObjectComponent("GameCamera", "GameCamera");
-        gameNet = new BeamGameNet();
-        beamApp = new BeamApplication(gameNet, frontend);
-
-        inputDispatch = new InputDispatch(this);
-
-#if UNTIY_WEBGL
-        UniLogger.DefaultLevel = UniLogger.Level.Info;
-#endif
 
     }
     // Start is called before the first frame update
     void Start()
     {
+        gameNet = new BeamGameNet();
+        beamApp = new BeamApplication(gameNet, frontend);
+        inputDispatch = new InputDispatch(this);
+
         beamApp.Start(BeamModeFactory.kSplash);
 
         // TODO: get rid of this Eth stuff (goes in GameNet)

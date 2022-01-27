@@ -3064,7 +3064,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 363067108}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: PlayStage, Assembly-CSharp
         m_MethodName: OnRestartBtn
         m_Mode: 1
         m_Arguments:

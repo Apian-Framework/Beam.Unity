@@ -30,39 +30,52 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public UniLogger logger;
 
+#if UNITY_WEBGL
+    void SetupWebGLLogging()
+    {
+
+        // TODO: come up with JSON file web support for this.
+        //
+        // UniLogger.GetLogger("Apian").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("ApianClock").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("ApianGroup").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("ApianGroupSynchronizer").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("AppCore").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("BaseBike").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("BeamApplication").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("BeamMode").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("BikeCtrl").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("CoreState").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("Frontend").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("GameInstance").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("GameNet").LogLevel = UniLogger.Level.Info;
+        // UniLogger.GetLogger("P2pNet").LogLevel = UniLogger.Level.Verbose;
+        // UniLogger.GetLogger("P2pNetSync").LogLevel = UniLogger.Level.Info;
+        UniLogger.GetLogger("UserSettings").LogLevel = UniLogger.Level.Verbose;
+
+        UniLogger.DefaultLevel = UniLogger.Level.Info;
+    }
+#endif
+
+    // Awake
+    void Awake()
+    {
+#if UNTIY_WEBGL
+        SetupWebGLLogging();
+#endif
+        userSettings = UserSettingsMgr.Load(kSettingsFileBaseName);
+        userSettings.localPlayerCtrlType = BikeFactory.LocalPlayerCtrl; // FIXME: is this necessary?
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        userSettings = UserSettingsMgr.Load(kSettingsFileBaseName);
-        userSettings.localPlayerCtrlType = BikeFactory.LocalPlayerCtrl; // Kinda hackly
-
         mainObj = BeamMain.GetInstance();
         mainObj.ApplyUserSettings();
         mainObj.PersistSettings(); // make sure the default settings get saved
         feBikes = new Dictionary<string, GameObject>();
         logger = UniLogger.GetLogger("Frontend");
         SetupModeActions();
-
-#if UNITY_WEBGL
-        UniLogger.GetLogger("Apian").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("ApianClock").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("ApianGroup").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("ApianGroupSynchronizer").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("AppCore").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("BaseBike").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("BeamApplication").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("BeamMode").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("BikeCtrl").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("CoreState").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("Frontend").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("GameInstance").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("GameNet").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("P2pNet").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("P2pNetSync").LogLevel = UniLogger.Level.Info;
-        UniLogger.GetLogger("UserSettings").LogLevel = UniLogger.Level.Info;
-// #else
-
-#endif
 
     }
 
@@ -283,18 +296,32 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         logger.Info($"SelectGameAsync(): displaying UI");
         GameObject panelGo = mainObj.uiController.CurrentStage().transform.Find("SelGamePanel").gameObject;
         SelGamePanel panel = panelGo.GetComponent<SelGamePanel>();
-        panel.LoadAndShow(existingGames, tcs);
+        panel.LoadAndShowAsync(existingGames, tcs);
 
         logger.Info($"SelectGameAsync(): awaiting task");
         return await tcs.Task;
     }
 
-    public void OnGameSelected(GameSelectedEventArgs selection, TaskCompletionSource<GameSelectedEventArgs> tcs )
+    public void OnGameSelectedAsync(GameSelectedEventArgs selection, TaskCompletionSource<GameSelectedEventArgs> tcs )
     {
         logger.Info($"OnGameSelected(): Setting result: {selection.gameInfo?.GameName} / {selection.result}");
         tcs.TrySetResult(selection);
     }
+
 #endif
+    public void SelectGame(IDictionary<string, BeamGameAnnounceData> existingGames)
+    {
+        logger.Info($"SelectGame(): displaying UI");
+        GameObject panelGo = mainObj.uiController.CurrentStage().transform.Find("SelGamePanel").gameObject;
+        SelGamePanel panel = panelGo.GetComponent<SelGamePanel>();
+        panel.LoadAndShow(existingGames);
+    }
+
+    public void OnGameSelected(GameSelectedEventArgs selection)
+    {
+        logger.Info($"OnGameSelected(): Setting result: {selection.gameInfo?.GameName} / {selection.result}");
+        beamAppl.OnGameSelected( selection.gameInfo, selection.result );
+    }
 
     // Players
 
