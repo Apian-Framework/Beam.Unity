@@ -141,6 +141,30 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     // IBeamFrontend API
     //
 
+        public void UpdateNetworkInfo()
+        {
+            BeamNetInfo netInfo = beamAppl.NetInfo;
+            logger.Info($"** Network Info: Name: {netInfo.NetName}, Peers: {netInfo.PeerCount}, Games: {netInfo.GameCount}");
+
+            // Need
+
+            // throw new NotImplementedException();
+
+        }
+
+        public void OnNetworkReady()
+        {
+            logger.Info($"OnNetworkReady() ");
+
+            // Need to display "Proceed" and "Cancel" (no, tnot hose prompts) to the user
+            // that result in a call to:
+            //     beamAppl.OnPushModeReq(BeamModeFactory.kNetPlay, null);
+            // or
+            //     beamAppl.OnSwitchModeReq(BeamModeFactory.kNetSplash, null);
+
+           // throw new NotImplementedException();
+        }
+
     public BeamUserSettings GetUserSettings() => userSettings;
 
     public void DisplayMessage(MessageSeverity lvl, string msgText)
@@ -176,14 +200,16 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         {
             { BeamModeFactory.kSplash, OnStartSplash},
             { BeamModeFactory.kPractice, OnStartPractice},
-            { BeamModeFactory.kPlay, OnStartPlay},
+            { BeamModeFactory.kNetwork, OnStartNetworkMode},
+            { BeamModeFactory.kNetPlay, OnStartNetPlay},
         };
 
         modeEndActions = new Dictionary<int, Action<BeamGameMode, object>>()
         {
             { BeamModeFactory.kSplash, OnEndSplash},
             { BeamModeFactory.kPractice, OnEndPractice},
-            { BeamModeFactory.kPlay, OnEndPlay},
+            { BeamModeFactory.kNetwork, OnEndNetworkMode},
+            { BeamModeFactory.kNetPlay, OnEndNetPlay},
         };
     }
 
@@ -207,11 +233,36 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     }
     protected void OnEndPractice(BeamGameMode mode, object param) {}
 
-    protected void OnStartPlay(BeamGameMode mode, object param)
+    protected void OnStartNetworkMode(BeamGameMode mode, object param)
+    {
+        SetupNetworkCamera();
+        connectBtn.SetActive(true);
+
+        // Note that this is the FRONTEND listening.
+        logger.Info($"OnStartNetworkMode(): Listening for network events");
+        beamAppl.GameAnnounceEvt += OnGameAnnounceEvt;
+        beamAppl.PeerJoinedEvt += OnPeerJoinedNetEvt;
+        beamAppl.PeerLeftEvt += OnPeerLeftNetEvt;
+    }
+    protected void OnEndNetworkMode(BeamGameMode mode, object param)
+    {
+        logger.Info($"OnEndNetworkMode(): No longer listening for network events");
+        beamAppl.GameAnnounceEvt -= OnGameAnnounceEvt;
+        beamAppl.PeerJoinedEvt -= OnPeerJoinedNetEvt;
+        beamAppl.PeerLeftEvt -= OnPeerLeftNetEvt;
+    }
+
+    protected void SetupNetworkCamera()
+    {
+        mainObj.gameCamera.transform.position = new Vector3(100, 100, 100);
+        mainObj.uiController.switchToNamedStage("NetworkStage");
+    }
+
+    protected void OnStartNetPlay(BeamGameMode mode, object param)
     {
         SetupPlayCameras();
     }
-    protected void OnEndPlay(BeamGameMode mode, object param) {}
+    protected void OnEndNetPlay(BeamGameMode mode, object param) {}
 
     protected void SetupSplashCamera()
     {
@@ -323,27 +374,46 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         beamAppl.OnGameSelected( selection.gameInfo, selection.result );
     }
 
-    // Players
+
+    //
+    // Event handlers
+    //
+
+    // Network information events
 
     public void OnPeerJoinedNetEvt(object sender, PeerJoinedEventArgs args)
     {
-    //      BeamPeer p = args.peer;
-    //      logger.Info($"New Peer: {p.Name}, Id: {p.PeerId}");
+        BeamNetworkPeer p = args.peer;
+        logger.Info($"OnPeerJoinedEvt() name: {p.Name}, Id: {SID(p.PeerId)}");
+        UpdateNetworkInfo();
     }
 
     public void OnPeerLeftNetEvt(object sender, PeerLeftEventArgs args)
     {
-        logger.Info("Peer Left: {SID(args.p2pId)}");
-        BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
-        mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5);
+        logger.Info($"OnPeerLeftEvt(): {SID(args.p2pId)}");
+        if (appCore != null)
+        {
+            // ToDo: Need an OnPlayerLeft handler. This one's about the peer
+            // Or... should have onPeerLeft toast?
+            BeamPlayer pl = appCore?.CoreState.GetPlayer(args.p2pId);
+            mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5);
+        }
+        UpdateNetworkInfo();
     }
+
+    public void OnGameAnnounceEvt(object sender, GameAnnounceEventArgs args)
+    {
+        UpdateNetworkInfo();
+    }
+
+    // Players
 
     public void OnPlayerJoinedEvt(object sender, PlayerJoinedEventArgs args)
     {
         // Player joined means a group has been joined AND is synced (ready to go)
         if ( args.player.PeerId == appCore.LocalPeerId )
         {
-            if (mainObj.beamApp.modeMgr.CurrentModeId() == BeamModeFactory.kPlay)
+            if (mainObj.beamApp.modeMgr.CurrentModeId() == BeamModeFactory.kNetPlay)
                 mainObj.uiController.ShowToast($"GameSpec: {args.groupChannel}", Toast.ToastColor.kBlue, 10.0f);
         }
     }

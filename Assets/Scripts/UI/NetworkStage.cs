@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BeamGameCode;
 using UnityEngine;
 
-public class SplashStage : MonoBehaviour
+public class NetworkStage : MonoBehaviour
 {
 	protected BeamMain _main = null;
 
@@ -13,14 +13,14 @@ public class SplashStage : MonoBehaviour
 		_main = BeamMain.GetInstance();
 	}
 
-	public void OnPracticeBtn()
+	public void OnProceedBtn()
 	{
-		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPractice, null);
+		_main.beamApp.OnPushModeReq(BeamModeFactory.kNetPlay, null);
 	}
 
-	public void OnConnectBtn()
+	public void OnCancelBtn()
 	{
-		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kNetwork, null);
+		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kSplash, null);
 	}
 
 }

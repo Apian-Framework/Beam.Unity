@@ -4,6 +4,9 @@ using BeamGameCode;
 
 public class StartBtn : UIBtn  {
 
+	// TODO: should be ConnectBtn
+	// TODO: Is this even used?
+
 	protected BeamMain _main = null;
 
 	// Use this for initialization
@@ -18,12 +21,12 @@ public class StartBtn : UIBtn  {
 	{
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.Return))
-			_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPlay, null);
+			_main.beamApp.OnSwitchModeReq(BeamModeFactory.kNetwork, null);
 	}
 
 	public override void doSelect()
 	{
-		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kPlay, null);
+		_main.beamApp.OnSwitchModeReq(BeamModeFactory.kNetwork, null);
 	}
 }
 
