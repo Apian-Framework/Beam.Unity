@@ -18,6 +18,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public const float kWarningToastSecs = 5.0f;
 	public FeGround feGround;
     public GameObject connectBtn;
+    public NetworkStage networkStage;
+
     public const string kSettingsFileBaseName = "unitybeamsettings";
     protected Dictionary<string, GameObject> feBikes;
     protected BeamMain mainObj; // main Unity GameObject
@@ -27,6 +29,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     Dictionary<int, Action<BeamGameMode, object>> modeStartActions;
     Dictionary<int, Action<BeamGameMode, object>> modeEndActions;
+    Dictionary<int, Action<BeamGameMode, object>> modeResumeActions;
+    Dictionary<int, Action<BeamGameMode, object>> modePauseActions;
+
 
     public UniLogger logger;
 
@@ -146,15 +151,15 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
             BeamNetInfo netInfo = beamAppl.NetInfo;
             logger.Info($"** Network Info: Name: {netInfo.NetName}, Peers: {netInfo.PeerCount}, Games: {netInfo.GameCount}");
 
-            // Need
-
-            // throw new NotImplementedException();
+            networkStage.OnNetUpdate(netInfo);
 
         }
 
         public void OnNetworkReady()
         {
             logger.Info($"OnNetworkReady() ");
+
+            networkStage.ShowProceedButton();
 
             // Need to display "Proceed" and "Cancel" (no, tnot hose prompts) to the user
             // that result in a call to:
@@ -211,10 +216,23 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
             { BeamModeFactory.kNetwork, OnEndNetworkMode},
             { BeamModeFactory.kNetPlay, OnEndNetPlay},
         };
+
+        modeResumeActions = new Dictionary<int, Action<BeamGameMode, object>>()
+        {
+            { BeamModeFactory.kNetwork, OnResumeNetworkMode},
+        };
+
+        modePauseActions = new Dictionary<int, Action<BeamGameMode, object>>()
+        {
+            { BeamModeFactory.kNetwork, OnPauseNetworkMode},
+        };
+
     }
 
     public void OnStartMode(BeamGameMode mode, object param) => modeStartActions[mode.ModeId()](mode, param);
     public void OnEndMode(BeamGameMode mode, object param) => modeEndActions[mode.ModeId()](mode, param);
+    public void OnResumeMode(BeamGameMode mode, object param) => modeResumeActions[mode.ModeId()](mode, param);
+    public void OnPauseMode(BeamGameMode mode, object param) => modePauseActions[mode.ModeId()](mode, param);
 
     protected void OnStartSplash(BeamGameMode mode, object param)
     {
@@ -235,8 +253,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     protected void OnStartNetworkMode(BeamGameMode mode, object param)
     {
+        networkStage.ShowProceedButton(false);
         SetupNetworkCamera();
-        connectBtn.SetActive(true);
 
         // Note that this is the FRONTEND listening.
         logger.Info($"OnStartNetworkMode(): Listening for network events");
@@ -244,6 +262,14 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         beamAppl.PeerJoinedEvt += OnPeerJoinedNetEvt;
         beamAppl.PeerLeftEvt += OnPeerLeftNetEvt;
     }
+
+    protected void OnPauseNetworkMode(BeamGameMode mode, object param) {}
+
+    protected void OnResumeNetworkMode(BeamGameMode mode, object param)
+    {
+        SetupNetworkCamera();
+    }
+
     protected void OnEndNetworkMode(BeamGameMode mode, object param)
     {
         logger.Info($"OnEndNetworkMode(): No longer listening for network events");
@@ -260,6 +286,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     protected void OnStartNetPlay(BeamGameMode mode, object param)
     {
+        logger.Info($"OnStartNetPlay()");
         SetupPlayCameras();
     }
     protected void OnEndNetPlay(BeamGameMode mode, object param) {}
@@ -344,7 +371,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         TaskCompletionSource<GameSelectedEventArgs> tcs = new TaskCompletionSource<GameSelectedEventArgs>();
 
-        logger.Info($"SelectGameAsync(): displaying UI");
+        logger.Info($"SelectGameAsync(): Current stage: {mainObj.uiController.CurrentStage()?.name},  displaying selection UI");
         GameObject panelGo = mainObj.uiController.CurrentStage().transform.Find("SelGamePanel").gameObject;
         SelGamePanel panel = panelGo.GetComponent<SelGamePanel>();
         panel.LoadAndShowAsync(existingGames, tcs);
@@ -441,7 +468,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         IBike ib = args?.ib;
         bool isLocal = BikeIsLocal(ib);
-        logger.Info($"OnNewBikeEvt(). Id: {SID(ib.bikeId)}, LocalPlayer: {(BikeIsLocalPlayer(ib))}");
+        logger.Info($"OnNewBikeEvt(). Id: {SID(ib.bikeId)}, Owner: {SID(ib.peerId)} LocalPlayer: {(BikeIsLocalPlayer(ib))}");
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround, isLocal);
         feBikes[ib.bikeId] = bikeGo;
         if (BikeIsLocalPlayer(ib))

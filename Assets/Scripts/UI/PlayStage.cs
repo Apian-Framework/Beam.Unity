@@ -71,6 +71,13 @@ public class PlayStage : MonoBehaviour
 
 	public void OnRestartBtn() => _main.beamApp.mainAppCore.RaiseRespawnPlayer();
 
-	public void OnExitBtn() =>	_main.beamApp.OnSwitchModeReq(BeamModeFactory.kSplash, null);
+	public void OnExitBtn()
+	{
+		if (_main.beamApp.CurrentGameModeId() == BeamModeFactory.kPractice)
+			_main.beamApp.OnSwitchModeReq(BeamModeFactory.kSplash, null);
+		else
+			_main.beamApp.OnPopModeReq(null);
+	}
+
 
 }
