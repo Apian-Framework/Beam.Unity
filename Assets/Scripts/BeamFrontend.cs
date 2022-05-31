@@ -152,7 +152,6 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
             logger.Info($"** Network Info: Name: {netInfo.NetName}, Peers: {netInfo.PeerCount}, Games: {netInfo.GameCount}");
 
             networkStage.OnNetUpdate(netInfo);
-
         }
 
         public void OnNetworkReady()
@@ -194,6 +193,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
 
         mainObj.uiController.ShowToast($"{lvlStr}: {msgText}", color, secs);
+
     }
 
    //
@@ -412,19 +412,23 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         BeamNetworkPeer p = args.peer;
         logger.Info($"OnPeerJoinedEvt() name: {p.Name}, Id: {SID(p.PeerId)}");
+
         UpdateNetworkInfo();
+
     }
 
     public void OnPeerLeftNetEvt(object sender, PeerLeftEventArgs args)
     {
         logger.Info($"OnPeerLeftEvt(): {SID(args.p2pId)}");
+
         if (appCore != null)
         {
-            // ToDo: Need an OnPlayerLeft handler. This one's about the peer
-            // Or... should have onPeerLeft toast?
-            BeamPlayer pl = appCore?.CoreState.GetPlayer(args.p2pId);
-            mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5);
+                // ToDo: Need an OnPlayerLeft handler. This one's about the peer
+                // Or... should have onPeerLeft toast?
+                BeamPlayer pl = appCore?.CoreState.GetPlayer(args.p2pId);
+                mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5);
         }
+
         UpdateNetworkInfo();
     }
 
