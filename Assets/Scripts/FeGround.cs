@@ -45,8 +45,11 @@ public class FeGround : MonoBehaviour
             marker = activeMarkers[posHash];
         } catch(KeyNotFoundException) {
             marker = idleMarkers.Count > 0 ? idleMarkers.Pop() : GameObject.Instantiate(markerPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-            marker.transform.parent = transform;
-            activeMarkers[posHash] =  marker;
+            if (marker != null)
+            {
+                marker.transform.parent = transform;
+                activeMarkers[posHash] =  marker;
+            }
         }
         marker.transform.position = utils.Vec3(p.GetPos());
         GroundMarker gm = (GroundMarker)marker.transform.GetComponent("GroundMarker");
