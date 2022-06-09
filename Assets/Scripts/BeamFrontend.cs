@@ -146,6 +146,26 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     // IBeamFrontend API
     //
 
+
+    private readonly Dictionary<ApianGroupMember.Status, string> statusNames = new Dictionary<ApianGroupMember.Status, string>{
+        {ApianGroupMember.Status.New, "New"},
+        {ApianGroupMember.Status.Joining, "Joining"},
+        {ApianGroupMember.Status.SyncingState, "SyncingState"},
+        {ApianGroupMember.Status.SyncingClock, "SyncingClock"},
+        {ApianGroupMember.Status.Active, "Active"},
+        {ApianGroupMember.Status.Removed, "Removed"}
+    };
+
+    public void OnGroupMemberStatus(string groupId, string peerId, ApianGroupMember.Status newStatus, ApianGroupMember.Status prevStatus)
+    {
+        if ((newStatus != prevStatus) && (peerId == appCore?.LocalPeerId ))
+        {
+            mainObj.uiController.ShowToast($"Local Peer is {statusNames[newStatus]}", Toast.ToastColor.kGreen, 3, "peerStatusTag");
+         }
+
+    }
+
+
         public void UpdateNetworkInfo()
         {
             BeamNetInfo netInfo = beamAppl.NetInfo;
@@ -280,6 +300,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     protected void SetupNetworkCamera()
     {
+        mainObj.uiController.ClearToasts();
         mainObj.gameCamera.transform.position = new Vector3(100, 100, 100);
         mainObj.uiController.switchToNamedStage("NetworkStage");
     }
@@ -299,6 +320,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     protected void SetupPlayCameras()
     {
+        mainObj.uiController.ClearToasts();
         mainObj.gameCamera.transform.position = new Vector3(100, 100, 100);
         mainObj.uiController.switchToNamedStage("PlayStage");
     }
@@ -367,6 +389,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
 
 #if !SINGLE_THREADED
+
     public async Task<GameSelectedEventArgs> SelectGameAsync(IDictionary<string, BeamGameAnnounceData> existingGames)
     {
         TaskCompletionSource<GameSelectedEventArgs> tcs = new TaskCompletionSource<GameSelectedEventArgs>();

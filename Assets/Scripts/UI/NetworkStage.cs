@@ -9,12 +9,14 @@ using static UniLog.UniLogger; // for SID()
 
 public class NetworkStage : MonoBehaviour
 {
+	public GameObject ConnectingTxt;
 	public GameObject ProceedBtn;
 	public TMP_Text NetworkNameTxt;
 	public TMP_Text PeerCntTxt;
 	public TMP_InputField PeerListFld; // is set to non-interactive
 	public TMP_Text GameCntTxt;
 	public TMP_InputField GameListFld; // is set to non-interactive
+	public TMP_Text CancelBtnTxt;
 
 	protected BeamMain _main = null;
 
@@ -37,6 +39,9 @@ public class NetworkStage : MonoBehaviour
 	public void ShowProceedButton(bool showIt=true)
 	{
 		ProceedBtn.SetActive(showIt);
+		ConnectingTxt.SetActive(!showIt);
+		CancelBtnTxt.text = showIt ? "DISCONNECT" : "CANCEL";
+
 	}
 
 	public void OnNetUpdate(BeamNetInfo netInfo)
