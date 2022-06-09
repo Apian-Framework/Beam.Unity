@@ -539,7 +539,7 @@ public class GameCamera : MonoBehaviour {
             _theGameCam.LookAroundEvt += OnLookAround;
 
             _bike = bike;
-            _maxDegPerSec = 120;
+            _maxDegPerSec = 360;
             _radius = 3.0f;
             _height = 3.0f;
             _viewHeight = 0f;

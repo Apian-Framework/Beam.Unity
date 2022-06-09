@@ -2,20 +2,20 @@ using UnityEngine;
 using System.Collections;
 
 public class ViewLeftBtn : UIBtn  {
-	
 
-	public float lookRadians = 1f;
-	public float decayRate = 1f;
 
-	protected BeamMain _main = null;	
+	public float lookRadians = 1.57f;
+	public float decayRate = .001f;
+
+	protected BeamMain _main = null;
 
 	// Use this for initialization
-	protected override void Start () 
+	protected override void Start ()
 	{
-		base.Start();		
+		base.Start();
 		_main = BeamMain.GetInstance();
 	}
-		
+
 	protected override void Update()
 	{
 		base.Update();
@@ -25,7 +25,7 @@ public class ViewLeftBtn : UIBtn  {
 
 	public override void doSelect()
 	{
-		_main.inputDispatch.LookAround(lookRadians, decayRate);		
+		_main.inputDispatch.LookAround(lookRadians, decayRate);
 	}
 }
 
