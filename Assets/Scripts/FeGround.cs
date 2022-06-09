@@ -51,10 +51,15 @@ public class FeGround : MonoBehaviour
                 activeMarkers[posHash] =  marker;
             }
         }
-        marker.transform.position = utils.Vec3(p.GetPos());
-        GroundMarker gm = (GroundMarker)marker.transform.GetComponent("GroundMarker");
-		gm.SetColor(utils.ColorFromName(p.bike.team.Color));
-        marker.SetActive(true);
+        if (marker != null)
+        {
+            // at game exit it might have been destroyed
+            // TODO: WHile not a THREAD sync problem, this might be a "message/action sync" issue. Check and see what's up.
+            marker.transform.position = utils.Vec3(p.GetPos());
+            GroundMarker gm = (GroundMarker)marker.transform.GetComponent("GroundMarker");
+		    gm.SetColor(utils.ColorFromName(p.bike.team.Color));
+            marker.SetActive(true);
+        }
         return marker;
     }
 

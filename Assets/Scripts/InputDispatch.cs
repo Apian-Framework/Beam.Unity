@@ -17,8 +17,8 @@ public class InputDispatch
        localPlayerBike = playerBike.transform.GetComponent<FePlayerBike>();
     }
 
-    public void LocalPlayerBikeLeft() => localPlayerBike.RequestTurn(TurnDir.kLeft);
-    public void LocalPlayerBikeRight() => localPlayerBike.RequestTurn(TurnDir.kRight);
+    public void LocalPlayerBikeLeft() => localPlayerBike?.RequestTurn(TurnDir.kLeft);
+    public void LocalPlayerBikeRight() => localPlayerBike?.RequestTurn(TurnDir.kRight);
 
     public void SwitchCameraView(GameObject focusObj = null)
     {
