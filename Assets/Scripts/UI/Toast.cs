@@ -24,6 +24,7 @@ public class Toast : MonoBehaviour
 	public Vector3 offScreenPos;
 	public Vector3 onScreenPos;
 	public float height;
+	public float vMargin = 2;
 	public string toastTag; // toasts will overwrite other toasts with the the same tag
 
 	public bool bMoving;
@@ -78,13 +79,19 @@ public class Toast : MonoBehaviour
 		SetColor(color);
 		SetText(msg);
 		SetTimeout(displaySecs);
-		SetIndex(0);
+		SetIndexPos(0);
 	}
 
 	public void SetIndex(int idx)
 	{
 		bMoving = true;
 		targetPos = onScreenPos + new Vector3(0, -idx*height, 0);
+	}
+
+	public void SetIndexPos(float dy)
+	{
+		bMoving = true;
+		targetPos = onScreenPos + new Vector3(0, -dy, 0);
 	}
 
 	public void SetColor(Toast.ToastColor color)
@@ -111,8 +118,21 @@ public class Toast : MonoBehaviour
 	}
 	public void SetText(string msg)
 	{
-		gameObject.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = msg;
+		 TMP_Text tmpt = gameObject.transform.Find("Text").GetComponent<TMP_Text>();
+		 tmpt.text = msg;
+		 tmpt.ForceMeshUpdate();
+		 height = tmpt.renderedHeight + vMargin*2;
+		 RectTransform rt = GetComponent<RectTransform>();
+		 Vector2 sd = rt.sizeDelta;
+		 sd.y = height;
+		 rt.sizeDelta = sd;
 	}
+
+
+	// public void SetText(string msg)
+	// {
+	// 	 gameObject.transform.Find("Text").GetComponent<TextMeshProUGUI>().text = msg;
+	// }
 
 	public void SetTimeout( float secs)
 	{

@@ -24,11 +24,15 @@ public class ToastMgr : MonoBehaviour
 
     }
 
+
     protected void FixupPositions()
     {
-        int idx = toasts.Count - 1;
-        foreach (Toast t in toasts)
-            t.SetIndex(idx--);
+        float runningDy = 0;
+        for (int idx  = toasts.Count - 1; idx >= 0; idx--)
+        {
+            toasts[idx].SetIndexPos(runningDy);
+            runningDy += toasts[idx].height;
+        }
     }
 
     private void _RemoveTaggedToast(string tag)
@@ -60,5 +64,11 @@ public class ToastMgr : MonoBehaviour
         toasts.Remove(theToast);
         GameObject.Destroy(theToast.gameObject);
         FixupPositions();
+    }
+
+    public void ClearToasts()
+    {
+        List<Toast> delToasts = toasts.Where(t => true).ToList();
+        delToasts.ForEach(t => RemoveToast(t));
     }
 }
