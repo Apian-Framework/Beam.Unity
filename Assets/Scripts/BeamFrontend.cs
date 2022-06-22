@@ -165,29 +165,36 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     }
 
+    public void OnGroupLeaderChanged(string groupId, string newLeaderId, string leaderName)
+    {
+        string msg = "Group Leader: " +  (leaderName != null ? $"{leaderName} {SID(newLeaderId)}"  : SID(newLeaderId));
 
-        public void UpdateNetworkInfo()
-        {
-            BeamNetInfo netInfo = beamAppl.NetInfo;
-            logger.Info($"** Network Info: Name: {netInfo.NetName}, Peers: {netInfo.PeerCount}, Games: {netInfo.GameCount}");
+        mainObj.uiController.ShowToast(msg, Toast.ToastColor.kOrange, 3, "groupLeadTag");
 
-            networkStage.OnNetUpdate(netInfo);
-        }
+    }
 
-        public void OnNetworkReady()
-        {
-            logger.Info($"OnNetworkReady() ");
+    public void UpdateNetworkInfo()
+    {
+        BeamNetInfo netInfo = beamAppl.NetInfo;
+        logger.Info($"** Network Info: Name: {netInfo.NetName}, Peers: {netInfo.PeerCount}, Games: {netInfo.GameCount}");
 
-            networkStage.ShowProceedButton();
+        networkStage.OnNetUpdate(netInfo);
+    }
 
-            // Need to display "Proceed" and "Cancel" (no, tnot hose prompts) to the user
-            // that result in a call to:
-            //     beamAppl.OnPushModeReq(BeamModeFactory.kNetPlay, null);
-            // or
-            //     beamAppl.OnSwitchModeReq(BeamModeFactory.kNetSplash, null);
+    public void OnNetworkReady()
+    {
+        logger.Info($"OnNetworkReady() ");
 
-           // throw new NotImplementedException();
-        }
+        networkStage.ShowProceedButton();
+
+        // Need to display "Proceed" and "Cancel" (no, tnot hose prompts) to the user
+        // that result in a call to:
+        //     beamAppl.OnPushModeReq(BeamModeFactory.kNetPlay, null);
+        // or
+        //     beamAppl.OnSwitchModeReq(BeamModeFactory.kNetSplash, null);
+
+        // throw new NotImplementedException();
+    }
 
     public BeamUserSettings GetUserSettings() => userSettings;
 

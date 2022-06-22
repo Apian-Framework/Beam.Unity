@@ -135,10 +135,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb3d05b0695f1a44c8c490e29fbea3bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  greenColor: {r: 0, g: 0.7019608, b: 0, a: 0.5019608}
-  blueColor: {r: 0.4719206, g: 0.60324955, b: 0.990566, a: 0.5019608}
-  orangeColor: {r: 1, g: 0.69692, b: 0.4009434, a: 0.5019608}
-  redColor: {r: 0.990566, g: 0, b: 0, a: 0.8156863}
+  greenColor: {r: 0, g: 0.7019608, b: 0, a: 0.65882355}
+  blueColor: {r: 0.4719206, g: 0.60324955, b: 0.990566, a: 0.65882355}
+  orangeColor: {r: 1, g: 0.7, b: 0, a: 0.65882355}
+  redColor: {r: 0.990566, g: 0, b: 0, a: 0.65882355}
   switchSecs: 0.125
   offScreenPos: {x: 0, y: 285, z: 0}
   onScreenPos: {x: 0, y: 265, z: 0}
