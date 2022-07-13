@@ -18,6 +18,12 @@
         "com.apian-framework.p2pnet.redis": "1.0.0"
       }
     },
+    "com.apian-framework.libp2p-unity": {
+      "version": "file:E:/ConsenSys/Apian/code/Libp2p-Unity/Libp2p.unitypackage",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.apian-framework.modalapplication": {
       "version": "file:../../ApianAppUtils/src/ModalApplication",
       "depth": 0,
@@ -30,6 +36,16 @@
       "source": "local",
       "dependencies": {
         "com.apian-framework.unilog": "1.0.4"
+      }
+    },
+    "com.apian-framework.p2pnet.libp2p": {
+      "version": "file:E:/ConsenSys/Apian/code/Libp2p-Unity/P2pNet.Libp2p",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.apian-framework.unilog": "1.0.4",
+        "com.apian-framework.p2pnet.base": "1.0.2",
+        "com.apian-framework.libp2p-unity": "1.0.0"
       }
     },
     "com.apian-framework.p2pnet.mqtt": {
