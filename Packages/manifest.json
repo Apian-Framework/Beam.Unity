@@ -2,10 +2,9 @@
   "dependencies": {
     "com.apian-framework.apian": "file:../../Apian.Net/src/Apian",
     "com.apian-framework.beamgamecode": "file:../../BeamGameCode/src/BeamGameCode",
-    "com.apian-framework.libp2p-unity": "file:E:/ConsenSys/Apian/code/Libp2p-Unity/Libp2p.unitypackage",
+    "com.apian-framework.libp2p-unity": "file:../../Libp2p-Unity/Libp2p.unitypackage",
     "com.apian-framework.modalapplication": "file:../../ApianAppUtils/src/ModalApplication",
     "com.apian-framework.p2pnet.base": "file:../../P2pNet/src/P2pNet.Base",
-    "com.apian-framework.p2pnet.libp2p": "file:E:/ConsenSys/Apian/code/Libp2p-Unity/P2pNet.Libp2p",
     "com.apian-framework.p2pnet.mqtt": "file:../../P2pNet/src/P2pNet.Mqtt",
     "com.apian-framework.p2pnet.redis": "file:../../P2pNet/src/P2pNet.Redis",
     "com.apian-framework.unilog": "file:../../UniLog/src/UniLog",
