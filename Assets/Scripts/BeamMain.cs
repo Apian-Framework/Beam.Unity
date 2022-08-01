@@ -71,7 +71,7 @@ public class BeamMain : MonoBehaviour
     static ProfilerMarker backendPerfMarker = new ProfilerMarker("Beam.Backend");
 
     // Non-monobehaviors
-    public BeamGameNet gameNet;
+    public UnityBeamGameNet gameNet;
     public BeamApplication beamApp;
 
     // Singleton management(*yeah, kinda lame)
@@ -102,7 +102,7 @@ public class BeamMain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameNet = new BeamGameNet();
+        gameNet = new UnityBeamGameNet();
         beamApp = new BeamApplication(gameNet, frontend);
         inputDispatch = new InputDispatch(this);
 

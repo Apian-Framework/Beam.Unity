@@ -18,8 +18,8 @@
         "com.apian-framework.p2pnet.redis": "1.0.0"
       }
     },
-    "com.apian-framework.libp2p-unity": {
-      "version": "file:../../Libp2p-Unity/Libp2p.unitypackage",
+    "com.apian-framework.libp2punity": {
+      "version": "file:E:../..//Libp2p-Unity/Libp2pUnity.unitypackage",
       "depth": 0,
       "source": "local",
       "dependencies": {}
@@ -53,6 +53,12 @@
       "dependencies": {
         "com.apian-framework.p2pnet.base": "1.0.2"
       }
+    },
+    "com.apian-framework.p2pnetlibp2p": {
+      "version": "file:../../Libp2p-Unity/P2pNetLibp2p.unitypackage",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
     },
     "com.apian-framework.unilog": {
       "version": "file:../../UniLog/src/UniLog",
