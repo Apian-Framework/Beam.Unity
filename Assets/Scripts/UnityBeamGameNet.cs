@@ -24,10 +24,15 @@ public class UnityBeamGameNet : BeamGameNet
             case "p2ploopback":
                 carrier = new P2pLoopback(null);
                 break;
+
 #if  UNITY_WEBGL && !UNITY_EDITOR
             case "p2punitylibp2p":
-            carrier = new P2pNetLibp2p(parts[1]);
-            break;
+                carrier = new P2pNetLibp2p(parts[1]);
+                break;
+
+            case "p2punitymqtt":
+                carrier = new P2pNetMqttJs(parts[1]);
+                break;
 #else
             case "p2predis":
                 carrier = new P2pRedis(parts[1]);
