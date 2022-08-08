@@ -7,6 +7,10 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
 
+<!-- This include (don't defer it - it's tiny) creates a global "WebGLDefaultSettings" object that Unity .jslib code can access -->
+    <script src="./WebGLDefaultSettings.js"></script>
+<!-- End WebGLDefaultSettings stuff -->
+
 <!-- This include is for MqttJS. Creates a global "mqtt" object that Unity .jslib code can access -->
     <script src="./browserMqtt.js"></script>
 <!-- End MqttJS stuff -->
