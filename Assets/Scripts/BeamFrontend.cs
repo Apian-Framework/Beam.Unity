@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 public class BeamFrontend : MonoBehaviour, IBeamFrontend
 {
-    public const float kErrorToastSecs = 5.0f;
+    public const float kErrorToastSecs = 7.0f;
     public const float kWarningToastSecs = 5.0f;
 	public FeGround feGround;
     public GameObject connectBtn;
@@ -160,7 +160,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         if ((newStatus != prevStatus) && (peerId == appCore?.LocalPeerId ))
         {
-            mainObj.uiController.ShowToast($"Local Peer is {statusNames[newStatus]}", Toast.ToastColor.kGreen, 3, "peerStatusTag");
+            mainObj.uiController.ShowToast($"Local Peer is {statusNames[newStatus]}", Toast.ToastColor.kGreen, 5, "peerStatusTag");
          }
 
     }
@@ -169,7 +169,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         string msg = "Group Leader: " +  (leaderName != null ? $"{leaderName} {SID(newLeaderId)}"  : SID(newLeaderId));
 
-        mainObj.uiController.ShowToast(msg, Toast.ToastColor.kOrange, 3, "groupLeadTag");
+        mainObj.uiController.ShowToast(msg, Toast.ToastColor.kOrange, 5, "groupLeadTag");
 
     }
 
