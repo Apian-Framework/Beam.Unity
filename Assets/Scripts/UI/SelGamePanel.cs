@@ -66,7 +66,7 @@ public class SelGamePanel : MovableUICanvasItem
 
         TMP_Dropdown typeDrop = agreeTypeDrop.GetComponent<TMP_Dropdown>();
         typeDrop.ClearOptions();
-        typeDrop.AddOptions( BeamApianFactory.ApianGroupTypes);
+        typeDrop.AddOptions( BeamApianFactory.ApianGroupTypes.Where(type => type != SinglePeerGroupManager.kGroupType).ToList());
 
         Dictionary<string, string> egTypesForCaptions = new Dictionary<string, string>();
 
