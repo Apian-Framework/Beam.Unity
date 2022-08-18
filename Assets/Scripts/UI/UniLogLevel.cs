@@ -22,12 +22,11 @@ public class UniLogLevel : MonoBehaviour
 
 	}
 
-	public void Setup(UniLogConfigPanel _panel, string _loggerName, UniLogger.Level lvl)
+	public void Setup(UniLogConfigPanel _panel, UniLogger logger)
 	{
 		configPanel = _panel;
-		SetText(_loggerName);
-		SetLevel(lvl);
-
+		SetText(logger.LoggerName);
+		SetLevel(logger.LogLevel);
 	}
 
 	public void SetText(string msg)
@@ -40,7 +39,7 @@ public class UniLogLevel : MonoBehaviour
 	public void SetLevel(UniLogger.Level lvl)
 	{
 		TMP_Dropdown drp = gameObject.transform.Find("Lvl").GetComponent<TMP_Dropdown>();
-		drp.value = (int)lvl;
+		drp.value = UniLogConfigPanel.IndexForLevel[lvl];
 	}
 
 

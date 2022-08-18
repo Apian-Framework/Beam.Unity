@@ -31,18 +31,27 @@ public class UniLogConfigPanel : MovableUICanvasItem
 
     public GameObject DefaultLevelDrop;
 
-    public int DefLogLevel;
+    public GameObject ScrollViewContent;
 
-    protected IDictionary<string, UniLogLevel> levels;
+    protected IDictionary<string, GameObject> levels;
+
+    protected bool _isDirty; // needs sort
 
 	protected override void Start ()
 	{
         base.Start();
+        levels = new Dictionary<string, GameObject>();
         TMP_Dropdown drop = DefaultLevelDrop.GetComponent<TMP_Dropdown>();
-        DefLogLevel = drop.value;
         drop.value = IndexForLevel[UniLogger.DefaultLevel];
         drop.RefreshShownValue();
 	}
+
+    protected override void Update ()
+    {
+        base.Update();
+        if (_isDirty)
+            SortLoggers();
+    }
 
     public void LoadAndShow()
     {
@@ -51,7 +60,38 @@ public class UniLogConfigPanel : MovableUICanvasItem
 
     protected void _DoLoadAndShow()
     {
+        foreach (UniLogger logger in  UniLogger.AllLoggers) AddLogger(logger);
         moveOnScreen();
+    }
+
+    protected void AddLogger(UniLogger logger)
+    {
+        GameObject newLine = GameObject.Instantiate(LogLevelPrefab, transform);
+        UniLogLevel lvl = newLine.GetComponent<UniLogLevel>();
+        lvl.Setup(this, logger);
+        newLine.transform.SetParent(ScrollViewContent.transform); // set it as a child of ScrollViewContent
+        levels[logger.LoggerName] = newLine;
+        _isDirty = true;
+    }
+
+    protected void SortLoggers()
+    {
+        Vector3 pos = new Vector3(0,0,0);
+        IList<string> sortedNames = levels.Keys.OrderBy(s => s).ToList();
+
+        float height =sortedNames.Count * 40;
+  	    RectTransform rt = ScrollViewContent.GetComponent<RectTransform>();
+		Vector2 sd = rt.sizeDelta;
+		sd.y = height;
+		rt.sizeDelta = sd;
+
+
+        foreach (string name in sortedNames)
+        {
+            levels[name].transform.localPosition = pos;
+            pos.y -= 40;
+        }
+        _isDirty = false;
     }
 
     public void DoSetDefaultLevel(int index)
