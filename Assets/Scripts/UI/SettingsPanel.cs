@@ -13,6 +13,7 @@ public class SettingsPanel : MovableUICanvasItem
     public GameObject ethNodeField;
     public GameObject ethAcctField;
     public GameObject netNameField;
+    public GameObject logLvlEditField;
 
 
     public void LoadAndShow()
@@ -25,6 +26,7 @@ public class SettingsPanel : MovableUICanvasItem
         ethNodeField.GetComponent<TMP_InputField>().text = settings.ethNodeUrl;
         ethAcctField.GetComponent<TMP_InputField>().text = settings.ethAcct;
         netNameField.GetComponent<TMP_InputField>().text = settings.apianNetworkName;
+        logLvlEditField.GetComponent<Toggle>().isOn = bool.Parse(settings.platformSettings.TryGetValue("enableLogLvlEdit", out var x) ? x : "false");
 
         UserSettingsMgr.Save(settings);
 
@@ -42,7 +44,11 @@ public class SettingsPanel : MovableUICanvasItem
         settings.ethAcct = ethAcctField.GetComponent<TMP_InputField>().text;
         settings.apianNetworkName = netNameField.GetComponent<TMP_InputField>().text;
 
-        UserSettingsMgr.Save(settings);
+        BeamMain bm = BeamMain.GetInstance();
+
+        bm.platformSettings.enableLogLvlEdit = logLvlEditField.GetComponent<Toggle>().isOn; // unity-only setting
+        bm.PersistSettings();
+        bm.ApplyPlatformUserSettings();
 
         moveOffScreen();
     }

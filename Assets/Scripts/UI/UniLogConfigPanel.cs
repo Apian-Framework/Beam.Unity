@@ -33,20 +33,26 @@ public class UniLogConfigPanel : MovableUICanvasItem
 
     public GameObject ScrollViewContent;
 
-    protected IDictionary<string, GameObject> levels;
+    protected IDictionary<string, GameObject> LoggerLevels;
 
     protected bool _isDirty; // needs sort
 
+    protected UniLogger Logger;
+
+    protected override void Awake()
+    {
+        Logger = UniLogger.GetLogger("UniLogConfig");
+	    Logger.Verbose($"UniLogConfigPanel Awake");
+        LoggerLevels = new Dictionary<string, GameObject>();
+    }
+
 	protected override void Start ()
 	{
+	    Logger.Verbose($"UniLogConfigPanel Start");
         base.Start();
-        levels = new Dictionary<string, GameObject>();
-        TMP_Dropdown drop = DefaultLevelDrop.GetComponent<TMP_Dropdown>();
-        drop.value = IndexForLevel[UniLogger.DefaultLevel];
-        drop.RefreshShownValue();
 	}
 
-    protected override void Update ()
+    protected override void Update()
     {
         base.Update();
         if (_isDirty)
@@ -60,6 +66,10 @@ public class UniLogConfigPanel : MovableUICanvasItem
 
     protected void _DoLoadAndShow()
     {
+        TMP_Dropdown drop = DefaultLevelDrop.GetComponent<TMP_Dropdown>();
+        drop.value = IndexForLevel[UniLogger.DefaultLevel];
+        drop.RefreshShownValue();
+        Logger.Info($"UniLogConfigPanel LoadAndShow()");
         foreach (UniLogger logger in  UniLogger.AllLoggers) AddLogger(logger);
         moveOnScreen();
     }
@@ -70,14 +80,14 @@ public class UniLogConfigPanel : MovableUICanvasItem
         UniLogLevel lvl = newLine.GetComponent<UniLogLevel>();
         lvl.Setup(this, logger);
         newLine.transform.SetParent(ScrollViewContent.transform); // set it as a child of ScrollViewContent
-        levels[logger.LoggerName] = newLine;
+        LoggerLevels[logger.LoggerName] = newLine;
         _isDirty = true;
     }
 
     protected void SortLoggers()
     {
         Vector3 pos = new Vector3(0,0,0);
-        IList<string> sortedNames = levels.Keys.OrderBy(s => s).ToList();
+        IList<string> sortedNames = LoggerLevels.Keys.OrderBy(s => s).ToList();
 
         float height =sortedNames.Count * 40;
   	    RectTransform rt = ScrollViewContent.GetComponent<RectTransform>();
@@ -85,10 +95,9 @@ public class UniLogConfigPanel : MovableUICanvasItem
 		sd.y = height;
 		rt.sizeDelta = sd;
 
-
         foreach (string name in sortedNames)
         {
-            levels[name].transform.localPosition = pos;
+            LoggerLevels[name].transform.localPosition = pos;
             pos.y -= 40;
         }
         _isDirty = false;
@@ -97,11 +106,36 @@ public class UniLogConfigPanel : MovableUICanvasItem
     public void DoSetDefaultLevel(int index)
     {
         UniLogger.DefaultLevel = LevelForIndex[index];
+        Logger.Info($"UniLogConfigPanel DoSetDefaultLevel() - setting to {UniLogger.DefaultLevel}");
+		BeamMain.GetInstance().PersistSettings();
+    }
+
+    public void DoSetAllToDefault()
+    {
+        foreach (GameObject go in LoggerLevels.Values)
+        {
+            UniLogLevel logLvl = go.GetComponent<UniLogLevel>();
+            logLvl.SetLevel(UniLogger.DefaultLevel); // note that this ends up calling PersistSettings a bunch of times
+        }
+    }
+
+    public void DoClipAllToDefault()
+    {
+        // "More verbose" is a lower level  (higher priority)
+        foreach (GameObject go in LoggerLevels.Values)
+        {
+            UniLogLevel logLvl = go.GetComponent<UniLogLevel>();
+            if (logLvl.ControlledLogger.LogLevel < UniLogger.DefaultLevel)
+            {
+                logLvl.SetLevel(UniLogger.DefaultLevel); // note that this ends up calling PersistSettings a bunch of times
+            }
+        }
     }
 
     public void DoDone()
     {
-
+        Logger.Info($"UniLogConfigPanel DoDone()");
+        BeamMain.GetInstance().PersistSettings();
         moveOffScreen();
     }
 

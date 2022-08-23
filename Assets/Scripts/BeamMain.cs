@@ -10,14 +10,17 @@ public class PlatformSettings
 {
     protected const string kMasterVolume = "mastervolume";
     protected const string kApianGameBase = "apiangamebase";
+    protected const string kEnableLogLvlEdit = "enableLogLvlEdit";
 
     public float masterVolume = .75f;
     public string apianGameBase = "beam"; // default
+    public bool enableLogLvlEdit = false;
 
     public void Load( Dictionary<string,string> settingsDict)
     {
         masterVolume = settingsDict.ContainsKey(kMasterVolume) ? float.Parse(settingsDict[kMasterVolume]) : masterVolume;
         apianGameBase = settingsDict.ContainsKey(kApianGameBase) ? settingsDict[kApianGameBase] : apianGameBase;
+        enableLogLvlEdit = settingsDict.ContainsKey(kEnableLogLvlEdit) ? bool.Parse(settingsDict[kEnableLogLvlEdit]) : enableLogLvlEdit;
 
         // On load create a randomish game/group spec and store it in tempsettings
         BeamMain.GetInstance().frontend.GetUserSettings().tempSettings["gameSpec"] = CreateNewGameSpec(apianGameBase);
@@ -28,7 +31,8 @@ public class PlatformSettings
         return new Dictionary<string,string>()
         {
             {kMasterVolume, $"{masterVolume}" },
-            {kApianGameBase, $"{apianGameBase}" }
+            {kApianGameBase, $"{apianGameBase}" },
+            {kEnableLogLvlEdit, $"{enableLogLvlEdit}"}
         };
     }
 
@@ -132,12 +136,12 @@ public class BeamMain : MonoBehaviour
     }
 
     // Settings-related stuff
-    public void ApplyUserSettings()
+    public void ApplyPlatformUserSettings()
     {
         // Called when the frontend starts up
         platformSettings.Load(frontend.GetUserSettings().platformSettings);
         SetMasterVolume(platformSettings.masterVolume); // first time
-
+        frontend.EnableLogLevelBtn(platformSettings.enableLogLvlEdit);
     }
 
     public void PersistSettings()

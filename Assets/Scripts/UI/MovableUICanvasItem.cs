@@ -16,6 +16,11 @@ public class MovableUICanvasItem : MonoBehaviour {
 	protected Vector2 TargetPos => shouldBeOnScreen ? onScreenPos : offScreenPos;
 
 	// Use this for initialization
+	protected virtual void Awake()
+	{
+
+	}
+
 	protected virtual void Start ()
 	{
 		bMoving = false;

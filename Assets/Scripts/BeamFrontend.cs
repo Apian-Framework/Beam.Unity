@@ -18,6 +18,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public const float kWarningToastSecs = 5.0f;
 	public FeGround feGround;
     public GameObject connectBtn;
+    public GameObject logLevelEditBtn;
     public NetworkStage networkStage;
 
     public const string kSettingsFileBaseName = "unitybeamsettings";
@@ -69,6 +70,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         SetupWebGLLogging();
 #endif
         userSettings = UserSettingsMgr.Load(kSettingsFileBaseName);
+        UniLogger.DefaultLevel = UniLogger.LevelFromName(userSettings.defaultLogLevel);
+        UniLogger.SetupLevels(userSettings.logLevels);
         userSettings.localPlayerCtrlType = BikeFactory.LocalPlayerCtrl; // FIXME: is this necessary?
     }
 
@@ -76,12 +79,17 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     void Start()
     {
         mainObj = BeamMain.GetInstance();
-        mainObj.ApplyUserSettings();
+        mainObj.ApplyPlatformUserSettings();
         mainObj.PersistSettings(); // make sure the default settings get saved
         feBikes = new Dictionary<string, GameObject>();
         logger = UniLogger.GetLogger("Frontend");
         SetupModeActions();
+    }
 
+    public void EnableLogLevelBtn(bool bDoIt)
+    {
+        // platform setting
+        logLevelEditBtn.SetActive(bDoIt);
     }
 
     public void SetBeamApplication(IBeamApplication appl)
