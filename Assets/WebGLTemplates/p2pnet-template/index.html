@@ -20,8 +20,8 @@
         // This includes the browserfied version of the libp2p-js library
         // the included script contains "window.Libp2pObj = Libp2pObj;"
     </script>
-     
-    <script type="module"> 
+
+    <script type="module">
       // This includes code that uses the libp2p library
       import JsLibp2p from "./js-libp2p-unity.js";
       window.JsLibp2p = JsLibp2p;
@@ -137,6 +137,7 @@
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
+        config['webglContextAttributes'] = {"preserveDrawingBuffer": true}; // don't clear buffer each frame
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
