@@ -142,6 +142,9 @@ PlayerSettings:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -549,7 +552,7 @@ PlayerSettings:
   - m_BuildTarget: Standalone
     m_EncodingQuality: 1
   - m_BuildTarget: WebGL
-    m_EncodingQuality: 1
+    m_EncodingQuality: 0
   m_BuildTargetGroupLightmapSettings:
   - m_BuildTarget: Standalone
     m_TextureStreamingEnabled: 0
@@ -829,7 +832,8 @@ PlayerSettings:
     Standalone: 0
   il2cppCompilerConfiguration:
     WebGL: 1
-  managedStrippingLevel: {}
+  managedStrippingLevel:
+    WebGL: 4
   incrementalIl2cppBuild: {}
   suppressCommonWarnings: 1
   allowUnsafeCode: 1
