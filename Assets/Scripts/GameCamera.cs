@@ -235,6 +235,8 @@ public class GameCamera : MonoBehaviour {
         // For moving a camera towards a target object
         protected Vector3 TargetCamPos(GameObject target, Vector3 posOffset)
         {
+            // posOffset is in *target local space*
+            // return value is posOffset in WORLD space (taking into account target pos and orient)
             return target.transform.TransformPoint(posOffset);
         }
 
@@ -419,10 +421,11 @@ public class GameCamera : MonoBehaviour {
             {
                 _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
             } else {
-                Vector3 posOffset = new Vector3(0, _height, 0);
-                Vector3 pos = TargetCamPos(_bike, posOffset);
+
+                Vector3 camPos = TargetCamPos(_bike, Vector3.zero);
+                camPos.y = _height; // bike world pos, but y = _height.
                 Vector3 lookAt = TargetCamLookat(_bike, 0, _viewHeight);
-                _theGameCam.MoveTowards(pos, lookAt, -1, .2f, kZeroDist);
+                _theGameCam.MoveTowards(camPos, lookAt, -1, .1f, kZeroDist);
             }
 
         }
