@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "988e9730444e553844",
         "name": "com.bigfattail.beam",
-        "processId": 18788,
+        "processId": 21897,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -18,6 +18,12 @@
             "deviceId": "988e9730444e553844",
             "name": "com.bigfattail.beam",
             "processId": 18788,
+            "exited": true
+        },
+        {
+            "deviceId": "988e9730444e553844",
+            "name": "com.bigfattail.beam",
+            "processId": 21897,
             "exited": false
         }
     ],
