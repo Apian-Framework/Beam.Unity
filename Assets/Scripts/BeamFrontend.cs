@@ -28,6 +28,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public IBeamAppCore appCore {get; private set;}
     protected BeamUserSettings userSettings;
 
+    protected string _startupErrorMsg;
+
     Dictionary<int, Action<BeamGameMode, object>> modeStartActions;
     Dictionary<int, Action<BeamGameMode, object>> modeEndActions;
     Dictionary<int, Action<BeamGameMode, object>> modeResumeActions;
@@ -69,7 +71,14 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 #if UNTIY_WEBGL
         SetupWebGLLogging();
 #endif
-        userSettings = UserSettingsMgr.Load(kSettingsFileBaseName);
+
+        try {
+            userSettings = UserSettingsMgr.Load(kSettingsFileBaseName);
+        } catch (Exception ex) {
+            _startupErrorMsg = $"LoadSettings failed: {ex.Message}. Default settings used.";
+            userSettings = BeamUserSettings.CreateDefault();
+        }
+
         UniLogger.DefaultLevel = UniLogger.LevelFromName(userSettings.defaultLogLevel);
         UniLogger.SetupLevels(userSettings.logLevels);
         userSettings.localPlayerCtrlType = BikeFactory.LocalPlayerCtrl; // FIXME: is this necessary?
@@ -84,6 +93,12 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         feBikes = new Dictionary<string, GameObject>();
         logger = UniLogger.GetLogger("Frontend");
         SetupModeActions();
+
+        if (_startupErrorMsg != null) {
+            mainObj.uiController.ClearToasts();
+            mainObj.uiController.ShowToast($"Startup Error: {_startupErrorMsg}", Toast.ToastColor.kRed, 10, "crashTag");
+        }
+
     }
 
     public void EnableLogLevelBtn(bool bDoIt)
@@ -350,7 +365,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
             mainObj.gameCamera.StartBikeMode(tBikeObj);
 
-            int choice = UnityEngine.Random.Range(0, 3); // No orbit view until I fix it (needs to zoom to the bike before orbiting)
+            int choice = UnityEngine.Random.Range(0, 4); // No orbit view until I fix it (needs to zoom to the bike before orbiting)
             switch (choice)
             {
                 case 0:
@@ -366,7 +381,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
                     mainObj.uiController.ShowToast($"Target View", Toast.ToastColor.kGreen);
                     break;
                 case 3:
-                    mainObj.gameCamera.StartOrbit(tBikeObj, 20, new Vector3(1, 0, .5f) );
+                    mainObj.gameCamera.StartOrbitView(tBikeObj);
                     mainObj.uiController.ShowToast($"Orbit View", Toast.ToastColor.kGreen);
                     break;
             }
