@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BeamGameCode;
 using UniLog;
 
 public class GameCamera : MonoBehaviour {
@@ -142,7 +143,7 @@ public class GameCamera : MonoBehaviour {
             newMode = new ModeMovingToTarget();
             break;
 
-        case CamModeID.kOrbit:
+        case CamModeID.kOrbitView:
             newMode = new ModeOrbit();
             break;
 
@@ -185,10 +186,11 @@ public class GameCamera : MonoBehaviour {
 	}
 
     // Maintain current distance from object and current height. >0 is CCW. Look at target's pos plus offset
-    public void StartOrbit(GameObject target, float degPerSec, Vector3 offset)
+
+    public void StartOrbitView(GameObject target)
     {
-        ModeOrbit mode = (ModeOrbit)SetMode(CamModeID.kOrbit);
-        mode.init(this, target, degPerSec, offset);
+        ModeOrbit mode = (ModeOrbit)SetMode(CamModeID.kOrbitView);
+        mode.init(this, target);
     }
 
     public void StartBikeMode(GameObject targetBike)
@@ -266,7 +268,7 @@ public class GameCamera : MonoBehaviour {
         kNormal = 0,
         kMoveToPos,
         kMoveToTarget,
-        kOrbit,
+        kOrbitView,
         kBikeView,
         kEnemyView,
         kOverheadView,
@@ -351,52 +353,54 @@ public class GameCamera : MonoBehaviour {
     public class ModeOrbit : CameraMode
     {
         // Orbit around a gameObject as it moves
+        // TODO: this needs a pile of work. It's pretty awful
         protected GameObject _targetObj;
+
         protected float _degPerSec;
-
         protected float _radius;
-        protected float _curAngle;
         protected float _height;
+        protected float _curAngle;
 
-        protected Vector3 _offset;
-
-        public virtual void init(GameCamera cam, GameObject target, float degPerSec, Vector3 offset)
+        public virtual void init(GameCamera cam, GameObject target)
         {
             base.init(cam);
 
             _targetObj = target;
-            _degPerSec = degPerSec;
-            _offset = offset;
+            _degPerSec = 45;
+            _radius = 7;
+            _height = 2f;
 
-            Vector3 targetPos = _targetObj.transform.position;
-            targetPos += offset;
-
-            // From target (w/offset) to camera
-            Vector3 toCam =  _theGameCam.transform.position - targetPos;
-
-            _height = toCam.y;
-            _radius = toCam.magnitude;
-            _curAngle = Mathf.Atan2(toCam.z, toCam.x);
+            _theGameCam.StartMotion();
         }
 
-        public override void update()
+       public override void update()
         {
             if (_targetObj == null) // target went away (gameobject refs get autonulled on destroy)
             {
                 _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
-            }
-            else
-            {
+
+            } else {
+
                 _curAngle += GameTime.DeltaTime() * _degPerSec * Mathf.Deg2Rad;
 
-                Vector3 pos = new Vector3(_radius * Mathf.Cos(_curAngle), _height, _radius * Mathf.Sin(_curAngle));
-                pos +=  _offset;
-                pos += _targetObj.transform.position;
+                Vector3 camPos =  new Vector3(_radius* Mathf.Sin(_curAngle), _height, _radius * Mathf.Cos(_curAngle));
+                camPos +=  _targetObj.transform.position;
 
-                _theGameCam.transform.position = pos;
-                _theGameCam.transform.LookAt(_targetObj.transform.position + _offset);
+                //FrontendBike feBike = _targetObj?.GetComponent<FrontendBike>();
+                //Vector3 bikeOffset = GameConstants.UnitOffset3ForHeading(feBike.heading ) * BaseBike.length * 2;
+                //camPos += bikeOffset;
+
+                //Vector3 lookVec = (_targetObj.transform.position - _theGameCam._thisCamera.transform.position).normalized ;
+                Vector3 lookAt = TargetCamLookat(_targetObj, 0, 1);
+
+                //float dist = (_theGameCam._thisCamera.transform.position - camPos).magnitude; // 0 to .2
+                //float timeScale = Math.Max( Math.Min(dist / _radius * 10f,  .2f), .01f);
+
+                _theGameCam.MoveTowards(camPos, _targetObj.transform.position, -1, .2f, 0);
             }
+
         }
+
     }
 
     public class ModeOverheadView : CameraMode
@@ -579,7 +583,7 @@ public class GameCamera : MonoBehaviour {
                 _lookAngle = 0; // hitting left while looking right immediates centers view
             } else {
                 _lookAngle += lp.AngleRad;
-                _lookDecayRate = lp.DecayRate;
+                _lookDecayRate = 0; // lp.DecayRate;
             }
         }
     }
