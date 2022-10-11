@@ -18,6 +18,12 @@
         "com.apian-framework.p2pnet.redis": "1.0.0"
       }
     },
+    "com.apian-framework.ethforapian": {
+      "version": "file:E:/ConsenSys/Apian/code/CryptoForApian/src/EthForApian",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.apian-framework.libp2punity": {
       "version": "file:../../Libp2p-Unity/Libp2pUnity.unitypackage",
       "depth": 0,

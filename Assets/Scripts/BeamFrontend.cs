@@ -6,6 +6,7 @@ using Apian;
 using BeamGameCode;
 using UniLog;
 using static UniLog.UniLogger; // for SID
+using CryptoForApian;
 
 #if !SINGLE_THREADED
 using System.Threading;
@@ -26,7 +27,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     protected BeamMain mainObj; // main Unity GameObject
     public IBeamApplication beamAppl {get; private set;}
     public IBeamAppCore appCore {get; private set;}
+    public ICryptoForApian cryptoThing {get; private set;}
     protected BeamUserSettings userSettings;
+
 
     protected string _startupErrorMsg;
 
@@ -74,6 +77,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
         try {
             userSettings = UserSettingsMgr.Load(kSettingsFileBaseName);
+        } catch (UserSettingsException ex) {
+            _startupErrorMsg = $"WARNING: {ex.Message}. Using default settings.";
+            userSettings = BeamUserSettings.CreateDefault();
         } catch (Exception ex) {
             _startupErrorMsg = $"LoadSettings failed: {ex.Message}. Default settings used.";
             userSettings = BeamUserSettings.CreateDefault();
@@ -94,8 +100,23 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         logger = UniLogger.GetLogger("Frontend");
         SetupModeActions();
 
+        mainObj.uiController.ClearToasts();
+
+        cryptoThing = EthForApian.Create();
+
+        if (string.IsNullOrEmpty(userSettings.cryptoAcctJSON))
+        {
+            string addr =  cryptoThing.CreateAccount();
+            string json = cryptoThing.GetJsonForAccount("password");
+            mainObj.uiController.ShowToast( $"Created new Eth acct: {addr}", Toast.ToastColor.kBlue, 5);
+            userSettings.cryptoAcctJSON = json;
+            mainObj.PersistSettings();
+        } else {
+            string addr = cryptoThing.CreateAccountFromJson("password", userSettings.cryptoAcctJSON);
+            mainObj.uiController.ShowToast(  $"Loaded Eth acct: {addr} from settings", Toast.ToastColor.kBlue, 5);
+        }
+
         if (_startupErrorMsg != null) {
-            mainObj.uiController.ClearToasts();
             mainObj.uiController.ShowToast($"Startup Error: {_startupErrorMsg}", Toast.ToastColor.kRed, 10, "crashTag");
         }
 
