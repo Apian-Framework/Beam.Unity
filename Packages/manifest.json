@@ -2,7 +2,8 @@
   "dependencies": {
     "com.apian-framework.apian": "file:../../Apian.Net/src/Apian",
     "com.apian-framework.beamgamecode": "file:../../BeamGameCode/src/BeamGameCode",
-    "com.apian-framework.ethforapian": "file:E:/ConsenSys/Apian/code/CryptoForApian/src/EthForApian",
+    "com.apian-framework.apiancrypto": "file:../../ApianCrypto/src/ApianCrypto",
+    "com.apian-framework.ethforapian": "file:../../ApianCrypto/src/EthForApian",
     "com.apian-framework.libp2punity": "file:../../Libp2p-Unity/Libp2pUnity.unitypackage",
     "com.apian-framework.modalapplication": "file:../../ApianAppUtils/src/ModalApplication",
     "com.apian-framework.mqttjs-unity": "file:../../MqttJS-Unity/MqttJsUnity.unitypackage",

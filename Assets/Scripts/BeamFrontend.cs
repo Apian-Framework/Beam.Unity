@@ -6,7 +6,7 @@ using Apian;
 using BeamGameCode;
 using UniLog;
 using static UniLog.UniLogger; // for SID
-using CryptoForApian;
+using ApianCrypto;
 
 #if !SINGLE_THREADED
 using System.Threading;
@@ -27,7 +27,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     protected BeamMain mainObj; // main Unity GameObject
     public IBeamApplication beamAppl {get; private set;}
     public IBeamAppCore appCore {get; private set;}
-    public ICryptoForApian cryptoThing {get; private set;}
+    public IApianCrypto cryptoThing {get; private set;}
     protected BeamUserSettings userSettings;
 
 
@@ -108,13 +108,28 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         {
             string addr =  cryptoThing.CreateAccount();
             string json = cryptoThing.GetJsonForAccount("password");
-            mainObj.uiController.ShowToast( $"Created new Eth acct: {addr}", Toast.ToastColor.kBlue, 5);
+            mainObj.uiController.ShowToast( $"Created new Eth acct: {addr}", Toast.ToastColor.kBlue, 5,  "acct");
             userSettings.cryptoAcctJSON = json;
             mainObj.PersistSettings();
         } else {
             string addr = cryptoThing.CreateAccountFromJson("password", userSettings.cryptoAcctJSON);
-            mainObj.uiController.ShowToast(  $"Loaded Eth acct: {addr} from settings", Toast.ToastColor.kBlue, 5);
+            mainObj.uiController.ShowToast(  $"Loaded Eth acct: {addr} from settings", Toast.ToastColor.kBlue, 5, "acct");
         }
+
+            // Stupid temporary test
+        string msg = "Ya Ya! Ya Ya ya.";
+        string sig = cryptoThing.EncodeUTF8AndSign(msg);
+
+        logger.Info( $"Message: {msg}");
+        logger.Info( $"Signature: {sig}");
+
+        string recAddr = cryptoThing.EncodeUTF8AndEcRecover(msg, sig);
+        logger.Info( $"Recovered addr: {recAddr}");
+
+        if (recAddr.Equals(cryptoThing.AccountAddress))
+            mainObj.uiController.ShowToast($"Lame Sign/Recover test succeeded", Toast.ToastColor.kGreen, 20, "test");
+        else
+           mainObj.uiController.ShowToast($"Lame Sign/Recover test FAILED!", Toast.ToastColor.kRed, 20, "test");
 
         if (_startupErrorMsg != null) {
             mainObj.uiController.ShowToast($"Startup Error: {_startupErrorMsg}", Toast.ToastColor.kRed, 10, "crashTag");

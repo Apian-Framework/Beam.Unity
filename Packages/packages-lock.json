@@ -9,6 +9,12 @@
         "com.apian-framework.unilog": "1.0.2"
       }
     },
+    "com.apian-framework.apiancrypto": {
+      "version": "file:../../ApianCrypto/src/ApianCrypto",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.apian-framework.beamgamecode": {
       "version": "file:../../BeamGameCode/src/BeamGameCode",
       "depth": 0,
@@ -19,7 +25,7 @@
       }
     },
     "com.apian-framework.ethforapian": {
-      "version": "file:E:/ConsenSys/Apian/code/CryptoForApian/src/EthForApian",
+      "version": "file:../../ApianCrypto/src/EthForApian",
       "depth": 0,
       "source": "local",
       "dependencies": {}
