@@ -116,6 +116,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
             mainObj.uiController.ShowToast(  $"Loaded Eth acct: {addr} from settings", Toast.ToastColor.kBlue, 5, "acct");
         }
 
+#if ETH_SIGN_RECOVER_TEST
             // Stupid temporary test
         string msg = "Ya Ya! Ya Ya ya.";
         string sig = cryptoThing.EncodeUTF8AndSign(msg);
@@ -130,6 +131,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
             mainObj.uiController.ShowToast($"Lame Sign/Recover test succeeded", Toast.ToastColor.kGreen, 20, "test");
         else
            mainObj.uiController.ShowToast($"Lame Sign/Recover test FAILED!", Toast.ToastColor.kRed, 20, "test");
+#endif
 
         if (_startupErrorMsg != null) {
             mainObj.uiController.ShowToast($"Startup Error: {_startupErrorMsg}", Toast.ToastColor.kRed, 10, "crashTag");
