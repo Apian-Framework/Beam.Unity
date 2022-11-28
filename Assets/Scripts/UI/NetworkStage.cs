@@ -58,7 +58,7 @@ public class NetworkStage : MonoBehaviour
 	protected void updatePeerList(Dictionary<string, BeamNetworkPeer> peers)
 	{
 		PeerListFld.text = string.Join("",
-			peers.Values.OrderBy(p => p.PeerId).Select(p =>  $"{SID(p.PeerId)} - {p.Name}\n")
+			peers.Values.OrderBy(p => p.PeerAddr).Select(p =>  $"{SID(p.PeerAddr)} - {p.Name}\n")
 		);
 
 	}

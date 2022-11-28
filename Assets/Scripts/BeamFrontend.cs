@@ -196,7 +196,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public bool BikeIsLocal(IBike ib)
     {
-        return ib.peerId == appCore.LocalPeerId;
+        return ib.playerAddr == appCore.LocalPlayerAddr;
     }
     public bool BikeIsLocalPlayer(IBike ib)
     {
@@ -217,9 +217,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         {ApianGroupMember.Status.Gone, "Gone"}
     };
 
-    public void OnGroupMemberStatus(string groupId, string peerId, ApianGroupMember.Status newStatus, ApianGroupMember.Status prevStatus)
+    public void OnGroupMemberStatus(string groupId, string peerAddr, ApianGroupMember.Status newStatus, ApianGroupMember.Status prevStatus)
     {
-        if ((newStatus != prevStatus) && (peerId == appCore?.LocalPeerId ))
+        if ((newStatus != prevStatus) && (peerAddr == appCore?.LocalPlayerAddr ))
         {
             mainObj.uiController.ShowToast($"Local Peer is {statusNames[newStatus]}", Toast.ToastColor.kGreen, 5, "peerStatusTag");
          }
@@ -502,7 +502,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnPeerJoinedNetEvt(object sender, PeerJoinedEventArgs args)
     {
         BeamNetworkPeer p = args.peer;
-        logger.Info($"OnPeerJoinedEvt() name: {p.Name}, Id: {SID(p.PeerId)}");
+        logger.Info($"OnPeerJoinedEvt() name: {p.Name}, Id: {SID(p.PeerAddr)}");
 
         UpdateNetworkInfo();
 
@@ -510,13 +510,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnPeerLeftNetEvt(object sender, PeerLeftEventArgs args)
     {
-        logger.Info($"OnPeerLeftEvt(): {SID(args.p2pId)}");
+        logger.Info($"OnPeerLeftEvt(): {SID(args.peerAddr)}");
 
         if (appCore != null)
         {
                 // ToDo: Need an OnPlayerLeft handler. This one's about the peer
                 // Or... should have onPeerLeft toast?
-                BeamPlayer pl = appCore?.CoreState.GetPlayer(args.p2pId);
+                BeamPlayer pl = appCore?.CoreState.GetPlayer(args.peerAddr);
                 mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5);
         }
 
@@ -533,7 +533,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnPlayerJoinedEvt(object sender, PlayerJoinedEventArgs args)
     {
         // Player joined means a group has been joined AND is synced (ready to go)
-        if ( args.player.PeerId == appCore.LocalPeerId )
+        if ( args.player.PlayerAddr == appCore.LocalPlayerAddr )
         {
             if (mainObj.beamApp.modeMgr.CurrentModeId() == BeamModeFactory.kNetPlay)
                 mainObj.uiController.ShowToast($"GameSpec: {args.groupChannel}", Toast.ToastColor.kBlue, 10.0f);
@@ -542,13 +542,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnPlayerMissingEvt(object sender, PlayerLeftEventArgs args)
     {
-        BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
+        BeamPlayer pl = appCore.CoreState.GetPlayer(args.playerAddr);
         mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Missing!!", Toast.ToastColor.kRed,8);
     }
 
     public void OnPlayerReturnedEvt(object sender, PlayerLeftEventArgs args)
     {
-        BeamPlayer pl = appCore.CoreState.GetPlayer(args.p2pId);
+        BeamPlayer pl = appCore.CoreState.GetPlayer(args.playerAddr);
         mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Returned!!", Toast.ToastColor.kRed,8);
     }
 
@@ -563,7 +563,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         IBike ib = args?.ib;
         bool isLocal = BikeIsLocal(ib);
-        logger.Info($"OnNewBikeEvt(). Id: {SID(ib.bikeId)}, Owner: {SID(ib.peerId)} LocalPlayer: {(BikeIsLocalPlayer(ib))}");
+        logger.Info($"OnNewBikeEvt(). Id: {SID(ib.bikeId)}, Owner: {SID(ib.playerAddr)} LocalPlayer: {(BikeIsLocalPlayer(ib))}");
         GameObject bikeGo = FrontendBikeFactory.CreateBike(ib, feGround, isLocal);
         feBikes[ib.bikeId] = bikeGo;
         if (BikeIsLocalPlayer(ib))
