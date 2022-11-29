@@ -10,7 +10,7 @@ public class UnityBeamGameNet : BeamGameNet
 
     }
 
-    protected override IP2pNet P2pNetFactory(string p2pConnectionString)
+    protected override IP2pNet P2pNetFactory(string localPeerAddress, string p2pConnectionString)
     {
         // P2pConnectionString is <p2p implmentation name>::<imp-dependent connection string>
         // Names are: p2ploopback, p2predis
@@ -49,7 +49,7 @@ public class UnityBeamGameNet : BeamGameNet
                 throw( new Exception($"Invalid connection type: {parts[0]}"));
         }
 
-        IP2pNet ip2p = new P2pNetBase(this, carrier);
+        IP2pNet ip2p = new P2pNetBase(this, carrier, localPeerAddress);
 
         // TODO: Since C# ctors can't fail and return null we don;t have a generic
         // "It didn;t work" path. As it stands, the P2pNet ctor will throw and we'll crash.
