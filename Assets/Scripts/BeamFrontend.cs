@@ -489,7 +489,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnGameSelected(GameSelectedEventArgs selection)
     {
         logger.Info($"OnGameSelected(): Setting result: {selection.gameInfo?.GameName} / {selection.result}");
-        beamAppl.OnGameSelected( selection.gameInfo, selection.result );
+        beamAppl.OnGameSelected( selection );
     }
 
 

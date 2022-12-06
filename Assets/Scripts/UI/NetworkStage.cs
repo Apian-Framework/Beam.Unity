@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using BeamGameCode;
+using P2pNet;
 using UnityEngine;
 using UniLog;
 using static UniLog.UniLogger; // for SID()
@@ -58,7 +59,11 @@ public class NetworkStage : MonoBehaviour
 	protected void updatePeerList(Dictionary<string, BeamNetworkPeer> peers)
 	{
 		PeerListFld.text = string.Join("",
-			peers.Values.OrderBy(p => p.PeerAddr).Select(p =>  $"{SID(p.PeerAddr)} - {p.Name}\n")
+			peers.Values.OrderBy(p => p.PeerAddr).Select(p =>
+			{
+            		PeerNetworkStats stats = _main.beamApp.beamGameNet.GetPeerNetStats(p.PeerAddr);
+				return $"{SID(p.PeerAddr)}: Lag: {stats?.NetLagMs}, Sigma: {stats?.NetLagSigma:F2}, LHF: {stats?.MsSinceLastHeadrFrom}, Name: {p.Name}";
+			})
 		);
 
 	}
@@ -66,10 +71,15 @@ public class NetworkStage : MonoBehaviour
 	protected void updateGameList(Dictionary<string, BeamGameAnnounceData> games)
 	{
 		GameListFld.text = string.Join("",
-			games.Values.OrderBy( g => g.GameInfo.GameName).Select( g =>
-				$"Name: {g.GameInfo.GameName} - {g.GameInfo.GroupId}\n"
-			  + $"  Type: {g.GameInfo.GroupType} Peers: {g.GameStatus.ActiveMemberCount}\n"
-			)
+			games.Values.OrderBy( g => g.GameInfo.GameName).Select( ga => {
+				BeamGameInfo gi = ga.GameInfo;
+				BeamGameStatus gs = ga.GameStatus;
+            	string gameId = $"{gi.GameName}: {gi.GroupType}";
+            	string memberInf = $"{gs.MemberCount} ({gi.MemberLimits.MinMembers}/{gi.MemberLimits.MaxMembers})";
+            	string playerInf = $"{gs.PlayerCount} ({gi.MemberLimits.MinPlayers}/{gi.MemberLimits.MaxPlayers}";
+            	string validatorInf = $"{gs.ValidatorCount} ({gi.MemberLimits.MinValidators}/{gi.MemberLimits.MaxValidators})";
+            	return$" {gameId}, Members: {memberInf}, Players: {playerInf}, Validators: {validatorInf}";
+			})
 		);
 
 	}
