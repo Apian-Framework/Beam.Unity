@@ -1,6 +1,7 @@
 # Gitignore for an Unity 3D project (NOT a .Net Core+UnityPackage library)
 # Unlike those libs, here we do NOT want .csproj and .sln files
 [Ll]ibrary/
+[Uu]sersettings/
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
