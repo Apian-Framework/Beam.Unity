@@ -62,7 +62,7 @@ public class NetworkStage : MonoBehaviour
 			peers.Values.OrderBy(p => p.PeerAddr).Select(p =>
 			{
             		PeerNetworkStats stats = _main.beamApp.beamGameNet.GetPeerNetStats(p.PeerAddr);
-				return $"{SID(p.PeerAddr)}: Lag: {stats?.NetLagMs}, Sigma: {stats?.NetLagSigma:F2}, LHF: {stats?.MsSinceLastHeadrFrom}, Name: {p.Name}";
+				return $"{SID(p.PeerAddr)}: Lag: {stats?.NetLagMs}, Sigma: {stats?.NetLagSigma:F2}, LHF: {stats?.MsSinceLastHeardFrom}, Name: {p.Name}";
 			})
 		);
 
