@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BeamGameCode;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ using UnityEngine.Events;
 public class SettingsPanel : MovableUICanvasItem
 {
     public GameObject screenNameField;
-    public GameObject p2pConnectionField;
+    public GameObject p2pConnectionDrop;
     public GameObject ethNodeField;
     public GameObject ethAcctField;
     public GameObject netNameField;
@@ -22,7 +23,11 @@ public class SettingsPanel : MovableUICanvasItem
         BeamUserSettings settings = mainObj.frontend.GetUserSettings();
 
         screenNameField.GetComponent<TMP_InputField>().text = settings.screenName;
-        p2pConnectionField.GetComponent<TMP_InputField>().text = settings.p2pConnectionString;
+
+        TMP_Dropdown p2pDrop = p2pConnectionDrop.GetComponent<TMP_Dropdown>();
+        p2pDrop.ClearOptions();
+        p2pDrop.AddOptions( settings.p2pConnectionSettings.Keys.ToList());
+
         ethNodeField.GetComponent<TMP_InputField>().text = settings.ethNodeUrl;
         ethAcctField.GetComponent<TMP_InputField>().text = settings.cryptoAcctJSON;
         netNameField.GetComponent<TMP_InputField>().text = settings.apianNetworkName;
@@ -39,7 +44,9 @@ public class SettingsPanel : MovableUICanvasItem
         BeamUserSettings settings = mainObj.frontend.GetUserSettings();
 
         settings.screenName = screenNameField.GetComponent<TMP_InputField>().text;
-        settings.p2pConnectionString = p2pConnectionField.GetComponent<TMP_InputField>().text;
+
+        settings.defaultP2pConnection = p2pConnectionDrop.GetComponent<TMP_Dropdown>().captionText.text;
+
         settings.ethNodeUrl = ethNodeField.GetComponent<TMP_InputField>().text;
         settings.cryptoAcctJSON = ethAcctField.GetComponent<TMP_InputField>().text;
         settings.apianNetworkName = netNameField.GetComponent<TMP_InputField>().text;
