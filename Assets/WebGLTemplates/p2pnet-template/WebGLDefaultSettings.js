@@ -7,6 +7,7 @@ var WebGLDefaultSettings = {
     "NewsWeasel MQTT WS": "p2punitymqtt::{\"url\":\"wss://newsweasel.com:15676/ws\",\"user\":\"apian_mqtt\",\"pwd\":\"apian_mqtt_pwd\"}"
   },
   "defaultP2pConnection": "NewsWeasel MQTT WS",
+  "cryptoAcctJSON": "",
   "apianNetworkName": "BeamNet1",
   "ethNodeUrl": "https://rinkeby.infura.io/v3/7653fb1ed226443c98ce85d402299735",
   "localPlayerCtrlType": "player",
