@@ -50,7 +50,7 @@ public class SelGamePanel : MovableUICanvasItem
 
     protected void NotifySelection( GameSelectedEventArgs selArgs)
     {
-        frontEnd.OnGameSelected(selArgs));
+        frontEnd.OnGameSelected(selArgs);
     }
 
 #endif
