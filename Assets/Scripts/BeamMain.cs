@@ -109,12 +109,6 @@ public class BeamMain : MonoBehaviour
         gameNet = new UnityBeamGameNet();
         beamApp = new BeamApplication(gameNet, frontend);
         inputDispatch = new InputDispatch(this);
-
-        beamApp.Start(BeamModeFactory.kSplash);
-
-        // TODO: get rid of this Eth stuff (goes in GameNet)
-        //eth = new EthereumProxy();
-		//eth.ConnectAsync(EthereumProxy.InfuraRinkebyUrl); // consumers should check eth.web3 before using
     }
 
     // Update is called once per frame
