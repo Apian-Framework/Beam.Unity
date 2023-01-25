@@ -88,6 +88,10 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         UniLogger.DefaultLevel = UniLogger.LevelFromName(userSettings.defaultLogLevel);
         UniLogger.SetupLevels(userSettings.logLevels);
         userSettings.localPlayerCtrlType = BikeFactory.LocalPlayerCtrl; // FIXME: is this necessary?
+
+        SetupModeActions(); // needs to happen before BeamMain.Start()
+        logger = UniLogger.GetLogger("Frontend");
+        feBikes = new Dictionary<string, GameObject>();
     }
 
     // Start is called before the first frame update
@@ -96,10 +100,6 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         mainObj = BeamMain.GetInstance();
         mainObj.ApplyPlatformUserSettings();
         mainObj.PersistSettings(); // make sure the default settings get saved
-        feBikes = new Dictionary<string, GameObject>();
-        logger = UniLogger.GetLogger("Frontend");
-        SetupModeActions();
-
         mainObj.uiController.ClearToasts();
 
         cryptoThing = EthForApian.Create();
@@ -317,8 +317,25 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     }
 
-    public void OnStartMode(BeamGameMode mode, object param) => modeStartActions[mode.ModeId()](mode, param);
-    public void OnEndMode(BeamGameMode mode, object param) => modeEndActions[mode.ModeId()](mode, param);
+    public void OnStartMode(BeamGameMode mode, object param)
+    {
+        try {
+            modeStartActions[mode.ModeId()](mode, param);
+        } catch (Exception e)
+        {
+            logger.Error( $"OnStartMode(): {e.Message}");
+        }
+    }
+    public void OnEndMode(BeamGameMode mode, object param)
+    {
+        try {
+            modeEndActions[mode.ModeId()](mode, param);
+        } catch (Exception e)
+        {
+            logger.Error( $"OnEndMode(): {e.Message}");
+        }
+    }
+
     public void OnResumeMode(BeamGameMode mode, object param) => modeResumeActions[mode.ModeId()](mode, param);
     public void OnPauseMode(BeamGameMode mode, object param) => modePauseActions[mode.ModeId()](mode, param);
 
