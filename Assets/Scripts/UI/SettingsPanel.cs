@@ -25,8 +25,6 @@ public class SettingsPanel : MovableUICanvasItem
     }
 
 
-
-
     public void LoadAndShow()
     {
         BeamMain mainObj = BeamMain.GetInstance();

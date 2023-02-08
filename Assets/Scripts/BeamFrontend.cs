@@ -6,7 +6,6 @@ using Apian;
 using BeamGameCode;
 using UniLog;
 using static UniLog.UniLogger; // for SID
-using ApianCrypto;
 
 #if !SINGLE_THREADED
 using System.Threading;
@@ -215,13 +214,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
         networkStage.ShowProceedButton();
 
-        // Need to display "Proceed" and "Cancel" (no, tnot hose prompts) to the user
-        // that result in a call to:
-        //     beamAppl.OnPushModeReq(BeamModeFactory.kNetPlay, null);
-        // or
-        //     beamAppl.OnSwitchModeReq(BeamModeFactory.kNetSplash, null);
+        mainObj.uiController.ShowToast( $"Connected to Network: \"{userSettings.curP2pConnection}\"", Toast.ToastColor.kBlue, 4.0f);
 
-        // throw new NotImplementedException();
+
     }
 
     public BeamUserSettings GetUserSettings() => userSettings;
@@ -333,6 +328,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         beamAppl.GameAnnounceEvt += OnGameAnnounceEvt;
         beamAppl.PeerJoinedEvt += OnPeerJoinedNetEvt;
         beamAppl.PeerLeftEvt += OnPeerLeftNetEvt;
+        beamAppl.ChainIdEvt += OnChainIdEvt;
     }
 
     protected void OnPauseNetworkMode(BeamGameMode mode, object param) {}
@@ -348,6 +344,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         beamAppl.GameAnnounceEvt -= OnGameAnnounceEvt;
         beamAppl.PeerJoinedEvt -= OnPeerJoinedNetEvt;
         beamAppl.PeerLeftEvt -= OnPeerLeftNetEvt;
+        beamAppl.ChainIdEvt -= OnChainIdEvt;
     }
 
     protected void SetupNetworkCamera()
@@ -510,6 +507,11 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnGameAnnounceEvt(object sender, GameAnnounceEventArgs args)
     {
         UpdateNetworkInfo();
+    }
+
+    public void OnChainIdEvt(object sender, ChainIdEventArgs args)
+    {
+        mainObj.uiController.ShowToast( $"Connected to Blockchain: \"{userSettings.curBlockchain}\" (id: {args.chainId})", Toast.ToastColor.kBlue, 5.0f);
     }
 
     // Players
