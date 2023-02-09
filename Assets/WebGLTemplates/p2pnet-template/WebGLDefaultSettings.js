@@ -20,8 +20,8 @@ var WebGLDefaultSettings = {
   "permAcctAddr": "0x1234567890123456789012345678901234567890",
   "apianNetworkName": "BeamNet1",
   "localPlayerCtrlType": "player",
-  "aiBikeCount": 2,
-  "regenerateAiBikes": true,
+  "aiBikeCount": 0,
+  "regenerateAiBikes": false,
   "defaultLogLevel": "Warn",
   "logLevels": {
     "UserSettings": "Warn",
