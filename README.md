@@ -62,5 +62,30 @@ When you first art the game you will probably want to practice. So click on "Pra
 ---
 ## **Multiplayer**
 
-The real reason for Beam (and Apian) is of course to play with other people.
+The real reason for Beam (and Apian) is of course to play with other people. First you will have to take care of some settings. So click on "Settings"
+
+### **Settings**
+
+There are a number of value which must be selected or entered in the Settings panel before being able to connect and play a network game. Because Beam is a test article it is useful to allow the user to select as many different options as are possible, but on the other hand a graphical UI that allowed everything would be completely impractical to use - especially in a demonstration environment. Because of the Beam stores user settings in a text file to allow users and developers to enter whatever they like, but the Beam.Unity interface only allows users to choose entries that are already in the settings file more some of the values.
+
+<p >
+  <img src="./docs/beam-settings.jpg" width="600" title="hover text">
+</p>
+
+- P2P Connection. Beam and Apian use the [P2pNet](https://github.com/Apian-Framework/P2pNet) library to manage Apian peer-to-per communications. P2pNet supports several different communications protocols which often make use of public or private message brokers. This dropdown provides access to a number of broker/protocol options (or relay/protocol in the case of libp2p.) In most cases you will only be able to connect to other peers who have made the same selection. _An exception here is that games begin played from within a browser who select "<SOME_BROKER> MQTT WS" to select MQTT over WebSockets can communicate with native build peers that select "<SOME_BROKER> MQTT"._
+
+- Blockchain. Beam can connect to any EVM-based chain. Selections for Gnosis and Ethereum mainnets and testnets are provided by default.
+
+- In-Game Acct. Beam creates and manages a blockchain account for use by the application. This account acts on its own, without necessarily informing the player, and is intended to serve as a proxy to the more traditionally-managed "permanent account" listed below. Currently the in-game account is just used among the peers as a unique identifier and to sign data originating from the local peer, though in the future it will submit transactions to the chain. Only one peer with this account address is able to join the p2p network at a time.
+
+- Permanent Acct. This value represents a "traditional" (MetaMask or Ledger managed) account owned by the user and will never actually perform any transactions in the game. It is not currently used, but in the future will be entered by providing an externally-generated and signed attestation saying that the in-game account is authorized to act as a proxy to this one. This attestation will be passed to other peers to they can validate that the player is who they say they are. In addition the proxy account, on submitting a transaction to the blockchain, might also provide the attestation. _Though it is more likely that whatever external tool created the attestation in the first place will also submit it to the relevant contract at that point in time - so the contract will already know about the proxy relationship._
+
+- Apian Network. This is simply a text string that allows for games or groups of games to use the same network infrastructure (broker or mesh) without being able to see one another.
+
+- Screen name. How you will be seen in the network.
+
+
+
+
+
 
