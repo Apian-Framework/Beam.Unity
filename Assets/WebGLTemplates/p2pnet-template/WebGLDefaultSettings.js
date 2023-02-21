@@ -4,7 +4,9 @@ var WebGLDefaultSettings = {
   "startMode": "splash",
   "screenName": "Web Player",
   "p2pConnectionSettings": {
+    "PokeyHedgehog MQTT WS": "p2punitymqtt::{\"url\":\"wss://pokeyhedgehog.com:15676/ws\",\"user\":\"apian_mqtt\",\"pwd\":\"apian_mqtt_pwd\"}",      
     "NewsWeasel MQTT WS": "p2punitymqtt::{\"url\":\"wss://newsweasel.com:15676/ws\",\"user\":\"apian_mqtt\",\"pwd\":\"apian_mqtt_pwd\"}",
+    "PokeyHedgehog lib2p-relay": "p2punitylibp2p::{\"relaybase\":\"/dns4/libp2p-relay.pokeyhedgehog.com/tcp/15003/wss/p2p/\",\"relayid\":\"12D3KooWHfNWUmd9SAGtwNTHRU6U9ThZmdabiRYw8EHP1sLayTCU\",\"dialid\":\"\"}",
     "Newsweasel lib2p-relay": "p2punitylibp2p::{\"relaybase\":\"/dns4/libp2p-relay.newsweasel.com/tcp/15003/wss/p2p/\",\"relayid\":\"12D3KooWArqNU1injda6AGUVzpSVciQXFLuRWnjtmF2sppLy6Tc8\",\"dialid\":\"\"}"
   },
   "blockchainInfos": {
