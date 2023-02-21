@@ -41,7 +41,7 @@ public class InputDispatch
         //     break;
         case GameCamera.CamModeID.kOverheadView:
             feMain.gameCamera.StartEnemyView(focusObj);
-            feMain.uiController.ShowToast($"Orbit View", Toast.ToastColor.kGreen, toastSecs, "camtoast");
+            feMain.uiController.ShowToast($"Target View", Toast.ToastColor.kGreen, toastSecs, "camtoast");
             break;
         default:
         case GameCamera.CamModeID.kEnemyView:
