@@ -21,13 +21,15 @@ When a pylon is hit the player hitting it loses a bunch of points and the player
 
 Team membership is random and when a player respawns her new team is probably not the same as it was. Awarded points and damages are less if the bike and the pylon are the same color. So if you are on the Yellow team and in a position where you can't avoid hitting a pylon, try to hit a yellow one. Likewise, a certain amount of impromptu cooperation with other Yellow bikes in trying to snare one of another team is probably a good idea. There is no concept of a "team score", though. You really are on your own.
 
+Oh, also: don't drive off the edge of the grid.
+
 ## Installing / Building
 
 This is a Unity 3D project and so you will have to have Unity 3D installed. The easiest way to get all of the sources necessary is to clone the [Beam-Releases repo](https://github.com/Apian-Framework/Beam-Releases) and follow the instructions there.
 
 ## Gameplay
 
-
+When you first art the game you will probably want to practice. So clock on "Practice" and you will be put in a local-only arena where you can home your skills,
 
 
 
