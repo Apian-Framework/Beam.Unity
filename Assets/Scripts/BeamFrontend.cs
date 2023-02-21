@@ -498,7 +498,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
                 // ToDo: Need an OnPlayerLeft handler. This one's about the peer
                 // Or... should have onPeerLeft toast?
                 BeamPlayer pl = appCore?.CoreState.GetPlayer(args.peerAddr);
-                mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5);
+                // peer address as tage for missing and left game so they don;t dup
+                mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Left Game", Toast.ToastColor.kRed,5,args.peerAddr);
         }
 
         UpdateNetworkInfo();
@@ -529,13 +530,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     public void OnPlayerMissingEvt(object sender, PlayerLeftEventArgs args)
     {
         BeamPlayer pl = appCore.CoreState.GetPlayer(args.playerAddr);
-        mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Missing!!", Toast.ToastColor.kRed,8);
+        mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Missing!!", Toast.ToastColor.kRed,5,args.playerAddr);
     }
 
     public void OnPlayerReturnedEvt(object sender, PlayerLeftEventArgs args)
     {
         BeamPlayer pl = appCore.CoreState.GetPlayer(args.playerAddr);
-        mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Returned!!", Toast.ToastColor.kRed,8);
+        mainObj.uiController.ShowToast($"Player {(pl!=null?pl.Name:"<unk>")} Returned!!", Toast.ToastColor.kRed,5,args.playerAddr);
     }
 
     public void OnPlayersClearedEvt(object sender, EventArgs e)
