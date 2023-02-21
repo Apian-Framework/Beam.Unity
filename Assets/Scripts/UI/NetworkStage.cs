@@ -61,8 +61,11 @@ public class NetworkStage : MonoBehaviour
 		PeerListFld.text = string.Join("",
 			peers.Values.OrderBy(p => p.PeerAddr).Select(p =>
 			{
-            		PeerNetworkStats stats = _main.beamApp.beamGameNet.GetPeerNetStats(p.PeerAddr);
-				return $"{SID(p.PeerAddr)}: Lag: {stats?.NetLagMs}, Sigma: {stats?.NetLagSigma:F2}, LHF: {stats?.MsSinceLastHeardFrom}, Name: {p.Name}";
+            	PeerNetworkStats stats = _main.beamApp.beamGameNet.GetPeerNetStats(p.PeerAddr);
+				long lagMs = stats?.NetLagMs == null ? 0 : stats.NetLagMs;
+				string lagStr = $"{(lagMs==0?"":" Lag: "+stats?.NetLagMs)}"; // Don;t display 0 lag
+
+				return $"{p.Name} ({SID(p.PeerAddr)}) {lagStr}\n";
 			})
 		);
 
@@ -78,7 +81,8 @@ public class NetworkStage : MonoBehaviour
             	string memberInf = $"{gs.MemberCount} ({gi.MemberLimits.MinMembers}/{gi.MemberLimits.MaxMembers})";
             	string playerInf = $"{gs.PlayerCount} ({gi.MemberLimits.MinPlayers}/{gi.MemberLimits.MaxPlayers}";
             	string validatorInf = $"{gs.ValidatorCount} ({gi.MemberLimits.MinValidators}/{gi.MemberLimits.MaxValidators})";
-            	return$" {gameId}, Members: {memberInf}, Players: {playerInf}, Validators: {validatorInf}";
+            	//return$" {gameId}, Members: {memberInf}, Players: {playerInf}, Validators: {validatorInf}";
+				return$" {gameId}  Players: {gs.PlayerCount}, Validators: {gs.ValidatorCount}\n";
 			})
 		);
 
