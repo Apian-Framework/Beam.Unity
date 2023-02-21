@@ -30,6 +30,10 @@ public class SettingsPanel : MovableUICanvasItem
         BeamMain mainObj = BeamMain.GetInstance();
         BeamUserSettings settings = mainObj.frontend.GetUserSettings();
 
+        if (string.IsNullOrEmpty(settings.gameAcctAddr))
+            BeamMain.GetInstance().beamApp.CreateNewPersistentGameAcct(settings);
+
+
         _SetupDropdown( p2pConnectionDrop.GetComponent<TMP_Dropdown>(),
             settings.p2pConnectionSettings.Keys.ToList(),
             settings.curP2pConnection
