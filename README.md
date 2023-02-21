@@ -66,7 +66,7 @@ The real reason for Beam (and Apian) is of course to play with other people. Fir
 
 ### **Settings**
 
-There are a number of value which must be selected or entered in the Settings panel before being able to connect and play a network game. Because Beam is a test article it is useful to allow the user to select as many different options as are possible, but on the other hand a graphical UI that allowed everything would be completely impractical to use - especially in a demonstration environment. Because of the Beam stores user settings in a text file to allow users and developers to enter whatever they like, but the Beam.Unity interface only allows users to choose entries that are already in the settings file more some of the values.
+There are a number of values which must be selected or entered in the Settings panel before being able to connect and play a network game. Because Beam is a test article it is useful to allow the user to select as many different options as are possible, but on the other hand a graphical UI that allowed everything would be completely impractical to use - especially in a demonstration environment. Because of the Beam stores user settings in a text file to allow users and developers to enter whatever they like, but the Beam.Unity interface only allows users to choose entries that are already in the settings file more some of the values.
 
 <p >
   <img src="./docs/beam-settings.jpg" width="600" title="hover text">
@@ -80,12 +80,24 @@ There are a number of value which must be selected or entered in the Settings pa
 
 - Permanent Acct. This value represents a "traditional" (MetaMask or Ledger managed) account owned by the user and will never actually perform any transactions in the game. It is not currently used, but in the future will be entered by providing an externally-generated and signed attestation saying that the in-game account is authorized to act as a proxy to this one. This attestation will be passed to other peers to they can validate that the player is who they say they are. In addition the proxy account, on submitting a transaction to the blockchain, might also provide the attestation. _Though it is more likely that whatever external tool created the attestation in the first place will also submit it to the relevant contract at that point in time - so the contract will already know about the proxy relationship._
 
-- Apian Network. This is simply a text string that allows for games or groups of games to use the same network infrastructure (broker or mesh) without being able to see one another.
+- Apian Network. This is simply a text name that allows for games or groups of games to use the same network infrastructure (broker or mesh) without being able to see one another.
 
-- Screen name. How you will be seen in the network.
+- Screen name. How you will be seen on the network.
 
+### **Connecting**
 
+Click on "Connect"
 
+<p >
+  <img src="./docs/beam-connect.jpg" width="600" title="hover text">
+</p>
 
+Assuming everything goes well and you see a game you would like to join, or if you'd like to create a new session, then press "Create/Join Game"
+
+### **CCreate/Join**
+
+<p >
+  <img src="./docs/beam-join.jpg" width="600" title="hover text">
+</p>
 
 
