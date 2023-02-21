@@ -1,4 +1,4 @@
-# Beam.Unity
+# **Beam.Unity**
 
 
 **An Apian demo app**
@@ -13,7 +13,7 @@
 
 In addition to this Unity version there is also [a headless CLI implementation](https://github.com/Apian-Framework/Beam.Cli) that is fully interoperable with this one and can be used as a standalone "validator" peer or to supply peach-can AI bikes.
 
-## The Game
+## **The Game**
 
 In Beam a player pilots a futuristic space-bike on a grid, trying to avoid hitting pylons left by other bikes, all the while dropping pylons on the grid and trying to get other bikes to hit them. It's basically 3D multiplayer snake in space.
 
@@ -23,13 +23,31 @@ Team membership is random and when a player respawns her new team is probably no
 
 Oh, also: don't drive off the edge of the grid.
 
-## Installing / Building
+## **Installing / Building**
 
 This is a Unity 3D project and so you will have to have Unity 3D installed. The easiest way to get all of the sources necessary is to clone the [Beam-Releases repo](https://github.com/Apian-Framework/Beam-Releases) and follow the instructions there.
 
-## Gameplay
+## **Gameplay**
 
-When you first art the game you will probably want to practice. So clock on "Practice" and you will be put in a local-only arena where you can home your skills,
+When you first art the game you will probably want to practice. So click on "Practice" and you will be put in a local-only arena where you can hone your skills.
+
+### **Driving**
+
+ - To turn your bike use the keyboard arrow keys or click on the lower-left and lower-right quadrants of the screen.
+
+ - To cycle through the camera views, press the spacebar or click on the upper-middle of the screen.
+
+ - In "target" view cycle through other bikes using the "Z" and "X" keys or clicking on the upper-left and upper-right of the screen.
+
+ - In "follow" view look left and right using the "Z" and "X" keys or clicking on the upper-left and upper-right of the screen.
+
+- Note that you cannot control the speed of your bike.
+
+### **Other controls**
+
+- Clicking on the score display a the lower left or pressing the "S" key will toggle its full display.
+
+- Clicking on the menu icon at the lower right allows you to exit practice or adjust the game volume.
 
 
 
