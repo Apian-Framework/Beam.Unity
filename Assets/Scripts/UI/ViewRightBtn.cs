@@ -3,8 +3,6 @@ using System.Collections;
 
 public class ViewRightBtn : UIBtn  {
 
-	public float lookRadians = -1.57f;
-	public float decayRate = .001f;
 	protected BeamMain _main = null;
 
 	// Use this for initialization
@@ -19,12 +17,12 @@ public class ViewRightBtn : UIBtn  {
 	{
 		base.Update();
 		if (Input.GetKeyDown(KeyCode.X ))
-			_main.inputDispatch.LookAround(lookRadians, decayRate);
+			_main.inputDispatch.LookAround(PlayStage.lookRadians, PlayStage.lookDecayRate);
 	}
 
 	public override void doSelect()
 	{
-		_main.inputDispatch.LookAround(lookRadians, decayRate);
+		_main.inputDispatch.LookAround(PlayStage.lookRadians, PlayStage.lookDecayRate);
 	}
 }
 

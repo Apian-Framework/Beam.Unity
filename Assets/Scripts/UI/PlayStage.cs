@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayStage : MonoBehaviour
 {
-	public float lookRadians = 1.57f; // positive is left
-	public float lookDecayRate = .001f;
+	public static float lookRadians = Mathf.PI / 8f; // positive is left
+	public static float lookDecayRate = .001f;
 	protected BeamMain _main = null;
 
 	protected PlayMenu _playMenu = null;
