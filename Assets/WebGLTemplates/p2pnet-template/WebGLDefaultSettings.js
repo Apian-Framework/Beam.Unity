@@ -4,20 +4,18 @@ var WebGLDefaultSettings = {
   "startMode": "splash",
   "screenName": "Web Player",
   "p2pConnectionSettings": {
-    "PokeyHedgehog MQTT WS": "p2punitymqtt::{\"url\":\"wss://pokeyhedgehog.com:15676/ws\",\"user\":\"apian_mqtt\",\"pwd\":\"apian_mqtt_pwd\"}",      
-    "NewsWeasel MQTT WS": "p2punitymqtt::{\"url\":\"wss://newsweasel.com:15676/ws\",\"user\":\"apian_mqtt\",\"pwd\":\"apian_mqtt_pwd\"}",
+    "PokeyHedgehog MQTT WS": "p2punitymqtt::{\"url\":\"wss://pokeyhedgehog.com:15676/ws\",\"user\":\"apian_mqtt\",\"pwd\":\"apian_mqtt_pwd\"}",
     "PokeyHedgehog lib2p-relay": "p2punitylibp2p::{\"relaybase\":\"/dns4/libp2p-relay.pokeyhedgehog.com/tcp/15003/wss/p2p/\",\"relayid\":\"12D3KooWHfNWUmd9SAGtwNTHRU6U9ThZmdabiRYw8EHP1sLayTCU\",\"dialid\":\"\"}",
-    "Newsweasel lib2p-relay": "p2punitylibp2p::{\"relaybase\":\"/dns4/libp2p-relay.newsweasel.com/tcp/15003/wss/p2p/\",\"relayid\":\"12D3KooWArqNU1injda6AGUVzpSVciQXFLuRWnjtmF2sppLy6Tc8\",\"dialid\":\"\"}"
   },
   "blockchainInfos": {
     "ETH MainNet": "{\"RpcUrl\": \"https://mainnet.infura.io/v3/6f03e0922a574b58867988f047fd3cfc\", \"ChainId\": 1, \"Currency\": \"ETH\"}",
     "ETH Gorli": "{\"RpcUrl\": \"https://goerli.infura.io/v3/6f03e0922a574b58867988f047fd3cfc\", \"ChainId\": 3, \"Currency\": \"ETH\"}",
     "Gnosis Main": "{\"RpcUrl\": \"https://rpc.gnosischain.com\", \"ChainId\": 100, \"Currency\": \"xDAI\"}",
-    "Gnosis Chaido": "{\"RpcUrl\": \"https://rpc.chiadochain.net\", \"ChainId\": 10200, \"Currency\": \"xDAI\"}"
+    "Gnosis Chiado": "{\"RpcUrl\": \"https://rpc.chiadochain.net\", \"ChainId\": 10200, \"Currency\": \"xDAI\"}"
   },
   "gameAcctJSON": { },
-  "curP2pConnection": "NewsWeasel MQTT",
-  "curBlockchain": "Gnosis Chaido",
+  "curP2pConnection": "PokeyHedgehog MQTT WS",
+  "curBlockchain": "Gnosis Chiado",
   "gameAcctAddr": "",
   "permAcctAddr": "0x1234567890123456789012345678901234567890",
   "apianNetworkName": "BeamNet1",
