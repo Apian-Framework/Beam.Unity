@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BeamGameCode;
+using GameNet;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -17,6 +18,8 @@ public class SettingsPanel : MovableUICanvasItem
     public GameObject netNameField;
     public GameObject logLvlEditField;
 
+    public BeamUserSettings oldSettingsForCancel;
+
     protected void _SetupDropdown(TMP_Dropdown drop, List<string> options, string defaultOption)
     {
         drop.ClearOptions();
@@ -24,15 +27,17 @@ public class SettingsPanel : MovableUICanvasItem
         drop.value = options.FindIndex(option => option == defaultOption);
     }
 
-
-    public void LoadAndShow()
+    protected void LoadFields()
     {
-        BeamMain mainObj = BeamMain.GetInstance();
-        BeamUserSettings settings = mainObj.frontend.GetUserSettings();
-
+        BeamUserSettings settings = BeamMain.GetInstance().frontend.GetUserSettings();
         if (string.IsNullOrEmpty(settings.gameAcctAddr))
-            BeamMain.GetInstance().beamApp.CreateNewPersistentGameAcct(settings);
-
+        {
+            string addr;
+            string json;
+            (addr, json) = BeamMain.GetInstance().gameNet.NewCryptoAccountJSON("password");
+            settings.gameAcctAddr = addr;
+            settings.gameAcctJSON.Add(addr, json);
+        }
 
         _SetupDropdown( p2pConnectionDrop.GetComponent<TMP_Dropdown>(),
             settings.p2pConnectionSettings.Keys.ToList(),
@@ -57,9 +62,24 @@ public class SettingsPanel : MovableUICanvasItem
 
         logLvlEditField.GetComponent<Toggle>().isOn = bool.Parse(settings.platformSettings.TryGetValue("enableLogLvlEdit", out var x) ? x : "false");
 
-        UserSettingsMgr.Save(settings);
+    }
 
+    public void LoadAndShow()
+    {
+        BeamMain mainObj = BeamMain.GetInstance();
+        BeamUserSettings settings = mainObj.frontend.GetUserSettings();
+        oldSettingsForCancel = new BeamUserSettings(settings); // COPY and stash in case cancel gets pressed
+        LoadFields();
         moveOnScreen();
+    }
+
+    public void ResetToDefaults()
+    {
+        BeamMain mainObj = BeamMain.GetInstance();
+        BeamUserSettings defaults = BeamUserSettings.CreateDefault();
+        mainObj.frontend.SetUserSettings(defaults);
+        mainObj.uiController.ShowToast($"Default Settings", Toast.ToastColor.kGreen, 3);
+        LoadFields();
     }
 
     public void SaveAndHide()
@@ -77,6 +97,18 @@ public class SettingsPanel : MovableUICanvasItem
 
         mainObj.platformSettings.enableLogLvlEdit = logLvlEditField.GetComponent<Toggle>().isOn; // unity-only setting
 
+        mainObj.PersistSettings();
+        mainObj.ApplyPlatformUserSettings();
+
+        moveOffScreen();
+    }
+
+    public void CancelAndHide()
+    {
+        BeamMain mainObj = BeamMain.GetInstance();
+        mainObj.uiController.ShowToast($"Settings Cancelled", Toast.ToastColor.kGreen, 3);
+
+        mainObj.frontend.SetUserSettings(oldSettingsForCancel);
         mainObj.PersistSettings();
         mainObj.ApplyPlatformUserSettings();
 

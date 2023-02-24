@@ -105,6 +105,17 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     }
 
+    public void SetUserSettings(BeamUserSettings settings)
+    {
+        userSettings = settings;
+        // Dunno about the below
+        UniLogger.DefaultLevel = UniLogger.LevelFromName(userSettings.defaultLogLevel);
+        UniLogger.SetupLevels(userSettings.logLevels);
+
+        mainObj.ApplyPlatformUserSettings(); // in case these changed
+        mainObj.PersistSettings(); // write 'em out
+    }
+
     public void EnableLogLevelBtn(bool bDoIt)
     {
         // platform setting
