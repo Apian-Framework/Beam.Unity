@@ -66,7 +66,7 @@ The real reason for Beam (and Apian) is of course to play with other people. Fir
 
 ### **Settings**
 
-There are a number of values which must be selected or entered in the Settings panel before being able to connect and play a network game. Because Beam is a test article it is useful to allow the user to select as many different options as are possible, but on the other hand a graphical UI that allowed everything would be completely impractical to use - especially in a demonstration environment. Because of the Beam stores user settings [in a text file](#SettingsFileLocations) to allow users and developers to enter whatever they like, but the Beam.Unity interface only allows users to choose entries that are already in the settings file more some of the values.
+There are a number of values which must be selected or entered in the Settings panel before being able to connect and play a network game. Because Beam is a test article it is useful to allow the user to select as many different options as are possible, but on the other hand a graphical UI that allowed everything would be completely impractical to use - especially in a demonstration environment. Because of the Beam stores user settings [in a text file](#Settings-File-Locations) to allow users and developers to enter whatever they like, but the Beam.Unity interface only allows users to choose entries that are already in the settings file more some of the values.
 
 **Please:** At _least_ change the Screen Name to something that will uniquely identify you.
 
@@ -86,7 +86,7 @@ There are a number of values which must be selected or entered in the Settings p
 
 - Screen name. How you will be seen on the network.
 
-- Enable LogLevel Edit. This developer option places a small button at the bottom-right of the screen which, when pressed, presents a panel that allows the user at runtime to [specify logging verbosity options](#UsingLogFiles) for the different modules in the app.
+- Enable LogLevel Edit. This developer option places a small button at the bottom-right of the screen which, when pressed, presents a panel that allows the user at runtime to [specify logging verbosity options](#Using-Log-Files) for the different modules in the app.
 
 ### **Connecting**
 
@@ -106,7 +106,7 @@ Assuming everything goes well and you see a game you would like to join, or if y
 
 To join a pre-existing game select it in the dropdown list and then press `Join`.
 
-To create a new game session, enter a name for it, select an [Apian group type](#ApianGroupTypes), and press `create`.
+To create a new game session, enter a name for it, select an [Apian group type](#Apian-Group-Types), and press `create`.
 
 In either case if you wish to participate in the session as a validator only, and not be able to play, select the `Join as Validator Only` checkbox. _This is really not very interesting at the moment, but in the future there will be an interactive "Validator Cam" that will allow you move around the game  grid and focus on particular vehicles._
 
