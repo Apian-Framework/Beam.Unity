@@ -118,13 +118,59 @@ In either case if you wish to participate in the session as a validator only, an
 ---
 ## Settings File Locations
 
+The ability to edit user settings in the Beam app is very limited and consists mostly of setting simple string values and choosing between pre-defined options relating to network connectivity or blockchain selection. To make substantial changes it is necessary to edit the setting file itself. For Unity builds the default settings file name is `unitybeamsettings.json`
 
+### - Windows
+For a Windows native build, the settings file is located at:
 
+`%userprofile%\AppData\LocalLow\bigfattail\Beam\.beam\unitybeamsettings.json`
 
+where `%userprofile%` is typically something like `C:\Users\jim`
+
+### - macOS
+For a macOS build, the settings file is located at:
+
+`~/Library/Application\ Support/com.bigfattail.beam/.beam/unitybeamsettings.json`
+
+Keep in mind that by default the `~/Library` folder tree is hidden from the user by macOS. Presumably someone who knows how to edit a JSON settings file probably also knows how to make the folder visible.
+
+### - Browser
+For web-hosted builds all data is stored in browser local storage, and it's really not something that you can get to easily. To make a substantial settings change you will need to have access to the web server file system, and edit the file `WebGLDefaultSettingsjs`. Then you will need to reload the app, go to `Settings` and select `Default Settings` to make the app read and store the new file data.
 
 ---
 ## Using Log Files
 
+<p >
+  <img src="./docs/log-level-btn.jpg" width="600" title="hover text">
+</p>
 
+`Beam` has an elaborate (maybe too much so for production) logging system that allows a user to tailor the verbosity levels for the individual subsystems of the application. The various levels are read from the user settings file at startup, but by enabling `Log Level Edit` in settings you can use the `LOG LVL` button on any screen to tailor the levels on-the-fly.
 
+<p >
+  <img src="./docs/log-level-edit.jpg" width="600" title="hover text">
+</p>
+
+On this panel you can scroll through all of the registered subsystems and set the log level or you can set a default level an press `All To Default` to set every subsystem at once, or `Clip to Default` to set any subsystem currently at a higher level of verbosity to the default, without changing the others. (Try it - you'll see how it's useful.)
+
+This is all well and good, but where are the logs? And how can you watch them on-the-fly while changing levels?
+
+### - Browser
+
+As always, the browser is different. Interestingly, for viewing logs at runtime the browser build is the easiest to work with. THe logging output is displayed in your browsers "developer console". You probably want to open it in its own window.
+
+### - Windows
+For a Windows native build, the gameplay log file is located at:
+
+`%userprofile%\AppData\LocalLow\bigfattail\Beam\Player.log`
+
+where, as before, `%userprofile%` is typically something like `C:\Users\jim`
+
+### - macOS
+The macOS log, like the settings file, is in the hidden `~/Library` folder tree.
+
+`~/Library/Logs/bigfattail/Beam/Player.log`
+
+Both the Windows and macOS logs contain only the most recent run of the applications. In addition to that `Player.log` file, there is also a `Player-prev.log` file in the same location.
+
+As you might guess, you can use `tail -f <path>/Player.log` on either system to watch the log in realtime. It is true that `tail` is not a Windows command, but it is certainly available.
 
