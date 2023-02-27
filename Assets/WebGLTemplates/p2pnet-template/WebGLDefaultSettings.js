@@ -1,6 +1,6 @@
 
 var WebGLDefaultSettings = {
-  "version": "107",
+  "version": "108",
   "startMode": "splash",
   "screenName": "Web Player",
   "p2pConnectionSettings": {
@@ -32,7 +32,7 @@ var WebGLDefaultSettings = {
   },
   "tempSettings": {},
   "platformSettings": {
-    "mastervolume": "0..5",
+    "mastervolume": "0.5",
     "apiangamebase": "beam",
     "enableLogLvlEdit": "False"
   }

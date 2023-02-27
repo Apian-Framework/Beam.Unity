@@ -64,8 +64,9 @@ public class NetworkStage : MonoBehaviour
             	PeerNetworkStats stats = _main.beamApp.beamGameNet.GetPeerNetStats(p.PeerAddr);
 				long lagMs = stats?.NetLagMs == null ? 0 : stats.NetLagMs;
 				string lagStr = $"{(lagMs==0?"":" Lag: "+stats?.NetLagMs)}"; // Don;t display 0 lag
+				string localStr = $"{(p.PeerAddr==_main.beamApp.LocalPeer.PeerAddr?"(L) ":"")}";
 
-				return $"{p.Name} ({SID(p.PeerAddr)}) {lagStr}\n";
+				return $"{localStr}{p.Name} ({SID(p.PeerAddr)}) {lagStr}\n";
 			})
 		);
 

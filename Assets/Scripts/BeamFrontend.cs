@@ -129,10 +129,27 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void SetAppCore(IBeamAppCore core)
     {
+        logger.Info($"SetAppCore() prev: {(appCore==null?"NULL":"Not NULL")} new: {(core==null?"NULL":"Not NULL")}");
+
+        if (appCore != null)
+        {
+            // If we are leaving one, unsubscribe
+            appCore.NewCoreStateEvt -= OnNewCoreState;
+            appCore.PlayerJoinedEvt -= OnPlayerJoinedEvt;
+            appCore.PlayerMissingEvt -= OnPlayerMissingEvt;
+            appCore.PlayerReturnedEvt -= OnPlayerReturnedEvt;
+            appCore.PlayersClearedEvt -= OnPlayersClearedEvt;
+            appCore.NewBikeEvt -= OnNewBikeEvt;
+            appCore.BikeRemovedEvt -= OnBikeRemovedEvt;
+            appCore.BikesClearedEvt -=OnBikesClearedEvt;
+            appCore.PlaceClaimedEvt -= OnPlaceClaimedEvt;
+            appCore.PlaceHitEvt -= OnPlaceHitEvt;
+            appCore.ReadyToPlayEvt -= OnReadyToPlay;
+        }
+
         appCore = core;
         if (core == null)
             return;
-
 
         OnNewCoreState(null, new NewCoreStateEventArgs(core.CoreState)); // initialize
 
@@ -440,6 +457,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnNewCoreState(object sender, NewCoreStateEventArgs e)
     {
+       //mainObj.uiController.ShowToast($"New Core state", Toast.ToastColor.kGreen);
         BeamCoreState newCoreState = e.coreState as BeamCoreState;
         _SetupNewCorePlaces(newCoreState);
 

@@ -105,12 +105,13 @@ public class SettingsPanel : MovableUICanvasItem
 
     public void CancelAndHide()
     {
-        BeamMain mainObj = BeamMain.GetInstance();
-        mainObj.uiController.ShowToast($"Settings Cancelled", Toast.ToastColor.kGreen, 3);
+         BeamMain mainObj = BeamMain.GetInstance();
+        mainObj.uiController.ShowToast("Settings Cancelled", Toast.ToastColor.kGreen, 3);
 
         mainObj.frontend.SetUserSettings(oldSettingsForCancel);
-        mainObj.PersistSettings();
-        mainObj.ApplyPlatformUserSettings();
+        // setusersettings calls:
+        //     mainObj.PersistSettings();
+        //     mainObj.ApplyPlatformUserSettings();
 
         moveOffScreen();
     }

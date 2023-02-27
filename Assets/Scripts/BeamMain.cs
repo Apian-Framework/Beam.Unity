@@ -12,15 +12,25 @@ public class PlatformSettings
     protected const string kApianGameBase = "apiangamebase";
     protected const string kEnableLogLvlEdit = "enableLogLvlEdit";
 
-    public float masterVolume = .75f;
+    public const float defMasterVolume = .5f;
+    public const bool defEnableLogLvlEdit = false;
+
+    public float masterVolume = defMasterVolume;
     public string apianGameBase = "beam"; // default
-    public bool enableLogLvlEdit = false;
+    public bool enableLogLvlEdit = defEnableLogLvlEdit;
 
     public void Load( Dictionary<string,string> settingsDict)
     {
-        masterVolume = settingsDict.ContainsKey(kMasterVolume) ? float.Parse(settingsDict[kMasterVolume]) : masterVolume;
+        if ( settingsDict.ContainsKey(kMasterVolume) )
+            if (! float.TryParse(settingsDict[kMasterVolume], out masterVolume) )
+                masterVolume = defMasterVolume;
+
+        if (settingsDict.ContainsKey(kEnableLogLvlEdit))
+            if (! bool.TryParse(settingsDict[kEnableLogLvlEdit], out enableLogLvlEdit) )
+                enableLogLvlEdit= defEnableLogLvlEdit;
+
         apianGameBase = settingsDict.ContainsKey(kApianGameBase) ? settingsDict[kApianGameBase] : apianGameBase;
-        enableLogLvlEdit = settingsDict.ContainsKey(kEnableLogLvlEdit) ? bool.Parse(settingsDict[kEnableLogLvlEdit]) : enableLogLvlEdit;
+
 
         // On load create a randomish game/group spec and store it in tempsettings
         BeamMain.GetInstance().frontend.GetUserSettings().tempSettings["gameSpec"] = CreateNewGameSpec(apianGameBase);
