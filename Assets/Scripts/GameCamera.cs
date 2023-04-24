@@ -426,15 +426,54 @@ public class GameCamera : MonoBehaviour {
                 _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
             } else {
 
-                Vector3 camPos = TargetCamPos(_bike, Vector3.zero);
-                camPos.y = _height; // bike world pos, but y = _height.
-                Vector3 lookAt = TargetCamLookat(_bike, 0, _viewHeight);
+                // Super simple
+                Vector3 camPos = new Vector3(_bike.transform.position.x, _height, _bike.transform.position.z);
+                Vector3 lookAt = new Vector3(_bike.transform.position.x, _viewHeight, _bike.transform.position.z);
                 _theGameCam.MoveTowards(camPos, lookAt, -1, .1f, kZeroDist);
             }
 
         }
 
     }
+
+
+    public class ModeOverheadView2 : CameraMode
+    {
+        protected GameObject _bike;
+        protected float _height;
+        protected float _viewHeight;
+
+        public virtual void init(GameCamera cam, GameObject bike)
+        {
+            base.init(cam);
+
+            _bike = bike;
+            _height = 60.0f;
+            _viewHeight = -1000f;
+            _theGameCam.StartMotion();
+        }
+
+        public override void update()
+        {
+            if (_bike == null) // target went away (gameobject refs get autonulled on destroy)
+            {
+                _theGameCam.SetMode(CamModeID.kNormal).init(_theGameCam);  // when we get there switch to "normal"
+            } else {
+
+                Vector3 camPos = TargetCamPos(_bike, Vector3.zero);
+                camPos.y = _height; // bike world pos, but y = _height.
+
+                Vector3 lookAt = TargetCamLookat(_bike, 0, _viewHeight);
+
+
+                _theGameCam.MoveTowards(camPos, lookAt, -1, .1f, kZeroDist);
+            }
+
+        }
+
+    }
+
+
 
     public class ModeEnemyView : CameraMode
     {
