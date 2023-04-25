@@ -8,12 +8,16 @@ public class FeGround : MonoBehaviour
 {
     public Ground beGround = null;
 
-    protected Dictionary<int, GameObject> activeMarkers;
+    protected Dictionary<int, GameObject> activeMarkers; // index is posHash
     protected Stack<GameObject> idleMarkers;
+
+    protected Dictionary<int, GameObject> activeSquares; // index is posHash of -x, -z corner
+    protected Stack<GameObject> idleSquares;
 
     protected Dictionary<(int,int), GameObject> activeConnectors; // tuple is (posHash1, posHash2)
     protected Stack<GameObject> idleConnectors;
     public GameObject markerPrefab;
+    public GameObject squarePrefab;
     public GameObject connectorPrefab;
     public GameObject connectorBoom;
 
@@ -24,9 +28,13 @@ public class FeGround : MonoBehaviour
         logger = UniLogger.GetLogger("FeGround");
         activeMarkers = new Dictionary<int, GameObject>();
         idleMarkers = new Stack<GameObject>();
+        activeSquares = new Dictionary<int, GameObject>();
+        idleSquares = new Stack<GameObject>();
         activeConnectors = new Dictionary<(int,int), GameObject>();
         idleConnectors =  new Stack<GameObject>();
     }
+
+    // Place markers
 
     public void ClearMarkers()
     {
@@ -75,6 +83,9 @@ public class FeGround : MonoBehaviour
         }  catch(KeyNotFoundException) { }
     }
 
+
+    // Connectors between adjacent markers
+
     protected void FreeConnectorsForPlace(BeamPlace p1)
     {
         if (p1 == null)
@@ -103,7 +114,6 @@ public class FeGround : MonoBehaviour
                                  BeamPlace.MakePosHash(px+1, pz),
                                  BeamPlace.MakePosHash(px-1, pz) };
     }
-
 
     public void ClearConnectors()
     {
