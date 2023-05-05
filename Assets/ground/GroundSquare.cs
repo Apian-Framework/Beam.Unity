@@ -7,6 +7,12 @@ public class GroundSquare : MonoBehaviour
     public Material defaultMaterial;
     protected static AutoMat<Color> autoMat;
 
+    void Awake()
+    {
+        if (autoMat == null)
+            autoMat = new AutoMat<Color>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {

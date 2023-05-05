@@ -463,6 +463,9 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
         newCoreState.PlaceFreedEvt += OnPlaceFreedEvt;
         newCoreState.PlacesClearedEvt += OnPlacesClearedEvt;
+        newCoreState.SquareAddEvt += OnSquareAddEvt;
+        newCoreState.SquareDelEvt += OnSquareDelEvt;
+
     }
 
 
@@ -635,6 +638,19 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         GetBikeObj(p.bike.bikeId)?.GetComponent<FrontendBike>()?.OnPlaceClaimed(p);
     }
 
+    public void OnSquareAddEvt(object sender, BeamSquareEventArgs args)
+    {
+        logger.Info($"OnSquareAdded(): pos: {args.posHash} Team: {args.team.Name}");
+        feGround.SetupSquare(args.posHash, args.team);
+    }
+
+    public void OnSquareDelEvt(object sender, BeamSquareEventArgs args)
+    {
+        logger.Info($"OnSquareRemoved(): pos: {args.posHash}");
+        feGround.FreeSquare(args.posHash);
+    }
+
+
     // Ground
 
 
@@ -649,6 +665,8 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
     {
         feGround.ClearMarkers();
     }
+
+
 
     public void OnReadyToPlay(object sender, EventArgs e)
     {

@@ -2514,7 +2514,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   markerPrefab: {fileID: 4599750368388464608, guid: 74880bc2c50a27c4abfb298835b71f9b,
     type: 3}
-  squarePrefab: {fileID: 0}
+  squarePrefab: {fileID: 3376264138624930042, guid: 8fc362dc5e0a1bd42ad2ffecad37ad4b,
+    type: 3}
   connectorPrefab: {fileID: 4599750368388464608, guid: 49a0c4a53fa0aa543b0120df22fb2d4c,
     type: 3}
   connectorBoom: {fileID: 6965850595247697052, guid: cd9efc44d01f40b4da994021e52660b3,
