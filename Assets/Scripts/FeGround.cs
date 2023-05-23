@@ -8,12 +8,16 @@ public class FeGround : MonoBehaviour
 {
     public Ground beGround = null;
 
-    protected Dictionary<int, GameObject> activeMarkers;
+    protected Dictionary<int, GameObject> activeMarkers; // index is posHash
     protected Stack<GameObject> idleMarkers;
+
+    protected Dictionary<int, GameObject> activeSquares; // index is posHash of -x, -z corner
+    protected Stack<GameObject> idleSquares;
 
     protected Dictionary<(int,int), GameObject> activeConnectors; // tuple is (posHash1, posHash2)
     protected Stack<GameObject> idleConnectors;
     public GameObject markerPrefab;
+    public GameObject squarePrefab;
     public GameObject connectorPrefab;
     public GameObject connectorBoom;
 
@@ -24,12 +28,17 @@ public class FeGround : MonoBehaviour
         logger = UniLogger.GetLogger("FeGround");
         activeMarkers = new Dictionary<int, GameObject>();
         idleMarkers = new Stack<GameObject>();
+        activeSquares = new Dictionary<int, GameObject>();
+        idleSquares = new Stack<GameObject>();
         activeConnectors = new Dictionary<(int,int), GameObject>();
         idleConnectors =  new Stack<GameObject>();
     }
 
+    // Place markers
+
     public void ClearMarkers()
     {
+        ClearSquares();
         ClearConnectors();
         foreach (GameObject go in activeMarkers.Values.ToList().Union(idleMarkers))
             Object.Destroy(go);
@@ -75,6 +84,9 @@ public class FeGround : MonoBehaviour
         }  catch(KeyNotFoundException) { }
     }
 
+
+    // Connectors between adjacent markers
+
     protected void FreeConnectorsForPlace(BeamPlace p1)
     {
         if (p1 == null)
@@ -105,6 +117,7 @@ public class FeGround : MonoBehaviour
     }
 
 
+
     public void ClearConnectors()
     {
         foreach (GameObject go in activeConnectors.Values.ToList().Union(idleConnectors))
@@ -122,14 +135,14 @@ public class FeGround : MonoBehaviour
         if (posHash1 == posHash2)
             logger.Error($"FeGround.SetupConnector() - places are the same! ({p1.xIdx}, {p1.zIdx})");
 
-        logger.Info($"Connector count: Active: {activeConnectors.Count}  Idle: {idleConnectors.Count}");
+        //logger.Info($"Connector count: Active: {activeConnectors.Count}  Idle: {idleConnectors.Count}");
         GameObject connGO = null;
         if (   (activeConnectors.TryGetValue((posHash1,posHash2), out connGO) == false)
             && (activeConnectors.TryGetValue((posHash2,posHash1), out connGO) == false) )
         {
             // Not in active list. Reuse an idle one or create a new instance
             connGO = idleConnectors.Count > 0 ? idleConnectors.Pop() : GameObject.Instantiate(connectorPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-            logger.Info($"Connector count: Active: {activeConnectors.Count}  Idle: {idleConnectors.Count}");
+            //logger.Info($"Connector count: Active: {activeConnectors.Count}  Idle: {idleConnectors.Count}");
             connGO.transform.parent = transform; // make a child of the ground obj
             Connector conn = (Connector)connGO.transform.GetComponent("Connector");
             conn.SetupForPlaces( p1, p2);
@@ -153,5 +166,53 @@ public class FeGround : MonoBehaviour
             idleConnectors.Push(connGO);
         }  catch(KeyNotFoundException) { }
     }
+
+
+    public void ClearSquares()
+    {
+        foreach (GameObject go in activeSquares.Values.ToList().Union(idleSquares))
+            Object.Destroy(go);
+        activeSquares.Clear();
+        idleSquares.Clear();
+    }
+
+    public GameObject SetupSquare(int posHash, Team team)
+    {
+        GameObject square = null;
+        try {
+            square = activeSquares[posHash];
+        } catch(KeyNotFoundException) {
+            square = idleSquares.Count > 0 ? idleSquares.Pop() : GameObject.Instantiate(squarePrefab, Vector3.zero, Quaternion.identity) as GameObject;
+            if (square != null)
+            {
+                square.transform.parent = transform;
+                activeSquares[posHash] =  square;
+            }
+        }
+        if (square != null)
+        {
+            logger.Info($"SetupSquare(): Setting up GameObject - posHash: {posHash}, team: {team}");
+
+            // at game exit it might have been destroyed
+            // TODO: WHile not a THREAD sync problem, this might be a "message/action sync" issue. Check and see what's up.
+            int xIdx, zIdx;
+            BeamPlace.PosHashToIdx(posHash, out xIdx, out zIdx);
+            square.transform.position = utils.Vec3( BeamPlace.PlacePos(xIdx, zIdx));
+            GroundSquare gs = (GroundSquare)square.transform.GetComponent("GroundSquare");
+		    gs.SetColor(utils.ColorFromName(team.Color));
+            square.SetActive(true);
+        }
+        return square;
+    }
+    public void FreeSquare(int posHash)
+    {
+            try {
+            GameObject square = activeSquares[posHash];
+            square.SetActive(false);
+            idleSquares.Push(square);
+            activeSquares.Remove(posHash);
+        }  catch(KeyNotFoundException) { }
+    }
+
 
 }
