@@ -555,7 +555,7 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
         if ( args.player.PlayerAddr == appCore.LocalPlayerAddr )
         {
             if (mainObj.beamApp.modeMgr.CurrentModeId() == BeamModeFactory.kNetPlay)
-                mainObj.uiController.ShowToast($"GameSpec: {args.groupChannel}", Toast.ToastColor.kBlue, 10.0f);
+                mainObj.uiController.ShowToast($"Session ID: {args.groupChannel}", Toast.ToastColor.kBlue, 10.0f);
         }
     }
 

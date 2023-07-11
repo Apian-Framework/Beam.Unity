@@ -28,6 +28,28 @@
     </script>
 <!-- End libp2p-js stuff -->
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+      #intro-dlg {
+        font-family: 'Poppins', sans-serif;
+        background-color:#60A917;
+        color:white;
+        font-size: 16px;
+        padding: 40px;
+        position:fixed;
+        left:25%;
+        text-align:center;
+        top:20%;
+        width: 50%;}
+      #intro-dlg a {color:white}
+      .close-btn {
+        font-family: 'Poppins', sans-serif;
+        font-size: 16px;}
+    </style>
+
+
   </head>
   <body>
     <div id="unity-container" class="unity-desktop">
@@ -44,6 +66,14 @@
         <div id="unity-fullscreen-button"></div>
         <div id="unity-build-title">{{{ PRODUCT_NAME }}}</div>
       </div>
+
+      <div id="intro-dlg">
+        This installation of Beam is under active development and may or may not behave as expected.<br /><br />
+        For information about Beam, including how to play,  please visit: <a href="https://github.com/Apian-Framework/Beam.Unity" target="_blank">https://github.com/Apian-Framework/Beam.Unity</a>
+        <br />	   <br />
+        <button class="close-btn"><span onclick="document.getElementById('intro-dlg').style.display='none'">Close</span></button>
+      </div>
+
     </div>
     <script>
       var container = document.querySelector("#unity-container");

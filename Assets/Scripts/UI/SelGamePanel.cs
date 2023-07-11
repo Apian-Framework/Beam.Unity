@@ -17,6 +17,7 @@ public class SelGamePanel : MovableUICanvasItem
     public GameObject existingGameDrop;
     public GameObject newGameField;
     public GameObject agreeTypeDrop;
+    public GameObject anchorAlgDrop;
     public bool JoinAsValidator;
     public const string kNoGames = "No Games Found";
 
@@ -69,6 +70,10 @@ public class SelGamePanel : MovableUICanvasItem
         typeDrop.ClearOptions();
         typeDrop.AddOptions( BeamApianFactory.ApianGroupTypes.Where(type => type != SinglePeerGroupManager.kGroupType).ToList());
 
+        TMP_Dropdown algDrop = anchorAlgDrop.GetComponent<TMP_Dropdown>();
+        algDrop.ClearOptions();
+        algDrop.AddOptions( ApianGroupInfo.AnchorPostAlgorithms.ToList());
+
         Dictionary<string, string> egTypesForCaptions = new Dictionary<string, string>();
 
         TMP_Dropdown existingDrop = existingGameDrop.GetComponent<TMP_Dropdown>();
@@ -108,8 +113,9 @@ public class SelGamePanel : MovableUICanvasItem
         moveOffScreen();
         string newGameName = newGameField.GetComponent<TMP_InputField>().text;
         string agreementType = agreeTypeDrop.GetComponent<TMP_Dropdown>().captionText.text;
+        string anchorPostAlgorithm = anchorAlgDrop.GetComponent<TMP_Dropdown>().captionText.text;
 
-        BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType, new GroupMemberLimits());
+        BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType, anchorPostAlgorithm, new GroupMemberLimits());
         NotifySelection(new GameSelectedEventArgs(newGameInfo, GameSelectedEventArgs.ReturnCode.kCreate, JoinAsValidator));
     }
 

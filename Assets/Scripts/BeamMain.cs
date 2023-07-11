@@ -33,7 +33,7 @@ public class PlatformSettings
 
 
         // On load create a randomish game/group spec and store it in tempsettings
-        BeamMain.GetInstance().frontend.GetUserSettings().tempSettings["gameSpec"] = CreateNewGameSpec(apianGameBase);
+        //BeamMain.GetInstance().frontend.GetUserSettings().tempSettings["gameSpec"] = CreateNewGameSpec(apianGameBase);
     }
 
     public Dictionary<string, string> ToDict()
@@ -61,13 +61,13 @@ public class PlatformSettings
         "witch", "color", "face", "wood", "list", "bird", "body", "dog", "song", "door", "wind", "ship", "area", "rock",
         "order", "fire", "piece", "top", "king", "space"};
 
-    public static string CreateNewGameSpec(string apianGameBase)
-    {
-        string adj = shortAdjs[UnityEngine.Random.Range(0, shortAdjs.Count)];
-        string noun = shortNouns[UnityEngine.Random.Range(0, shortNouns.Count)];
-        string gameNumStr = UnityEngine.Random.Range(0, 1000).ToString("D4");
-        return $"{apianGameBase}{gameNumStr}/{adj}{noun}+";  // by default use "create if not exists"
-    }
+    // public static string CreateNewGameSpec(string apianGameBase)
+    // {
+    //     string adj = shortAdjs[UnityEngine.Random.Range(0, shortAdjs.Count)];
+    //     string noun = shortNouns[UnityEngine.Random.Range(0, shortNouns.Count)];
+    //     string gameNumStr = UnityEngine.Random.Range(0, 1000).ToString("D4");
+    //     return $"{apianGameBase}{gameNumStr}/{adj}{noun}+";  // by default use "create if not exists"
+    // }
 
 }
 
@@ -103,7 +103,7 @@ public class BeamMain : MonoBehaviour
     }
 
     void Awake() {
-		Application.targetFrameRate = 60; // default is 60 - but in WebGL it means not to use a timer
+		Application.targetFrameRate = -1; //60; // default is 60 - but in WebGL it means not to use a timer
         DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
 
         platformSettings = new PlatformSettings();

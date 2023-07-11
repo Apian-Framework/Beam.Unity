@@ -10,12 +10,14 @@ using UnityEngine.Events;
 
 public class SettingsPanel : MovableUICanvasItem
 {
-    public GameObject screenNameField;
+
     public GameObject p2pConnectionDrop;
     public GameObject blockchainDrop;
+    public GameObject anchorAddrField;
     public GameObject gameAcctDrop;
     public GameObject permAcctField;
     public GameObject netNameField;
+    public GameObject screenNameField;
     public GameObject logLvlEditField;
 
     public BeamUserSettings oldSettingsForCancel;
@@ -49,6 +51,8 @@ public class SettingsPanel : MovableUICanvasItem
             settings.blockchainInfos.Keys.ToList(),
             settings.curBlockchain
         );
+
+        anchorAddrField.GetComponent<TMP_InputField>().text = settings.anchorContractAddr;
 
         _SetupDropdown( gameAcctDrop.GetComponent<TMP_Dropdown>(),
 
@@ -89,9 +93,11 @@ public class SettingsPanel : MovableUICanvasItem
 
         settings.curP2pConnection = p2pConnectionDrop.GetComponent<TMP_Dropdown>().captionText.text;
         settings.curBlockchain = blockchainDrop.GetComponent<TMP_Dropdown>().captionText.text;
-        settings.gameAcctAddr = gameAcctDrop.GetComponent<TMP_Dropdown>().captionText.text;
+        settings.anchorContractAddr = anchorAddrField.GetComponent<TMP_InputField>().text;
 
+        settings.gameAcctAddr = gameAcctDrop.GetComponent<TMP_Dropdown>().captionText.text;
         settings.permAcctAddr = permAcctField.GetComponent<TMP_InputField>().text;
+
         settings.apianNetworkName = netNameField.GetComponent<TMP_InputField>().text;
         settings.screenName = screenNameField.GetComponent<TMP_InputField>().text;
 
