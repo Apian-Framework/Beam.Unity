@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BeamGameCode;
+using ApianCrypto;
 using GameNet;
 using UnityEngine;
 using UnityEngine.UI;
@@ -35,10 +36,10 @@ public class SettingsPanel : MovableUICanvasItem
         if (string.IsNullOrEmpty(settings.gameAcctAddr))
         {
             string addr;
-            string json;
-            (addr, json) = BeamMain.GetInstance().gameNet.NewCryptoAccountJSON("password");
+            string keyStoreJson;
+            (addr, keyStoreJson) = BeamMain.GetInstance().gameNet.NewCryptoAccountKeystore("password");
             settings.gameAcctAddr = addr;
-            settings.gameAcctJSON.Add(addr, json);
+            settings.gameAcctJSON.Add(addr, new PersistentAccount(PersistentAccount.AvailTypes.V3Keystore, addr, keyStoreJson).ToJson());
         }
 
         _SetupDropdown( p2pConnectionDrop.GetComponent<TMP_Dropdown>(),
