@@ -9,6 +9,12 @@
         "com.apian-framework.unilog": "1.0.2"
       }
     },
+    "com.apian-framework.apiananchor": {
+      "version": "file:E:/ConsenSys/Apian/code/ApianCrypto/src/EthereumContracts/ApianAnchor",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.apian-framework.apiancrypto": {
       "version": "file:../../ApianCrypto/src/ApianCrypto",
       "depth": 0,

@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.apian-framework.apian": "file:../../Apian.Net/src/Apian",
+    "com.apian-framework.apiananchor": "file:E:/ConsenSys/Apian/code/ApianCrypto/src/EthereumContracts/ApianAnchor",
     "com.apian-framework.apiancrypto": "file:../../ApianCrypto/src/ApianCrypto",
     "com.apian-framework.beamgamecode": "file:../../BeamGameCode/src/BeamGameCode",
     "com.apian-framework.ethforapian": "file:../../ApianCrypto/src/EthForApian",

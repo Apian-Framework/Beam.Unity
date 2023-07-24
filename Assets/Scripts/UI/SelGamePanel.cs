@@ -114,8 +114,9 @@ public class SelGamePanel : MovableUICanvasItem
         string newGameName = newGameField.GetComponent<TMP_InputField>().text;
         string agreementType = agreeTypeDrop.GetComponent<TMP_Dropdown>().captionText.text;
         string anchorPostAlgorithm = anchorAlgDrop.GetComponent<TMP_Dropdown>().captionText.text;
+        string anchorAddr = frontEnd.GetUserSettings().anchorContractAddr;
 
-        BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType, anchorPostAlgorithm, new GroupMemberLimits());
+        BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType, anchorAddr, anchorPostAlgorithm, new GroupMemberLimits());
         NotifySelection(new GameSelectedEventArgs(newGameInfo, GameSelectedEventArgs.ReturnCode.kCreate, JoinAsValidator));
     }
 

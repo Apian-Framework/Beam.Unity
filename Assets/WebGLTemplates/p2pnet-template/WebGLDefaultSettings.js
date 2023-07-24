@@ -1,6 +1,6 @@
 
 var WebGLDefaultSettings = {
-  "version": "108",
+  "version": "109",
   "startMode": "splash",
   "screenName": "Web Player",
   "p2pConnectionSettings": {
@@ -16,6 +16,7 @@ var WebGLDefaultSettings = {
   "gameAcctJSON": { },
   "curP2pConnection": "PokeyHedgehog MQTT WS",
   "curBlockchain": "Gnosis Chiado",
+  "anchorContractAddr": "0x89E803FC2F704B34e93B88F7b4bbeAf4D5F995fa",  
   "gameAcctAddr": "",
   "permAcctAddr": "0x1234567890123456789012345678901234567890",
   "apianNetworkName": "BeamNet1",

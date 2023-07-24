@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using System.Collections;
 
 public class SettingsPanel : MovableUICanvasItem
 {
@@ -121,6 +122,33 @@ public class SettingsPanel : MovableUICanvasItem
         //     mainObj.ApplyPlatformUserSettings();
 
         moveOffScreen();
+    }
+
+    protected void _copyToClipboard(string stringToCopy)
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        WebGLBrowserClip.Copy(stringToCopy);
+#endif
+        GUIUtility.systemCopyBuffer = stringToCopy;
+   }
+
+    public void CopyPermAcctAddrToClipboard()
+    {
+        _copyToClipboard( permAcctField.GetComponent<TMP_InputField>().text);
+        BeamMain.GetInstance().frontend.DisplayMessage(MessageSeverity.Info, "Permanent Account Copied to Clipboard");
+    }
+
+    public void CopyGameAcctAddrToClipboard()
+    {
+        _copyToClipboard(gameAcctDrop.GetComponent<TMP_Dropdown>().captionText.text);
+        BeamMain.GetInstance().frontend.DisplayMessage(MessageSeverity.Info, "Game Account Copied to Clipboard");
+    }
+
+
+    public void CopyAnchorAddrToClipboard()
+    {
+        _copyToClipboard(anchorAddrField.GetComponent<TMP_InputField>().text);
+        BeamMain.GetInstance().frontend.DisplayMessage(MessageSeverity.Info, "Anchor Contract Address Copied to Clipboard");
     }
 
 }
