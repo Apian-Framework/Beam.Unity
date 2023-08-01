@@ -1,0 +1,6 @@
+
+This folder contains Nethereum 4.14 DLLs.
+
+THey are the contents of the netStandardUnityCommonAOT.zip archive
+from https://github.com/Nethereum/Nethereum/releases
+
