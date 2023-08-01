@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 public class BeamFrontend : MonoBehaviour, IBeamFrontend
 {
-    public const float kErrorToastSecs = 7.0f;
+    public const float kErrorToastSecs = 30.0f;
     public const float kWarningToastSecs = 5.0f;
 	public FeGround feGround;
     public GameObject connectBtn;
