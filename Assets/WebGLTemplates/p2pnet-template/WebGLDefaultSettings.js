@@ -16,7 +16,7 @@ var WebGLDefaultSettings = {
   "gameAcctJSON": { },
   "curP2pConnection": "PokeyHedgehog MQTT WS",
   "curBlockchain": "Gnosis Chiado",
-  "anchorContractAddr": "0x89E803FC2F704B34e93B88F7b4bbeAf4D5F995fa",  
+  "anchorContractAddr": "0xCD23D5C57E88c829d6413a0Da55f3c627900BF64",  
   "gameAcctAddr": "",
   "permAcctAddr": "0x1234567890123456789012345678901234567890",
   "apianNetworkName": "BeamNet1",
@@ -33,7 +33,7 @@ var WebGLDefaultSettings = {
   },
   "tempSettings": {},
   "platformSettings": {
-    "mastervolume": "0.5",
+    "mastervolume": "0.25",
     "apiangamebase": "beam",
     "enableLogLvlEdit": "False"
   }
