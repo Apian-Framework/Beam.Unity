@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "com.apian-framework.apian": "file:../../Apian.Net/src/Apian",
-    "com.apian-framework.apiananchor": "file:E:/ConsenSys/Apian/code/ApianCrypto/src/EthereumContracts/ApianAnchor",
+    "com.apian-framework.apiananchor": "file:../../ApianCrypto/src/EthereumContracts/ApianAnchor",
     "com.apian-framework.apiancrypto": "file:../../ApianCrypto/src/ApianCrypto",
     "com.apian-framework.beamgamecode": "file:../../BeamGameCode/src/BeamGameCode",
     "com.apian-framework.ethforapian": "file:../../ApianCrypto/src/EthForApian",
@@ -14,6 +14,7 @@
     "com.apian-framework.p2pnetlibp2p": "file:../../Libp2p-Unity/P2pNetLibp2p.unitypackage",
     "com.apian-framework.p2pnetmqttjs": "file:../../MqttJS-Unity/P2pNetMqttJs.unitypackage",
     "com.apian-framework.unilog": "file:../../UniLog/src/UniLog",
+    "com.tools.webglthreadingpatcher": "file:../InternalPackages/WebGLThreadingPatcher",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.analytics": "3.6.12",
