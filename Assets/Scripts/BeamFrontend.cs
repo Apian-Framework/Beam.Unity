@@ -640,13 +640,13 @@ public class BeamFrontend : MonoBehaviour, IBeamFrontend
 
     public void OnSquareAddEvt(object sender, BeamSquareEventArgs args)
     {
-        logger.Info($"OnSquareAdded(): pos: {args.posHash} Team: {args.team.Name}");
+        logger.Verbose($"OnSquareAdded(): pos: {args.posHash} Team: {args.team.Name}");
         feGround.SetupSquare(args.posHash, args.team);
     }
 
     public void OnSquareDelEvt(object sender, BeamSquareEventArgs args)
     {
-        logger.Info($"OnSquareRemoved(): pos: {args.posHash}");
+        logger.Verbose($"OnSquareRemoved(): pos: {args.posHash}");
         feGround.FreeSquare(args.posHash);
     }
 

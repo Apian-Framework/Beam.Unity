@@ -191,7 +191,7 @@ public class FeGround : MonoBehaviour
         }
         if (square != null)
         {
-            logger.Info($"SetupSquare(): Setting up GameObject - posHash: {posHash}, team: {team}");
+            logger.Verbose($"SetupSquare(): Setting up GameObject - posHash: {posHash}, team: {team}");
 
             // at game exit it might have been destroyed
             // TODO: WHile not a THREAD sync problem, this might be a "message/action sync" issue. Check and see what's up.
