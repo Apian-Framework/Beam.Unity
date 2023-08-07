@@ -1,0 +1,8 @@
+
+I decided it was best to include the source for this plugin as part of this Unity project rather than only referring to it on GitHub (in case it went away.)
+
+Basically I dropped the github repo as-is in this folder and got rid of the .git subfolder so it became part of the containing project repo.
+
+The actual source repo for WebGLThreadingPatcher is: https://github.com/VolodymyrBS/WebGLThreadingPatcher
+
+All credit (and thanks) go to the author.
