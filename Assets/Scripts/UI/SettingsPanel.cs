@@ -24,6 +24,8 @@ public class SettingsPanel : MovableUICanvasItem
 
     public BeamUserSettings oldSettingsForCancel;
 
+    public const string kNoChainStr = "No Chain";
+
     protected void _SetupDropdown(TMP_Dropdown drop, List<string> options, string defaultOption)
     {
         drop.ClearOptions();
@@ -48,9 +50,10 @@ public class SettingsPanel : MovableUICanvasItem
             settings.curP2pConnection
         );
 
+        List<string> s = settings.blockchainInfos.Keys.ToList();
+        s.Insert(0, kNoChainStr); // 1st item on list
         _SetupDropdown( blockchainDrop.GetComponent<TMP_Dropdown>(),
-
-            settings.blockchainInfos.Keys.ToList(),
+            s,
             settings.curBlockchain
         );
 
@@ -94,7 +97,11 @@ public class SettingsPanel : MovableUICanvasItem
         BeamUserSettings settings = mainObj.frontend.GetUserSettings();
 
         settings.curP2pConnection = p2pConnectionDrop.GetComponent<TMP_Dropdown>().captionText.text;
-        settings.curBlockchain = blockchainDrop.GetComponent<TMP_Dropdown>().captionText.text;
+
+        string chainName = blockchainDrop.GetComponent<TMP_Dropdown>().captionText.text;
+        settings.curBlockchain =  (chainName == kNoChainStr)? "" : chainName;
+        mainObj.uiController.ShowToast($"curBlockchain: {settings.curBlockchain}", Toast.ToastColor.kGreen, 3);
+
         settings.anchorContractAddr = anchorAddrField.GetComponent<TMP_InputField>().text;
 
         settings.gameAcctAddr = gameAcctDrop.GetComponent<TMP_Dropdown>().captionText.text;
