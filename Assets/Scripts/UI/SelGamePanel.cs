@@ -15,13 +15,21 @@ using System.Threading.Tasks;
 public class SelGamePanel : MovableUICanvasItem
 {
     public GameObject existingGameDrop;
-    public GameObject newGameField;
-    public GameObject agreeTypeDrop;
-    public GameObject anchorAlgDrop;
+    public GameObject gameNameField;
+    public GameObject agreeTypeField;
+    public GameObject anchorAlgField;
+    public GameObject anchorAddrField;
     public bool JoinAsValidator;
+
+    public GameObject newGamePanelGo;
+    public GameObject joinCreateButtonGo;
+
     public const string kNoGames = "No Games Found";
 
     protected IDictionary<string, BeamGameAnnounceData> existingGames;
+
+    protected BeamGameInfo curGameInfo;
+    protected bool createBeforeJoin; // if true, button says "create" else "join"
 
 #if !SINGLE_THREADED
     protected TaskCompletionSource<GameSelectedEventArgs> completionSource;
@@ -66,14 +74,6 @@ public class SelGamePanel : MovableUICanvasItem
         existingGames = existingGameDict;
         frontEnd = BeamMain.GetInstance().frontend;
 
-        TMP_Dropdown typeDrop = agreeTypeDrop.GetComponent<TMP_Dropdown>();
-        typeDrop.ClearOptions();
-        typeDrop.AddOptions( BeamApianFactory.ApianGroupTypes.Where(type => type != SinglePeerGroupManager.kGroupType).ToList());
-
-        TMP_Dropdown algDrop = anchorAlgDrop.GetComponent<TMP_Dropdown>();
-        algDrop.ClearOptions();
-        algDrop.AddOptions( ApianGroupInfo.AnchorPostAlgorithms.ToList());
-
         Dictionary<string, string> egTypesForCaptions = new Dictionary<string, string>();
 
         TMP_Dropdown existingDrop = existingGameDrop.GetComponent<TMP_Dropdown>();
@@ -82,14 +82,39 @@ public class SelGamePanel : MovableUICanvasItem
         if (existingGames?.Count > 0)
         {
             existingDrop.AddOptions(existingGames.Values.Select((entry) => GameDisplayName(entry)).ToList());
+            _LoadCurrentGame(existingGames.Values.First().GameInfo, false);
         }
         else
         {
             existingDrop.AddOptions( new List<string>(){"(No existing games to join.)"});
             existingDrop.enabled = false;
+            _LoadCurrentGame(null, true);
         }
 
         moveOnScreen();
+    }
+
+    protected void _LoadCurrentGame(BeamGameInfo gameInfo, bool createThenJoin)
+    {
+        BeamUserSettings settings = BeamMain.GetInstance().frontend.GetUserSettings();
+
+        if (gameInfo == null)
+        {
+            gameNameField.GetComponent<TMP_InputField>().text = "";
+            agreeTypeField.GetComponent<TMP_InputField>().text = "";
+            anchorAlgField.GetComponent<TMP_InputField>().text = "";
+            anchorAddrField.GetComponent<TMP_InputField>().text = "";
+        } else {
+
+            curGameInfo = gameInfo;
+            createBeforeJoin = createThenJoin;
+            joinCreateButtonGo.transform.Find("Text").GetComponent<TMP_Text>().text = createThenJoin ? "CREATE" : "JOIN"; // there's just 1 child
+
+            gameNameField.GetComponent<TMP_InputField>().text = curGameInfo.GameName;
+            agreeTypeField.GetComponent<TMP_InputField>().text = curGameInfo.GroupType;
+            anchorAlgField.GetComponent<TMP_InputField>().text = curGameInfo.AnchorPostAlg;
+            anchorAddrField.GetComponent<TMP_InputField>().text = curGameInfo.AnchorAddr;
+        }
     }
 
     public void DoSetValidator(bool isSet)
@@ -99,25 +124,49 @@ public class SelGamePanel : MovableUICanvasItem
 
     public void DoJoinGame()
     {
-        moveOffScreen();
-        TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
-        frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
-        BeamGameInfo selectedGame = existingGames.Values.ToList()[drop.value].GameInfo;
-        NotifySelection(new GameSelectedEventArgs(selectedGame, GameSelectedEventArgs.ReturnCode.kJoin, JoinAsValidator));
+        if (curGameInfo != null)
+        {
+            moveOffScreen();
+
+            frontEnd.logger.Info($"SelGamePanel.DoJoinGame()");
+            NotifySelection(
+                new GameSelectedEventArgs(curGameInfo,
+                    createBeforeJoin? GameSelectedEventArgs.ReturnCode.kCreate : GameSelectedEventArgs.ReturnCode.kJoin,
+                    JoinAsValidator));
+        }
 
     }
 
+    // public void DoCreateGame() // SHould be DoCreateGameAsync
+    // {
+    //     moveOffScreen();
+    //     string newGameName = newGameField.GetComponent<TMP_InputField>().text;
+    //     string agreementType = agreeTypeDrop.GetComponent<TMP_Dropdown>().captionText.text;
+    //     string anchorPostAlgorithm = anchorAlgDrop.GetComponent<TMP_Dropdown>().captionText.text;
+    //     string anchorAddr = frontEnd.GetUserSettings().anchorContractAddr;
 
-    public void DoCreateGame() // SHould be DoCreateGameAsync
+    //     BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType, anchorAddr, anchorPostAlgorithm, new GroupMemberLimits());
+    //     NotifySelection(new GameSelectedEventArgs(newGameInfo, GameSelectedEventArgs.ReturnCode.kCreate, JoinAsValidator));
+    // }
+
+    public void OnExistingGameSelected()
     {
-        moveOffScreen();
-        string newGameName = newGameField.GetComponent<TMP_InputField>().text;
-        string agreementType = agreeTypeDrop.GetComponent<TMP_Dropdown>().captionText.text;
-        string anchorPostAlgorithm = anchorAlgDrop.GetComponent<TMP_Dropdown>().captionText.text;
-        string anchorAddr = frontEnd.GetUserSettings().anchorContractAddr;
+        TMP_Dropdown drop = existingGameDrop.GetComponent<TMP_Dropdown>();
+        BeamGameInfo selectedGame = existingGames.Values.ToList()[drop.value].GameInfo;
+        frontEnd.logger.Info($"SelGamePanel.OnExistingGameSelected()  Selected game: \"{selectedGame.GameName}\"");
+        _LoadCurrentGame(selectedGame, false);
+    }
 
-        BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType, anchorAddr, anchorPostAlgorithm, new GroupMemberLimits());
-        NotifySelection(new GameSelectedEventArgs(newGameInfo, GameSelectedEventArgs.ReturnCode.kCreate, JoinAsValidator));
+    public void DoCreateNewGameASync()
+    {
+        NewGamePanel panel = newGamePanelGo.GetComponent<NewGamePanel>();
+        panel.GetNewGame(this);
+    }
+
+    public void OnNewGameCreated(BeamGameInfo gameInfo)
+    {
+        frontEnd.logger.Info($"SelGamePanel.OnNewGameCreated()");
+        _LoadCurrentGame(gameInfo, true);
     }
 
     public void DoCancel()
@@ -125,7 +174,5 @@ public class SelGamePanel : MovableUICanvasItem
         moveOffScreen();
         NotifySelection(new GameSelectedEventArgs(null, GameSelectedEventArgs.ReturnCode.kCancel, false));
     }
-
-
 
 }
