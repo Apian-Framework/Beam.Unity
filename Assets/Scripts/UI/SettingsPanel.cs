@@ -15,7 +15,6 @@ public class SettingsPanel : MovableUICanvasItem
 
     public GameObject p2pConnectionDrop;
     public GameObject blockchainDrop;
-    public GameObject anchorAddrField;
     public GameObject gameAcctDrop;
     public GameObject permAcctField;
     public GameObject netNameField;
@@ -56,8 +55,6 @@ public class SettingsPanel : MovableUICanvasItem
             s,
             settings.curBlockchain
         );
-
-        anchorAddrField.GetComponent<TMP_InputField>().text = settings.anchorContractAddr;
 
         _SetupDropdown( gameAcctDrop.GetComponent<TMP_Dropdown>(),
 
@@ -101,8 +98,6 @@ public class SettingsPanel : MovableUICanvasItem
         string chainName = blockchainDrop.GetComponent<TMP_Dropdown>().captionText.text;
         settings.curBlockchain =  (chainName == kNoChainStr)? "" : chainName;
         mainObj.uiController.ShowToast($"curBlockchain: {settings.curBlockchain}", Toast.ToastColor.kGreen, 3);
-
-        settings.anchorContractAddr = anchorAddrField.GetComponent<TMP_InputField>().text;
 
         settings.gameAcctAddr = gameAcctDrop.GetComponent<TMP_Dropdown>().captionText.text;
         settings.permAcctAddr = permAcctField.GetComponent<TMP_InputField>().text;
@@ -151,11 +146,5 @@ public class SettingsPanel : MovableUICanvasItem
         BeamMain.GetInstance().frontend.DisplayMessage(MessageSeverity.Info, "Game Account Copied to Clipboard");
     }
 
-
-    public void CopyAnchorAddrToClipboard()
-    {
-        _copyToClipboard(anchorAddrField.GetComponent<TMP_InputField>().text);
-        BeamMain.GetInstance().frontend.DisplayMessage(MessageSeverity.Info, "Anchor Contract Address Copied to Clipboard");
-    }
 
 }
