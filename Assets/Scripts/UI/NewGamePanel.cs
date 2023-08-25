@@ -17,7 +17,6 @@ public class NewGamePanel : MovableUICanvasItem
     public GameObject anchorAddrField;
     public GameObject anchorAlgDrop;
 
-
     protected TaskCompletionSource<GameSelectedEventArgs> completionSource;
     protected BeamFrontend frontEnd;
     protected SelGamePanel selGamePanel;
@@ -44,7 +43,17 @@ public class NewGamePanel : MovableUICanvasItem
         algDrop.ClearOptions();
         algDrop.AddOptions( ApianGroupInfo.AnchorPostAlgorithms.ToList());
 
+        OnAnchorTypeSel(); // show/hide the address field
+
         moveOnScreen();
+    }
+
+    public void OnAnchorTypeSel()
+    {
+        // enable/disable anchor address field (index 0 is "none")
+        int selAnchorIdx =  anchorAlgDrop.GetComponent<TMP_Dropdown>().value;
+        anchorAddrField.SetActive( selAnchorIdx != 0);
+
     }
 
     public void DoCreateGame() // SHould be DoCreateGameAsync
@@ -53,7 +62,12 @@ public class NewGamePanel : MovableUICanvasItem
         string newGameName = gameNameField.GetComponent<TMP_InputField>().text;
         string agreementType = agreeTypeDrop.GetComponent<TMP_Dropdown>().captionText.text;
         string anchorPostAlgorithm = anchorAlgDrop.GetComponent<TMP_Dropdown>().captionText.text;
-        string anchorAddr = frontEnd.GetUserSettings().anchorContractAddr;
+        string anchorAddr = "";
+
+        if ( anchorAlgDrop.GetComponent<TMP_Dropdown>().value != 0) {
+            anchorAddr =  anchorAddrField.GetComponent<TMP_InputField>().text;
+            frontEnd.GetUserSettings().anchorContractAddr = anchorAddr; // if there's an anchor, write its addr to settings
+        }
 
         BeamGameInfo newGameInfo = frontEnd.beamAppl.beamGameNet.CreateBeamGameInfo(newGameName, agreementType, anchorAddr, anchorPostAlgorithm, new GroupMemberLimits());
         selGamePanel.OnNewGameCreated(newGameInfo);

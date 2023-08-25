@@ -15,6 +15,10 @@ using System.Threading.Tasks;
 public class SelGamePanel : MovableUICanvasItem
 {
     public GameObject existingGameDrop;
+
+    public GameObject noGameInfoMsg;
+    public GameObject gameInfoPanel;
+
     public GameObject gameNameField;
     public GameObject agreeTypeField;
     public GameObject anchorAlgField;
@@ -93,18 +97,23 @@ public class SelGamePanel : MovableUICanvasItem
 
         moveOnScreen();
     }
-
     protected void _LoadCurrentGame(BeamGameInfo gameInfo, bool createThenJoin)
     {
         BeamUserSettings settings = BeamMain.GetInstance().frontend.GetUserSettings();
 
         if (gameInfo == null)
         {
+            noGameInfoMsg.SetActive(true);
+            gameInfoPanel.SetActive(false);
+
             gameNameField.GetComponent<TMP_InputField>().text = "";
             agreeTypeField.GetComponent<TMP_InputField>().text = "";
             anchorAlgField.GetComponent<TMP_InputField>().text = "";
             anchorAddrField.GetComponent<TMP_InputField>().text = "";
         } else {
+
+            noGameInfoMsg.SetActive(false);
+            gameInfoPanel.SetActive(true);
 
             curGameInfo = gameInfo;
             createBeforeJoin = createThenJoin;
