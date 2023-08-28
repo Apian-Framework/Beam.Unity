@@ -106,6 +106,16 @@ public class BeamMain : MonoBehaviour
 		Application.targetFrameRate = -1; //60; // default is 60 - but in WebGL it means not to use a timer
         DontDestroyOnLoad(transform.gameObject); // this obj survives scene change (TODO: Needed?)
 
+        // The Analytics package is not even installed, so these don't
+        // even work. If it needs to be installed for other reasons then maybe
+        // some/all become necessary
+        //
+        // UnityEngine.Analytics.Analytics.enabled = false;
+        // UnityEngine.Analytics.Analytics.deviceStatsEnabled = false;
+        // UnityEngine.Analytics.Analytics.initializeOnStartup = false;
+        // UnityEngine.Analytics.Analytics.limitUserTracking = false;
+        // UnityEngine.Analytics.PerformanceReporting.enabled = false;
+
         platformSettings = new PlatformSettings();
 
         frontend = (BeamFrontend)utils.findObjectComponent("BeamFrontend", "BeamFrontend"); // loads settings
